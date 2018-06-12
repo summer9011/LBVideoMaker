@@ -1,5 +1,8 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
 use_frameworks!
 
+platform :ios, '9.0'
 target 'LBVideoMaker_Example' do
   pod 'LBVideoMaker', :path => '../'
 

@@ -39,7 +39,7 @@
 /* Begin PBXFileReference section */
 		0AE537E0B774D61CDC3620DC /* Pods_LBVideoMaker_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LBVideoMaker_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4544E785458404C129E9A5CF /* Pods-LBVideoMaker_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LBVideoMaker_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LBVideoMaker_Tests/Pods-LBVideoMaker_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		49BDEEAA2A1862B502E46C6E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		49BDEEAA2A1862B502E46C6E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		4F495CAB19FB42785DDA4328 /* Pods-LBVideoMaker_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LBVideoMaker_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LBVideoMaker_Example/Pods-LBVideoMaker_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* LBVideoMaker_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LBVideoMaker_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -64,9 +64,9 @@
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		805AC189D1EAAC805569BF75 /* Pods-LBVideoMaker_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LBVideoMaker_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-LBVideoMaker_Example/Pods-LBVideoMaker_Example.release.xcconfig"; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		B1B532AA8B543F422497D1C8 /* LBVideoMaker.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = LBVideoMaker.podspec; path = ../LBVideoMaker.podspec; sourceTree = "<group>"; };
+		B1B532AA8B543F422497D1C8 /* LBVideoMaker.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LBVideoMaker.podspec; path = ../LBVideoMaker.podspec; sourceTree = "<group>"; };
 		B9ECE9EC52CA7ACA2DD2B93C /* Pods-LBVideoMaker_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LBVideoMaker_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LBVideoMaker_Tests/Pods-LBVideoMaker_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		FA02AD9E685DC9937E1313E8 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		FA02AD9E685DC9937E1313E8 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,6 +247,9 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "胡萝卜_小波波";
 				TargetAttributes = {
+					6003F589195388D20070C39A = {
+						DevelopmentTeam = U9A4TD7GB4;
+					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
 					};
@@ -485,6 +488,7 @@
 			baseConfigurationReference = 4F495CAB19FB42785DDA4328 /* Pods-LBVideoMaker_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = U9A4TD7GB4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LBVideoMaker/LBVideoMaker-Prefix.pch";
 				INFOPLIST_FILE = "LBVideoMaker/LBVideoMaker-Info.plist";
@@ -500,6 +504,7 @@
 			baseConfigurationReference = 805AC189D1EAAC805569BF75 /* Pods-LBVideoMaker_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = U9A4TD7GB4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LBVideoMaker/LBVideoMaker-Prefix.pch";
 				INFOPLIST_FILE = "LBVideoMaker/LBVideoMaker-Info.plist";

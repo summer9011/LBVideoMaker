@@ -7,6 +7,7 @@
 //
 
 #import "LBViewController.h"
+#import <LBVideoMaker/LBVideoMaker.h>
 
 @interface LBViewController ()
 
@@ -24,6 +25,20 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)makeVideo:(id)sender {
+    [[LBVideoMaker shareMaker] makeVideo:[self createVideoObj]
+                             toDirectory:NSTemporaryDirectory()
+                                withName:[[NSUUID UUID].UUIDString lowercaseString]
+                               extension:LBVideoExtensionDefault
+                             resultBlock:^(BOOL success, NSError *error) {
+                                 
+                             }];
+}
+
+- (id<LBVideoProtocol>)createVideoObj {
+    return nil;
 }
 
 @end

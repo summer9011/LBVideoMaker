@@ -21,14 +21,14 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/胡萝卜_小波波/LBVideoMaker'
+  s.homepage         = 'https://github.com/summer9011/LBVideoMaker'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { '胡萝卜_小波波' => '451973176@qq.com' }
-  s.source           = { :git => 'https://github.com/胡萝卜_小波波/LBVideoMaker.git', :tag => s.version.to_s }
+  s.author           = { 'leebo' => 'zhao_li_bo@163.com' }
+  s.source           = { :git => 'https://github.com/summer9011/LBVideoMaker.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
 
   s.source_files = 'LBVideoMaker/Classes/**/*'
   
@@ -37,6 +37,6 @@ TODO: Add long description of the pod here.
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
+  s.frameworks = 'AVFoundation', 'AVKit'
   # s.dependency 'AFNetworking', '~> 2.3'
 end
