@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'LBVideoMaker_Example' do
+  pod 'LBVideoMaker', :path => '../'
+
+  target 'LBVideoMaker_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
