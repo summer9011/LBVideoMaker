@@ -9,6 +9,9 @@
 #import "LBTimeProtocol.h"
 
 @protocol LBEnvironmentProtocol <NSObject, LBTimeProtocol>
+
+@property (nonatomic, strong) id<LBEnvironmentProtocol> nextEnvironment;
+
 @end
 
 @protocol LBBackgroundAudioEnvironmentProtocol <LBEnvironmentProtocol>

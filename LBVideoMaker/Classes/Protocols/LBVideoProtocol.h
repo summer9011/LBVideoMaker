@@ -11,7 +11,7 @@
 
 @protocol LBVideoProtocol <NSObject>
 
-@property (nonatomic, strong) NSArray<id<LBEnvironmentProtocol>> *environments;
+@property (nonatomic, strong) NSSet<id<LBEnvironmentProtocol>> *environments;
 @property (nonatomic, strong) NSArray<id<LBSceneProtocol>> *scenes;
 
 @end
