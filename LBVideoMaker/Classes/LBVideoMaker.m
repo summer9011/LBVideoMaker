@@ -30,33 +30,36 @@
 - (void)makeVideo:(id<LBVideoProtocol>)video toDirectory:(NSString *)directory withName:(NSString *)name extension:(LBVideoExtensionType)extension resultBlock:(LBVideoMakerBlock)resultBlock {
     dispatch_sync(self.queue, ^{
         AVMutableComposition *composition = [AVMutableComposition composition];
-        [self insertTracksWithEnvironment:video.environments composition:composition];
+        [self insertTracksWithEnvironments:video.environments composition:composition];
     });
 }
 
-- (void)insertTracksWithEnvironment:(NSSet<id<LBEnvironmentProtocol>> *)environments composition:(AVMutableComposition *)composition {
-    __block CGSize naturalSize = CGSizeZero;
+- (void)insertTracksWithEnvironments:(NSSet<id<LBEnvironmentProtocol>> *)environments composition:(AVMutableComposition *)composition {
     if (environments) {
         [environments enumerateObjectsUsingBlock:^(id<LBEnvironmentProtocol>  _Nonnull obj, BOOL * _Nonnull stop) {
-            AVMutableCompositionTrack *track = nil;
-            AVAssetTrack *assetTrack = nil;
-            if ([obj conformsToProtocol:@protocol(LBBackgroundVideoEnvironmentProtocol)]) {
-                track = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
-                AVURLAsset *asset = [AVURLAsset assetWithURL:((id<LBBackgroundVideoEnvironmentProtocol>)obj).videoURL];
-                assetTrack = [asset tracksWithMediaType:AVMediaTypeVideo].firstObject;
-                naturalSize = assetTrack.naturalSize;
-            } else if ([obj conformsToProtocol:@protocol(LBBackgroundAudioEnvironmentProtocol)]) {
-                track = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-                AVURLAsset *asset = [AVURLAsset assetWithURL:((id<LBBackgroundAudioEnvironmentProtocol>)obj).audioURL];
-                assetTrack = [asset tracksWithMediaType:AVMediaTypeAudio].firstObject;
-            }
-            
-            if (track) {
-                [track insertTimeRange:obj.durition ofTrack:assetTrack atTime:obj.startTime error:nil];
-            }
+            [self insertTrackWithEnvironment:obj composition:composition];
         }];
     }
-    composition.naturalSize = naturalSize;
+}
+
+- (void)insertTrackWithEnvironment:(id<LBEnvironmentProtocol>)environment composition:(AVMutableComposition *)composition {
+    AVMutableCompositionTrack *track = nil;
+    AVAssetTrack *assetTrack = nil;
+    if ([environment conformsToProtocol:@protocol(LBBackgroundVideoEnvironmentProtocol)]) {
+        track = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+        AVURLAsset *asset = [AVURLAsset assetWithURL:((id<LBBackgroundVideoEnvironmentProtocol>)environment).videoURL];
+        assetTrack = [asset tracksWithMediaType:AVMediaTypeVideo].firstObject;
+    } else if ([environment conformsToProtocol:@protocol(LBBackgroundAudioEnvironmentProtocol)]) {
+        track = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+        AVURLAsset *asset = [AVURLAsset assetWithURL:((id<LBBackgroundAudioEnvironmentProtocol>)environment).audioURL];
+        assetTrack = [asset tracksWithMediaType:AVMediaTypeAudio].firstObject;
+    }
+    if (track) {
+        [track insertTimeRange:environment.durition ofTrack:assetTrack atTime:environment.startTime error:nil];
+    }
+    if (environment.nextEnvironment) {
+        [self insertTrackWithEnvironment:environment.nextEnvironment composition:composition];
+    }
 }
 
 @end
