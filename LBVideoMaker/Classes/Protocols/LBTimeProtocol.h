@@ -6,11 +6,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <AVFoundation/AVFoundation.h>
+
+@import AVFoundation;
 
 @protocol LBTimeProtocol <NSObject>
 
-@property (nonatomic, assign) CMTime startTime;
-@property (nonatomic, assign) CMTimeRange durition;
+@property (nonatomic, assign) CMTimeRange timeRange;
 
 @end

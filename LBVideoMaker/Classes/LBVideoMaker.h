@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "LBVideoProtocol.h"
 
+typedef void(^LBVideoMakerProgressBlock)(CGFloat progress);
 typedef void(^LBVideoMakerBlock)(BOOL success, NSError *error);
 
 typedef NS_ENUM(NSUInteger, LBVideoExtensionType) {
@@ -19,6 +20,13 @@ typedef NS_ENUM(NSUInteger, LBVideoExtensionType) {
 
 + (LBVideoMaker *)shareMaker;
 
-- (void)makeVideo:(id<LBVideoProtocol>)video toDirectory:(NSString *)directory withName:(NSString *)name extension:(LBVideoExtensionType)extension resultBlock:(LBVideoMakerBlock)resultBlock;
+- (NSString *)makeVideo:(id<LBVideoProtocol>)video
+            toDirectory:(NSString *)directory
+               withName:(NSString *)name
+              extension:(LBVideoExtensionType)extension
+          progressBlock:(LBVideoMakerProgressBlock)progressBlock
+            resultBlock:(LBVideoMakerBlock)resultBlock;
+
+- (void)cancelMakeVideo:(NSString *)makingIdentifier;
 
 @end

@@ -16,6 +16,7 @@
 
 @property (nonatomic, strong) id<LBTransitionProtocol> startTransition;
 @property (nonatomic, strong) id<LBTransitionProtocol> endTransition;
+
 @property (nonatomic, strong) id<LBSceneProtocol> nextScene;
 
 @end

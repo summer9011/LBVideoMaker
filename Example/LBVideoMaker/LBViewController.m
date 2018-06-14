@@ -112,8 +112,11 @@
                              toDirectory:NSTemporaryDirectory()
                                 withName:[[NSUUID UUID].UUIDString lowercaseString]
                                extension:LBVideoExtensionDefault
+                           progressBlock:^(CGFloat progress) {
+                               NSLog(@"progress %f", progress);
+                           }
                              resultBlock:^(BOOL success, NSError *error) {
-                                 
+                                 NSLog(@"success %d, error %@", success, error);
                              }];
 }
 

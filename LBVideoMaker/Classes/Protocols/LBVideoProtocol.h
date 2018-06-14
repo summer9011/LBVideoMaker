@@ -11,6 +11,8 @@
 
 @protocol LBVideoProtocol <NSObject>
 
+@property (nonatomic, assign) int32_t frames;   //30fps
+
 @property (nonatomic, strong) NSSet<id<LBEnvironmentProtocol>> *environments;
 @property (nonatomic, strong) NSArray<id<LBSceneProtocol>> *scenes;
 

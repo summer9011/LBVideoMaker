@@ -7,8 +7,14 @@
 
 #import <Foundation/Foundation.h>
 #import "LBTimeProtocol.h"
+#import "LBTransitionProtocol.h"
 
 @protocol LBEnvironmentProtocol <NSObject, LBTimeProtocol>
+
+@property (nonatomic, assign) CMTimeRange availableTimeRange;
+
+@property (nonatomic, strong) id<LBTransitionProtocol> startTransition;
+@property (nonatomic, strong) id<LBTransitionProtocol> endTransition;
 
 @property (nonatomic, strong) id<LBEnvironmentProtocol> nextEnvironment;
 
@@ -22,6 +28,7 @@
 
 @protocol LBBackgroundVideoEnvironmentProtocol <LBEnvironmentProtocol>
 
+@property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic, strong) NSURL *videoURL;
 
 @end
