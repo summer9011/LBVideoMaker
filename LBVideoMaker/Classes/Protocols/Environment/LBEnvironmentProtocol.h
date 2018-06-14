@@ -13,8 +13,8 @@
 
 @property (nonatomic, assign) CMTimeRange availableTimeRange;
 
-@property (nonatomic, strong) id<LBTransitionProtocol> startTransition;
-@property (nonatomic, strong) id<LBTransitionProtocol> endTransition;
+@property (nonatomic, strong) id<LBTransitionProtocol> appear;
+@property (nonatomic, strong) id<LBTransitionProtocol> disappear;
 
 @property (nonatomic, strong) id<LBEnvironmentProtocol> nextEnvironment;
 

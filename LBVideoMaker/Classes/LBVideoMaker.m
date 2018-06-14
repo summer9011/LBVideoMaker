@@ -59,6 +59,8 @@
             videoComposition.instructions = self.instructions;
             int32_t timescale = (video.frames > 0)?video.frames:30;
             videoComposition.frameDuration = CMTimeMake(1, timescale);
+            
+            [self addAnimationToolWithScenes:video.scenes videoComposition:videoComposition];
         }
         
         AVMutableAudioMix *audioMix = nil;
@@ -115,17 +117,11 @@
         assetTrack = [asset tracksWithMediaType:AVMediaTypeVideo].firstObject;
         
         AVMutableVideoCompositionLayerInstruction *layerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:assetTrack];
-        if (videoEnvironment.startTransition) {
-            if ([videoEnvironment.startTransition conformsToProtocol:@protocol(LBAlphaTransitionProtocol)]) {
-                id<LBAlphaTransitionProtocol> alphaTransition = (id<LBAlphaTransitionProtocol>)videoEnvironment.startTransition;
-                [layerInstruction setOpacityRampFromStartOpacity:alphaTransition.fromAlpha toEndOpacity:alphaTransition.toAlpha timeRange:alphaTransition.timeRange];
-            }
+        if (videoEnvironment.appear) {
+            [self addTransition:videoEnvironment.appear toLayerInstruction:layerInstruction];
         }
-        if (videoEnvironment.endTransition) {
-            if ([videoEnvironment.endTransition conformsToProtocol:@protocol(LBAlphaTransitionProtocol)]) {
-                id<LBAlphaTransitionProtocol> alphaTransition = (id<LBAlphaTransitionProtocol>)videoEnvironment.startTransition;
-                [layerInstruction setOpacityRampFromStartOpacity:alphaTransition.fromAlpha toEndOpacity:alphaTransition.toAlpha timeRange:alphaTransition.timeRange];
-            }
+        if (videoEnvironment.disappear) {
+            [self addTransition:videoEnvironment.disappear toLayerInstruction:layerInstruction];
         }
         
         AVMutableVideoCompositionInstruction *instruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
@@ -144,19 +140,13 @@
         
         BOOL existAudioTransition = NO;
         AVMutableAudioMixInputParameters *audioMixInputParameters = [AVMutableAudioMixInputParameters audioMixInputParametersWithTrack:assetTrack];
-        if (audioEnvironment.startTransition) {
-            if ([audioEnvironment.startTransition conformsToProtocol:@protocol(LBVolumeTransitionProtocol)]) {
-                existAudioTransition = YES;
-                id<LBVolumeTransitionProtocol> volumeTransition = (id<LBVolumeTransitionProtocol>)audioEnvironment.startTransition;
-                [audioMixInputParameters setVolumeRampFromStartVolume:volumeTransition.fromVolume toEndVolume:volumeTransition.toVolume timeRange:volumeTransition.timeRange];
-            }
+        if (audioEnvironment.appear) {
+            existAudioTransition = YES;
+            [self addTransition:audioEnvironment.appear toAudioMixInputParameters:audioMixInputParameters];
         }
-        if (audioEnvironment.endTransition) {
-            if ([audioEnvironment.endTransition conformsToProtocol:@protocol(LBVolumeTransitionProtocol)]) {
-                existAudioTransition = YES;
-                id<LBVolumeTransitionProtocol> volumeTransition = (id<LBVolumeTransitionProtocol>)audioEnvironment.startTransition;
-                [audioMixInputParameters setVolumeRampFromStartVolume:volumeTransition.fromVolume toEndVolume:volumeTransition.toVolume timeRange:volumeTransition.timeRange];
-            }
+        if (audioEnvironment.disappear) {
+            existAudioTransition = YES;
+            [self addTransition:audioEnvironment.disappear toAudioMixInputParameters:audioMixInputParameters];
         }
         if (existAudioTransition) {
             [self.audioMixInputParameters addObject:audioMixInputParameters];
@@ -169,6 +159,89 @@
         [self insertTrackWithEnvironment:environment.nextEnvironment
                              composition:composition];
     }
+}
+
+- (void)addTransition:(id<LBTransitionProtocol>)transition toLayerInstruction:(AVMutableVideoCompositionLayerInstruction *)layerInstruction {
+    if ([transition conformsToProtocol:@protocol(LBAlphaTransitionProtocol)]) {
+        id<LBAlphaTransitionProtocol> alphaTransition = (id<LBAlphaTransitionProtocol>)transition;
+        [layerInstruction setOpacityRampFromStartOpacity:alphaTransition.fromAlpha toEndOpacity:alphaTransition.toAlpha timeRange:alphaTransition.timeRange];
+    }
+}
+
+- (void)addTransition:(id<LBTransitionProtocol>)transition toAudioMixInputParameters:(AVMutableAudioMixInputParameters *)audioMixInputParameters {
+    if ([transition conformsToProtocol:@protocol(LBVolumeTransitionProtocol)]) {
+        id<LBVolumeTransitionProtocol> volumeTransition = (id<LBVolumeTransitionProtocol>)transition;
+        [audioMixInputParameters setVolumeRampFromStartVolume:volumeTransition.fromVolume toEndVolume:volumeTransition.toVolume timeRange:volumeTransition.timeRange];
+    }
+}
+
+- (void)addAnimationToolWithScenes:(NSArray<id<LBSceneProtocol>> *)scenes videoComposition:(AVMutableVideoComposition *)videoComposition {
+    CGRect layerRect = CGRectZero;
+    layerRect.size = videoComposition.renderSize;
+    
+    CALayer *parentLayer = [CALayer layer];
+    parentLayer.frame = layerRect;
+    
+    CALayer *videoLayer = [CALayer layer];
+    videoLayer.frame = layerRect;
+    [parentLayer addSublayer:videoLayer];
+    
+    CALayer *animationLayer = [CALayer layer];
+    animationLayer.frame = layerRect;
+    [parentLayer addSublayer:animationLayer];
+    
+    [self addSceneLayersWithScenes:scenes
+                  toAnimationLayer:animationLayer];
+    
+    videoComposition.animationTool = [AVVideoCompositionCoreAnimationTool videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:videoLayer inLayer:parentLayer];
+}
+
+- (void)addSceneLayersWithScenes:(NSArray<id<LBSceneProtocol>> *)scenes
+                toAnimationLayer:(CALayer *)animationLayer {
+    if (scenes) {
+        [scenes enumerateObjectsUsingBlock:^(id<LBSceneProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [self addSceneLayerWithScene:obj
+                        toAnimationLayer:animationLayer];
+        }];
+    }
+}
+
+- (void)addSceneLayerWithScene:(id<LBSceneProtocol>)scene
+              toAnimationLayer:(CALayer *)animationLayer {
+    CALayer *sceneLayer = [CALayer layer];
+    sceneLayer.frame = animationLayer.bounds;
+    [animationLayer addSublayer:sceneLayer];
+    
+    if (scene.persons) {
+        [scene.persons enumerateObjectsUsingBlock:^(id<LBPersonProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [self addPersonLayerWithPerson:obj toSceneLayer:sceneLayer];
+        }];
+    }
+    
+    if (scene.appear) {
+        [self addTransition:scene.appear withLayer:sceneLayer];
+    }
+    if (scene.disappear) {
+        [self addTransition:scene.appear withLayer:sceneLayer];
+    }
+    
+    if (scene.nextScene) {
+        [self addSceneLayerWithScene:scene.nextScene
+                    toAnimationLayer:animationLayer];
+    }
+}
+
+- (void)addPersonLayerWithPerson:(id<LBPersonProtocol>)person toSceneLayer:(CALayer *)sceneLayer {
+    if (person.appear) {
+        
+    }
+    if (person.disappear) {
+        
+    }
+}
+
+- (void)addTransition:(id<LBTransitionProtocol>)transition withLayer:(CALayer *)layer {
+    
 }
 
 - (void)exportVideoWithIdentifier:(NSString *)identifier

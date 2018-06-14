@@ -14,8 +14,8 @@
 
 @property (nonatomic, strong) NSArray<id<LBPersonProtocol>> *persons;
 
-@property (nonatomic, strong) id<LBTransitionProtocol> startTransition;
-@property (nonatomic, strong) id<LBTransitionProtocol> endTransition;
+@property (nonatomic, strong) id<LBTransitionProtocol> appear;
+@property (nonatomic, strong) id<LBTransitionProtocol> disappear;
 
 @property (nonatomic, strong) id<LBSceneProtocol> nextScene;
 
