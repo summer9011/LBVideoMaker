@@ -8,6 +8,8 @@
 
 #import "LBViewController.h"
 
+#import "LBVideoObj.h"
+
 @import AVKit;
 @import LBVideoMaker;
 
@@ -104,7 +106,18 @@
 }
 
 - (id<LBVideoProtocol>)createVideoObj {
-    return nil;
+    LBVideoObj *videoObj = [LBVideoObj new];
+    
+    //enviroments
+    LBVideoEnvironmentObj *videoEnvironmentObj = [LBVideoEnvironmentObj new];
+    videoEnvironmentObj.backgroundColor = [UIColor whiteColor];
+    videoEnvironmentObj.videoURL = [NSURL fileURLWithPath:@""];
+    LBAudioEnvironmentObj *audioEnvironmentObj = [LBAudioEnvironmentObj new];
+    audioEnvironmentObj.audioURL = [NSURL fileURLWithPath:@""];
+    
+    videoObj.environments = [NSSet setWithObjects:videoEnvironmentObj, audioEnvironmentObj, nil];
+    
+    return videoObj;
 }
 
 - (IBAction)makeVideo:(id)sender {

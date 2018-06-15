@@ -9,6 +9,7 @@
 #import "LBTimeProtocol.h"
 
 @protocol LBTransitionProtocol <NSObject, LBTimeProtocol>
+
 @end
 
 @protocol LBVolumeTransitionProtocol <LBTransitionProtocol>

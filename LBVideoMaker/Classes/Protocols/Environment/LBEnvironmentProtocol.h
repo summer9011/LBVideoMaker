@@ -20,13 +20,13 @@
 
 @end
 
-@protocol LBBackgroundAudioEnvironmentProtocol <LBEnvironmentProtocol>
+@protocol LBAudioEnvironmentProtocol <LBEnvironmentProtocol>
 
 @property (nonatomic, strong) NSURL *audioURL;
 
 @end
 
-@protocol LBBackgroundVideoEnvironmentProtocol <LBEnvironmentProtocol>
+@protocol LBVideoEnvironmentProtocol <LBEnvironmentProtocol>
 
 @property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic, strong) NSURL *videoURL;

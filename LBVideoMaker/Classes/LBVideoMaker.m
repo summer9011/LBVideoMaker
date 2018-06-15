@@ -7,6 +7,8 @@
 
 #import "LBVideoMaker.h"
 
+#import "LBTransitionHelper.h"
+
 @import AVFoundation;
 @import KVOController;
 
@@ -109,8 +111,8 @@
                        composition:(AVMutableComposition *)composition {
     AVMutableCompositionTrack *track = nil;
     AVAssetTrack *assetTrack = nil;
-    if ([environment conformsToProtocol:@protocol(LBBackgroundVideoEnvironmentProtocol)]) {
-        id<LBBackgroundVideoEnvironmentProtocol> videoEnvironment = (id<LBBackgroundVideoEnvironmentProtocol>)environment;
+    if ([environment conformsToProtocol:@protocol(LBVideoEnvironmentProtocol)]) {
+        id<LBVideoEnvironmentProtocol> videoEnvironment = (id<LBVideoEnvironmentProtocol>)environment;
         
         track = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
         AVURLAsset *asset = [AVURLAsset assetWithURL:videoEnvironment.videoURL];
@@ -118,10 +120,10 @@
         
         AVMutableVideoCompositionLayerInstruction *layerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:assetTrack];
         if (videoEnvironment.appear) {
-            [self addTransition:videoEnvironment.appear toLayerInstruction:layerInstruction];
+            [LBTransitionHelper addTransition:videoEnvironment.appear toLayerInstruction:layerInstruction];
         }
         if (videoEnvironment.disappear) {
-            [self addTransition:videoEnvironment.disappear toLayerInstruction:layerInstruction];
+            [LBTransitionHelper addTransition:videoEnvironment.disappear toLayerInstruction:layerInstruction];
         }
         
         AVMutableVideoCompositionInstruction *instruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
@@ -131,8 +133,8 @@
         
         [self.instructions addObject:instruction];
         
-    } else if ([environment conformsToProtocol:@protocol(LBBackgroundAudioEnvironmentProtocol)]) {
-        id<LBBackgroundAudioEnvironmentProtocol> audioEnvironment = (id<LBBackgroundAudioEnvironmentProtocol>)environment;
+    } else if ([environment conformsToProtocol:@protocol(LBAudioEnvironmentProtocol)]) {
+        id<LBAudioEnvironmentProtocol> audioEnvironment = (id<LBAudioEnvironmentProtocol>)environment;
         
         track = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
         AVURLAsset *asset = [AVURLAsset assetWithURL:audioEnvironment.audioURL];
@@ -142,11 +144,11 @@
         AVMutableAudioMixInputParameters *audioMixInputParameters = [AVMutableAudioMixInputParameters audioMixInputParametersWithTrack:assetTrack];
         if (audioEnvironment.appear) {
             existAudioTransition = YES;
-            [self addTransition:audioEnvironment.appear toAudioMixInputParameters:audioMixInputParameters];
+            [LBTransitionHelper addTransition:audioEnvironment.appear toAudioMixInputParameters:audioMixInputParameters];
         }
         if (audioEnvironment.disappear) {
             existAudioTransition = YES;
-            [self addTransition:audioEnvironment.disappear toAudioMixInputParameters:audioMixInputParameters];
+            [LBTransitionHelper addTransition:audioEnvironment.disappear toAudioMixInputParameters:audioMixInputParameters];
         }
         if (existAudioTransition) {
             [self.audioMixInputParameters addObject:audioMixInputParameters];
@@ -158,20 +160,6 @@
     if (environment.nextEnvironment) {
         [self insertTrackWithEnvironment:environment.nextEnvironment
                              composition:composition];
-    }
-}
-
-- (void)addTransition:(id<LBTransitionProtocol>)transition toLayerInstruction:(AVMutableVideoCompositionLayerInstruction *)layerInstruction {
-    if ([transition conformsToProtocol:@protocol(LBAlphaTransitionProtocol)]) {
-        id<LBAlphaTransitionProtocol> alphaTransition = (id<LBAlphaTransitionProtocol>)transition;
-        [layerInstruction setOpacityRampFromStartOpacity:alphaTransition.fromAlpha toEndOpacity:alphaTransition.toAlpha timeRange:alphaTransition.timeRange];
-    }
-}
-
-- (void)addTransition:(id<LBTransitionProtocol>)transition toAudioMixInputParameters:(AVMutableAudioMixInputParameters *)audioMixInputParameters {
-    if ([transition conformsToProtocol:@protocol(LBVolumeTransitionProtocol)]) {
-        id<LBVolumeTransitionProtocol> volumeTransition = (id<LBVolumeTransitionProtocol>)transition;
-        [audioMixInputParameters setVolumeRampFromStartVolume:volumeTransition.fromVolume toEndVolume:volumeTransition.toVolume timeRange:volumeTransition.timeRange];
     }
 }
 
@@ -210,19 +198,24 @@
               toAnimationLayer:(CALayer *)animationLayer {
     CALayer *sceneLayer = [CALayer layer];
     sceneLayer.frame = animationLayer.bounds;
+    sceneLayer.opacity = 0.f;
     [animationLayer addSublayer:sceneLayer];
+    
+    if (scene.appear) {
+        [LBTransitionHelper addTransition:scene.appear withLayer:sceneLayer toParentLayer:animationLayer];
+    } else {
+        [LBTransitionHelper addDefaultAppearTransitionWithLayer:sceneLayer toParentLayer:animationLayer];
+    }
+    if (scene.disappear) {
+        [LBTransitionHelper addTransition:scene.disappear withLayer:sceneLayer toParentLayer:animationLayer];
+    } else {
+        [LBTransitionHelper addDefaultDisappearTransitionWithLayer:sceneLayer toParentLayer:animationLayer];
+    }
     
     if (scene.persons) {
         [scene.persons enumerateObjectsUsingBlock:^(id<LBPersonProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             [self addPersonLayerWithPerson:obj toSceneLayer:sceneLayer];
         }];
-    }
-    
-    if (scene.appear) {
-        [self addTransition:scene.appear withLayer:sceneLayer];
-    }
-    if (scene.disappear) {
-        [self addTransition:scene.appear withLayer:sceneLayer];
     }
     
     if (scene.nextScene) {
@@ -238,10 +231,6 @@
     if (person.disappear) {
         
     }
-}
-
-- (void)addTransition:(id<LBTransitionProtocol>)transition withLayer:(CALayer *)layer {
-    
 }
 
 - (void)exportVideoWithIdentifier:(NSString *)identifier
