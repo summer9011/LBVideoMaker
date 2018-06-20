@@ -25,11 +25,37 @@
 
 @synthesize audioURL;
 
+- (instancetype)initWithAudioURL:(NSURL *)audioURL {
+    if (self = [super init]) {
+        AVURLAsset *asset = [AVURLAsset assetWithURL:audioURL];
+        _audioTimeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
+        self.availableTimeRange = _audioTimeRange;
+        self.timeRange = self.availableTimeRange;
+        
+        self.audioURL = audioURL;
+    }
+    return self;
+}
+
 @end
 
 @implementation LBVideoEnvironmentObj
 
 @synthesize backgroundColor;
 @synthesize videoURL;
+
+- (instancetype)initWithVideoURL:(NSURL *)videoURL
+                 backgroundColor:(UIColor *)backgroundColor {
+    if (self = [super init]) {
+        AVURLAsset *asset = [AVURLAsset assetWithURL:videoURL];
+        _videoTimeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
+        self.availableTimeRange = _videoTimeRange;
+        self.timeRange = self.availableTimeRange;
+        
+        self.videoURL = videoURL;
+        self.backgroundColor = backgroundColor;
+    }
+    return self;
+}
 
 @end

@@ -19,6 +19,17 @@
 @synthesize fromVolume;
 @synthesize toVolume;
 
+- (instancetype)initWithFromVolume:(CGFloat)fromVolume
+                          toVolume:(CGFloat)toVolume
+                         timeRange:(CMTimeRange)timeRange {
+    if (self = [super init]) {
+        self.timeRange = timeRange;
+        self.fromVolume = fromVolume;
+        self.toVolume = toVolume;
+    }
+    return self;
+}
+
 @end
 
 @implementation LBAlphaTransitionObj

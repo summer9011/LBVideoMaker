@@ -14,6 +14,10 @@
 
 @interface LBVolumeTransitionObj : LBTransitionObj <LBVolumeTransitionProtocol>
 
+- (instancetype)initWithFromVolume:(CGFloat)fromVolume
+                          toVolume:(CGFloat)toVolume
+                         timeRange:(CMTimeRange)timeRange;
+
 @end
 
 @interface LBAlphaTransitionObj : LBTransitionObj <LBAlphaTransitionProtocol>

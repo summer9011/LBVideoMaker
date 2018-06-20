@@ -114,10 +114,15 @@
     if ([environment conformsToProtocol:@protocol(LBVideoEnvironmentProtocol)]) {
         id<LBVideoEnvironmentProtocol> videoEnvironment = (id<LBVideoEnvironmentProtocol>)environment;
         
-        track = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+        NSArray<AVMutableCompositionTrack *> *tracks = [composition tracksWithMediaType:AVMediaTypeVideo];
+        if (tracks.count > 0) {
+            track = tracks.firstObject;
+        } else {
+            track = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+        }
+        
         AVURLAsset *asset = [AVURLAsset assetWithURL:videoEnvironment.videoURL];
         assetTrack = [asset tracksWithMediaType:AVMediaTypeVideo].firstObject;
-        
         AVMutableVideoCompositionLayerInstruction *layerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:assetTrack];
         if (videoEnvironment.appear) {
             [LBTransitionHelper addTransition:videoEnvironment.appear toLayerInstruction:layerInstruction];
@@ -136,11 +141,16 @@
     } else if ([environment conformsToProtocol:@protocol(LBAudioEnvironmentProtocol)]) {
         id<LBAudioEnvironmentProtocol> audioEnvironment = (id<LBAudioEnvironmentProtocol>)environment;
         
-        track = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-        AVURLAsset *asset = [AVURLAsset assetWithURL:audioEnvironment.audioURL];
-        assetTrack = [asset tracksWithMediaType:AVMediaTypeAudio].firstObject;
+        NSArray<AVMutableCompositionTrack *> *tracks = [composition tracksWithMediaType:AVMediaTypeAudio];
+        if (tracks.count > 0) {
+            track = tracks.firstObject;
+        } else {
+            track = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+        }
         
         BOOL existAudioTransition = NO;
+        AVURLAsset *asset = [AVURLAsset assetWithURL:audioEnvironment.audioURL];
+        assetTrack = [asset tracksWithMediaType:AVMediaTypeAudio].firstObject;
         AVMutableAudioMixInputParameters *audioMixInputParameters = [AVMutableAudioMixInputParameters audioMixInputParametersWithTrack:assetTrack];
         if (audioEnvironment.appear) {
             existAudioTransition = YES;
@@ -155,7 +165,14 @@
         }
     }
     if (track) {
-        [track insertTimeRange:environment.availableTimeRange ofTrack:assetTrack atTime:environment.timeRange.start error:nil];
+        CMTimeRange timeRange = CMTimeRangeMake(kCMTimeZero, environment.timeRange.duration);
+        [track insertTimeRange:timeRange ofTrack:assetTrack atTime:environment.timeRange.start error:nil];
+        
+        CMTime leaveCMTime = CMTimeSubtract(environment.timeRange.duration, environment.availableTimeRange.duration);
+        if (CMTimeGetSeconds(leaveCMTime) > 0) {
+            CMTime startTime = CMTimeAdd(environment.timeRange.start, environment.availableTimeRange.duration);
+            [track insertEmptyTimeRange:CMTimeRangeMake(startTime, leaveCMTime)];
+        }
     }
     if (environment.nextEnvironment) {
         [self insertTrackWithEnvironment:environment.nextEnvironment
