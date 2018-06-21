@@ -34,4 +34,8 @@
 
 @interface LBColorMaskTransitionObj : LBMaskTransitionObj <LBColorMaskTransitionProtocol>
 
+- (instancetype)initWithFromColor:(UIColor *)fromColor
+                          toColor:(UIColor *)toColor
+                        timeRange:(CMTimeRange)timeRange;
+
 @end

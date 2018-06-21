@@ -59,4 +59,15 @@
 @synthesize fromColor;
 @synthesize toColor;
 
+- (instancetype)initWithFromColor:(UIColor *)fromColor
+                          toColor:(UIColor *)toColor
+                        timeRange:(CMTimeRange)timeRange {
+    if (self = [super init]) {
+        self.fromColor = fromColor;
+        self.toColor = toColor;
+        self.timeRange = timeRange;
+    }
+    return self;
+}
+
 @end

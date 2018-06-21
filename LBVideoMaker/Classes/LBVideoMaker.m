@@ -96,6 +96,7 @@
 }
 
 #pragma mark - Private Method
+#pragma mark - Environments
 
 - (void)insertTracksWithEnvironments:(NSSet<id<LBEnvironmentProtocol>> *)environments
                          composition:(AVMutableComposition *)composition {
@@ -183,6 +184,8 @@
     }
 }
 
+#pragma mark - Scenes
+
 - (void)addAnimationToolWithScenes:(NSArray<id<LBSceneProtocol>> *)scenes videoComposition:(AVMutableVideoComposition *)videoComposition {
     CGRect layerRect = CGRectZero;
     layerRect.size = videoComposition.renderSize;
@@ -252,6 +255,8 @@
         
     }
 }
+
+#pragma mark - Export
 
 - (void)exportVideoWithIdentifier:(NSString *)identifier
                       composition:(AVMutableComposition *)composition
