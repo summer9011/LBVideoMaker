@@ -22,6 +22,10 @@
 
 @interface LBAlphaTransitionObj : LBTransitionObj <LBAlphaTransitionProtocol>
 
+- (instancetype)initWithFromAlpha:(CGFloat)fromAlpha
+                          toAlpha:(CGFloat)toAlpha
+                        timeRange:(CMTimeRange)timeRange;
+
 @end
 
 @interface LBMaskTransitionObj : LBTransitionObj <LBMaskTransitionProtocol>

@@ -23,9 +23,9 @@
                           toVolume:(CGFloat)toVolume
                          timeRange:(CMTimeRange)timeRange {
     if (self = [super init]) {
-        self.timeRange = timeRange;
         self.fromVolume = fromVolume;
         self.toVolume = toVolume;
+        self.timeRange = timeRange;
     }
     return self;
 }
@@ -36,6 +36,17 @@
 
 @synthesize fromAlpha;
 @synthesize toAlpha;
+
+- (instancetype)initWithFromAlpha:(CGFloat)fromAlpha
+                          toAlpha:(CGFloat)toAlpha
+                        timeRange:(CMTimeRange)timeRange {
+    if (self = [super init]) {
+        self.fromAlpha = fromAlpha;
+        self.toAlpha = toAlpha;
+        self.timeRange = timeRange;
+    }
+    return self;
+}
 
 @end
 

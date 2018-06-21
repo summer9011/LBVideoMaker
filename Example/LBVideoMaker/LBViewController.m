@@ -109,24 +109,30 @@
     LBVideoObj *videoObj = [LBVideoObj new];
     
     CMTime videoDurationCMTime = CMTimeMakeWithSeconds(15, videoObj.frames);
+    CMTime durationTime = CMTimeMakeWithSeconds(3, videoObj.frames);
     
     //enviroments
     NSString *videoPath = [[NSBundle mainBundle] pathForResource:@"bg_video" ofType:@"mov"];
     LBVideoEnvironmentObj *videoEnvironmentObj = [[LBVideoEnvironmentObj alloc] initWithVideoURL:[NSURL fileURLWithPath:videoPath]
                                                                                  backgroundColor:[UIColor whiteColor]];
     videoEnvironmentObj.timeRange = CMTimeRangeMake(kCMTimeZero, videoDurationCMTime);
+    videoEnvironmentObj.appear = [[LBAlphaTransitionObj alloc] initWithFromAlpha:0
+                                                                         toAlpha:1
+                                                                       timeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
+    CMTime startTime = CMTimeSubtract(CMTimeAdd(videoEnvironmentObj.timeRange.start, videoEnvironmentObj.timeRange.duration), durationTime);
+    videoEnvironmentObj.disappear = [[LBAlphaTransitionObj alloc] initWithFromAlpha:1
+                                                                            toAlpha:0
+                                                                          timeRange:CMTimeRangeMake(startTime, durationTime)];
     
     NSString *audioPath = [[NSBundle mainBundle] pathForResource:@"bg_audio" ofType:@"mp3"];
     LBAudioEnvironmentObj *audioEnvironmentObj = [[LBAudioEnvironmentObj alloc] initWithAudioURL:[NSURL fileURLWithPath:audioPath]];
     audioEnvironmentObj.timeRange = CMTimeRangeMake(kCMTimeZero, videoDurationCMTime);
-    
-    CMTime durationTime = CMTimeMakeWithSeconds(3, videoObj.frames);
-    audioEnvironmentObj.appear = [[LBVolumeTransitionObj alloc] initWithFromVolume:0.f
-                                                                          toVolume:1.f
+    audioEnvironmentObj.appear = [[LBVolumeTransitionObj alloc] initWithFromVolume:0
+                                                                          toVolume:1
                                                                          timeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
-    CMTime startTime = CMTimeSubtract(CMTimeAdd(audioEnvironmentObj.timeRange.start, audioEnvironmentObj.timeRange.duration), durationTime);
-    audioEnvironmentObj.disappear = [[LBVolumeTransitionObj alloc] initWithFromVolume:1.f
-                                                                             toVolume:0.f
+    startTime = CMTimeSubtract(CMTimeAdd(audioEnvironmentObj.timeRange.start, audioEnvironmentObj.timeRange.duration), durationTime);
+    audioEnvironmentObj.disappear = [[LBVolumeTransitionObj alloc] initWithFromVolume:1
+                                                                             toVolume:0
                                                                             timeRange:CMTimeRangeMake(startTime, durationTime)];
     
     videoObj.environments = [NSSet setWithObjects:videoEnvironmentObj,audioEnvironmentObj, nil];
