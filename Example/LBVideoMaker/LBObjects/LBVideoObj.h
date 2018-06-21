@@ -19,4 +19,8 @@
 
 @interface LBVideoObj : LBBaseObj <LBVideoProtocol>
 
+- (instancetype)initWithFramePerSecond:(int32_t)framePerSecond;
+
++ (LBVideoObj *)createDemoObj;
+
 @end

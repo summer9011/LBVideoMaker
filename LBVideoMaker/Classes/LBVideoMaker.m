@@ -57,8 +57,7 @@
         AVMutableVideoComposition *videoComposition = nil;
         if (self.instructions.count > 0) {
             videoComposition = [AVMutableVideoComposition videoComposition];
-            int32_t timescale = (video.frames > 0)?video.frames:30;
-            videoComposition.frameDuration = CMTimeMake(1, timescale);
+            videoComposition.frameDuration = CMTimeMake(1, video.framePerSecond);
             videoComposition.renderSize = composition.naturalSize;
             videoComposition.instructions = self.instructions;
 
