@@ -108,38 +108,58 @@
 - (id<LBVideoProtocol>)createVideoObj {
     LBVideoObj *videoObj = [LBVideoObj new];
     
+    CMTime videoDurationCMTime = CMTimeMakeWithSeconds(15, videoObj.frames);
+    
     //enviroments
     NSString *videoPath = [[NSBundle mainBundle] pathForResource:@"bg_video" ofType:@"mov"];
     LBVideoEnvironmentObj *videoEnvironmentObj = [[LBVideoEnvironmentObj alloc] initWithVideoURL:[NSURL fileURLWithPath:videoPath]
                                                                                  backgroundColor:[UIColor whiteColor]];
+    videoEnvironmentObj.timeRange = CMTimeRangeMake(kCMTimeZero, videoDurationCMTime);
     
     NSString *audioPath = [[NSBundle mainBundle] pathForResource:@"bg_audio" ofType:@"mp3"];
     LBAudioEnvironmentObj *audioEnvironmentObj = [[LBAudioEnvironmentObj alloc] initWithAudioURL:[NSURL fileURLWithPath:audioPath]];
+    audioEnvironmentObj.timeRange = CMTimeRangeMake(kCMTimeZero, videoDurationCMTime);
     
-//    CMTime durationTime = CMTimeMake(1, 1);
-//    audioEnvironmentObj.appear = [[LBVolumeTransitionObj alloc] initWithFromVolume:0
-//                                                                          toVolume:1
-//                                                                         timeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
-//    CMTime startTime = CMTimeSubtract(CMTimeAdd(audioEnvironmentObj.audioTimeRange.start, audioEnvironmentObj.audioTimeRange.duration), durationTime);
-//    audioEnvironmentObj.disappear = [[LBVolumeTransitionObj alloc] initWithFromVolume:1
-//                                                                             toVolume:0
-//                                                                            timeRange:CMTimeRangeMake(startTime, durationTime)];
+    CMTime durationTime = CMTimeMakeWithSeconds(3, videoObj.frames);
+    audioEnvironmentObj.appear = [[LBVolumeTransitionObj alloc] initWithFromVolume:0.f
+                                                                          toVolume:1.f
+                                                                         timeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
+    CMTime startTime = CMTimeSubtract(CMTimeAdd(audioEnvironmentObj.timeRange.start, audioEnvironmentObj.timeRange.duration), durationTime);
+    audioEnvironmentObj.disappear = [[LBVolumeTransitionObj alloc] initWithFromVolume:1.f
+                                                                             toVolume:0.f
+                                                                            timeRange:CMTimeRangeMake(startTime, durationTime)];
     
-    videoObj.environments = [NSSet setWithObjects:videoEnvironmentObj, audioEnvironmentObj, nil];
+    videoObj.environments = [NSSet setWithObjects:videoEnvironmentObj,audioEnvironmentObj, nil];
     
     return videoObj;
 }
 
 - (IBAction)makeVideo:(id)sender {
+    self.makeVideoBtn.enabled = NO;
+    
+    NSString *dir = NSTemporaryDirectory();
+    NSString *name = [[NSUUID UUID].UUIDString lowercaseString];
+    NSString *fullPath = [[dir stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"mp4"];
+    NSURL *videoURL = [NSURL fileURLWithPath:fullPath];
+    
     [[LBVideoMaker shareMaker] makeVideo:[self createVideoObj]
-                             toDirectory:NSTemporaryDirectory()
-                                withName:[[NSUUID UUID].UUIDString lowercaseString]
+                             toDirectory:dir
+                                withName:name
                                extension:LBVideoExtensionDefault
                            progressBlock:^(CGFloat progress) {
                                NSLog(@"progress %f", progress);
                            }
                              resultBlock:^(BOOL success, NSError *error) {
-                                 NSLog(@"success %d, error %@", success, error);
+                                 self.makeVideoBtn.enabled = YES;
+                                 
+                                 if (success) {
+                                     NSIndexPath *insertIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+                                     [self.tableView beginUpdates];
+                                     [self addVideo:videoURL atIndexPath:insertIndexPath];
+                                     [self.tableView endUpdates];
+                                 } else {
+                                     NSLog(@"error %@", error);
+                                 }
                              }];
 }
 

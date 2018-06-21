@@ -14,15 +14,11 @@
 
 @interface LBAudioEnvironmentObj : LBEnvironmentObj <LBAudioEnvironmentProtocol>
 
-@property (nonatomic, assign, readonly) CMTimeRange audioTimeRange;
-
 - (instancetype)initWithAudioURL:(NSURL *)audioURL;
 
 @end
 
 @interface LBVideoEnvironmentObj : LBEnvironmentObj <LBVideoEnvironmentProtocol>
-
-@property (nonatomic, assign, readonly) CMTimeRange videoTimeRange;
 
 - (instancetype)initWithVideoURL:(NSURL *)videoURL
                  backgroundColor:(UIColor *)backgroundColor;

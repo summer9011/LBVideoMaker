@@ -57,11 +57,11 @@
         AVMutableVideoComposition *videoComposition = nil;
         if (self.instructions.count > 0) {
             videoComposition = [AVMutableVideoComposition videoComposition];
-            videoComposition.renderSize = composition.naturalSize;
-            videoComposition.instructions = self.instructions;
             int32_t timescale = (video.frames > 0)?video.frames:30;
             videoComposition.frameDuration = CMTimeMake(1, timescale);
-            
+            videoComposition.renderSize = composition.naturalSize;
+            videoComposition.instructions = self.instructions;
+
             [self addAnimationToolWithScenes:video.scenes videoComposition:videoComposition];
         }
         
@@ -111,6 +111,7 @@
                        composition:(AVMutableComposition *)composition {
     AVMutableCompositionTrack *track = nil;
     AVAssetTrack *assetTrack = nil;
+    AVURLAsset *asset = nil;
     if ([environment conformsToProtocol:@protocol(LBVideoEnvironmentProtocol)]) {
         id<LBVideoEnvironmentProtocol> videoEnvironment = (id<LBVideoEnvironmentProtocol>)environment;
         
@@ -121,9 +122,9 @@
             track = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
         }
         
-        AVURLAsset *asset = [AVURLAsset assetWithURL:videoEnvironment.videoURL];
+        asset = [AVURLAsset assetWithURL:videoEnvironment.videoURL];
         assetTrack = [asset tracksWithMediaType:AVMediaTypeVideo].firstObject;
-        AVMutableVideoCompositionLayerInstruction *layerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:assetTrack];
+        AVMutableVideoCompositionLayerInstruction *layerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:track];
         if (videoEnvironment.appear) {
             [LBTransitionHelper addTransition:videoEnvironment.appear toLayerInstruction:layerInstruction];
         }
@@ -149,9 +150,9 @@
         }
         
         BOOL existAudioTransition = NO;
-        AVURLAsset *asset = [AVURLAsset assetWithURL:audioEnvironment.audioURL];
+        asset = [AVURLAsset assetWithURL:audioEnvironment.audioURL];
         assetTrack = [asset tracksWithMediaType:AVMediaTypeAudio].firstObject;
-        AVMutableAudioMixInputParameters *audioMixInputParameters = [AVMutableAudioMixInputParameters audioMixInputParametersWithTrack:assetTrack];
+        AVMutableAudioMixInputParameters *audioMixInputParameters = [AVMutableAudioMixInputParameters audioMixInputParametersWithTrack:track];
         if (audioEnvironment.appear) {
             existAudioTransition = YES;
             [LBTransitionHelper addTransition:audioEnvironment.appear toAudioMixInputParameters:audioMixInputParameters];
@@ -165,14 +166,16 @@
         }
     }
     if (track) {
-        CMTimeRange timeRange = CMTimeRangeMake(kCMTimeZero, environment.timeRange.duration);
-        [track insertTimeRange:timeRange ofTrack:assetTrack atTime:environment.timeRange.start error:nil];
-        
-        CMTime leaveCMTime = CMTimeSubtract(environment.timeRange.duration, environment.availableTimeRange.duration);
+        CMTimeRange timeRange;
+        CMTime leaveCMTime = CMTimeSubtract(asset.duration, environment.timeRange.duration);
         if (CMTimeGetSeconds(leaveCMTime) > 0) {
-            CMTime startTime = CMTimeAdd(environment.timeRange.start, environment.availableTimeRange.duration);
+            timeRange = CMTimeRangeMake(kCMTimeZero, environment.timeRange.duration);
+        } else {
+            timeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
+            CMTime startTime = CMTimeAdd(environment.timeRange.start, asset.duration);
             [track insertEmptyTimeRange:CMTimeRangeMake(startTime, leaveCMTime)];
         }
+        [track insertTimeRange:timeRange ofTrack:assetTrack atTime:environment.timeRange.start error:nil];
     }
     if (environment.nextEnvironment) {
         [self insertTrackWithEnvironment:environment.nextEnvironment
@@ -259,6 +262,15 @@
                     progressBlock:(LBVideoMakerProgressBlock)progressBlock
                       resultBlock:(LBVideoMakerBlock)resultBlock {
     AVAssetExportSession *session = [[AVAssetExportSession alloc] initWithAsset:composition presetName:AVAssetExportPresetHighestQuality];
+    session.outputURL = fileURL;
+    session.outputFileType = [self fileTypeForExtensionType:extension];
+    if (videoComposition) {
+        session.videoComposition = videoComposition;
+    }
+    if (audioMix) {
+        session.audioMix = audioMix;
+    }
+    
     [self.exportSessionDic setObject:session forKey:identifier];
     [self.kvoController observe:session
                         keyPath:@"progress"
@@ -270,15 +282,6 @@
                                   }
                               });
                           }];
-    
-    session.outputURL = fileURL;
-    session.outputFileType = [self fileTypeForExtensionType:extension];
-    if (videoComposition) {
-        session.videoComposition = videoComposition;
-    }
-    if (audioMix) {
-        session.audioMix = audioMix;
-    }
     
     [session exportAsynchronouslyWithCompletionHandler:^{
         dispatch_async(self.queue, ^{
