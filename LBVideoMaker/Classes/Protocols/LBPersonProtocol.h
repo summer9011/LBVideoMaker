@@ -10,15 +10,24 @@
 #import "LBPositionProtocol.h"
 #import "LBBehaviorProtocol.h"
 #import "LBTransitionProtocol.h"
-#import "LBPersonAppearanceProtocol.h"
+
+@protocol LBSceneProtocol;
 
 @protocol LBPersonProtocol <NSObject, LBTimeProtocol>
 
-@property (nonatomic, strong) id<LBPersonAppearanceProtocol> appearance;
+@property (nonatomic, strong) CALayer *appearance;
+
+@property (nonatomic, assign) CGPoint percentCenter;
+@property (nonatomic, assign) CGSize percentSize;
+@property (nonatomic, assign) CGSize specificSize;
+@property (nonatomic, assign) CGRect percentRect;
+
 @property (nonatomic, strong) NSArray<id<LBPositionProtocol>> *moves;
 @property (nonatomic, strong) NSArray<id<LBBehaviorProtocol>> *behaviors;
 
 @property (nonatomic, strong) id<LBTransitionProtocol> appear;
 @property (nonatomic, strong) id<LBTransitionProtocol> disappear;
+
+@property (nonatomic, weak) id<LBSceneProtocol> contentScene;
 
 @end

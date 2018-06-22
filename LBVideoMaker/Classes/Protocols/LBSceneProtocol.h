@@ -22,6 +22,8 @@ typedef NS_ENUM(NSUInteger, LBSceneSortType) {
 
 @property (nonatomic, assign) LBSceneSortType sortType;
 
+@property (nonatomic, strong) UIColor *backgroundColor;
+
 @property (nonatomic, strong) NSArray<id<LBPersonProtocol>> *persons;
 
 @property (nonatomic, strong) id<LBTransitionProtocol> appear;

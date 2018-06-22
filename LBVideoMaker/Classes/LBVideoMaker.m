@@ -220,10 +220,7 @@
               toAnimationLayer:(CALayer *)animationLayer {
     CALayer *sceneLayer = [CALayer layer];
     sceneLayer.frame = animationLayer.bounds;
-    int R = (arc4random() % 256);
-    int G = (arc4random() % 256);
-    int B = (arc4random() % 256);
-    sceneLayer.backgroundColor = [UIColor colorWithRed:R/255.f green:G/255.f blue:B/255.f alpha:1.f].CGColor;
+    sceneLayer.backgroundColor = scene.backgroundColor.CGColor;
     sceneLayer.opacity = (scene.sortType == LBSceneSortFirst && !scene.appear)?1:0;
     [animationLayer addSublayer:sceneLayer];
     
@@ -288,10 +285,40 @@
 }
 
 - (void)addPersonLayerWithPerson:(id<LBPersonProtocol>)person toSceneLayer:(CALayer *)sceneLayer {
+    if (CGSizeEqualToSize(person.specificSize, CGSizeZero)) {
+        CGSize sceneSize = sceneLayer.bounds.size;
+        CGRect frame = CGRectZero;
+        frame.origin.x = person.percentRect.origin.x * sceneSize.width;
+        frame.origin.y = person.percentRect.origin.y * sceneSize.height;
+        frame.size.width = person.percentRect.size.width * sceneSize.width;
+        frame.size.height = person.percentRect.size.height * sceneSize.height;
+        person.appearance.frame = frame;
+    } else {
+        person.appearance.position = person.percentCenter;
+        CGRect bounds = CGRectZero;
+        bounds.size = person.specificSize;
+        person.appearance.bounds = bounds;
+    }
+    person.appearance.opaque = (person.appear)?1:0;
+    [sceneLayer addSublayer:person.appearance];
+    
     if (person.appear) {
         
+    } else {
+        
     }
+    
     if (person.disappear) {
+        
+    } else {
+        
+    }
+    
+    if (person.moves) {
+        
+    }
+    
+    if (person.behaviors) {
         
     }
 }

@@ -9,7 +9,6 @@
 #import "LBBaseObj.h"
 
 #import "LBBehaviorObj.h"
-#import "LBPersonAppearanceObj.h"
 #import "LBPersonObj.h"
 #import "LBPositionObj.h"
 #import "LBSceneObj.h"
@@ -20,7 +19,5 @@
 @interface LBVideoObj : LBBaseObj <LBVideoProtocol>
 
 - (instancetype)initWithFramePerSecond:(int32_t)framePerSecond;
-
-+ (LBVideoObj *)createDemoObj;
 
 @end

@@ -7,8 +7,7 @@
 //
 
 #import "LBViewController.h"
-
-#import "LBVideoObj.h"
+#import "LBDemoObj.h"
 
 @import AVKit;
 @import LBVideoMaker;
@@ -114,7 +113,7 @@
     NSString *fullPath = [[dir stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"mp4"];
     NSURL *videoURL = [NSURL fileURLWithPath:fullPath];
     
-    [[LBVideoMaker shareMaker] makeVideo:[LBVideoObj createDemoObj]
+    [[LBVideoMaker shareMaker] makeVideo:[LBDemoObj createDemoObj]
                              toDirectory:dir
                                 withName:name
                                extension:LBVideoExtensionDefault
