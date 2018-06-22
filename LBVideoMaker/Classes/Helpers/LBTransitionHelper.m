@@ -134,7 +134,7 @@
                           toParentLayer:(CALayer *)parentLayer
                         withVideoFrames:(int32_t)videoFrames
                                isAppear:(BOOL)isAppear {
-    CMTime durationTime = CMTimeMake(floorf(videoFrames*0.25), videoFrames);
+    CMTime durationTime = CMTimeMake(0.2, videoFrames);
     LBDefaultTransitionObj *defaultTransition = [LBDefaultTransitionObj new];
     if (isAppear) {
         defaultTransition.fromAlpha = 0;
