@@ -16,7 +16,7 @@
 
 - (instancetype)initWithFromVolume:(CGFloat)fromVolume
                           toVolume:(CGFloat)toVolume
-                         timeRange:(CMTimeRange)timeRange;
+                      durationTime:(CMTime)durationTime;
 
 @end
 
@@ -24,7 +24,7 @@
 
 - (instancetype)initWithFromAlpha:(CGFloat)fromAlpha
                           toAlpha:(CGFloat)toAlpha
-                        timeRange:(CMTimeRange)timeRange;
+                     durationTime:(CMTime)durationTime;
 
 @end
 
@@ -36,6 +36,7 @@
 
 - (instancetype)initWithFromColor:(UIColor *)fromColor
                           toColor:(UIColor *)toColor
-                        timeRange:(CMTimeRange)timeRange;
+                     durationTime:(CMTime)durationTime
+                         isAppear:(BOOL)isAppear;
 
 @end

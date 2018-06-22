@@ -21,21 +21,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MNd-IY-Q0j">
-                                <rect key="frame" x="137.5" y="567" width="100" height="40"/>
-                                <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="ICz-Wa-Von"/>
-                                    <constraint firstAttribute="width" constant="100" id="wiV-Vg-eeO"/>
-                                </constraints>
-                                <state key="normal" title="Make Video"/>
-                                <state key="disabled" title="Making"/>
-                                <connections>
-                                    <action selector="makeVideo:" destination="whP-gf-Uak" eventType="touchUpInside" id="kTC-fA-seV"/>
-                                </connections>
-                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="K7V-Ca-9M2">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="507"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="VideoCell" textLabel="LoA-oH-2UT" detailTextLabel="ak8-ex-Fbe" style="IBUITableViewCellStyleSubtitle" id="XuF-sH-nzS">
@@ -68,19 +55,40 @@
                                     <outlet property="delegate" destination="whP-gf-Uak" id="Ivk-3O-Cq2"/>
                                 </connections>
                             </tableView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rjl-9S-NqH">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="6iV-AP-fuT"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem title="Make Demo Video" id="Y32-Sa-QMr">
+                                        <connections>
+                                            <action selector="makeVideo:" destination="whP-gf-Uak" id="3ha-wE-iXY"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="esl-dE-tEl"/>
+                                    <barButtonItem title="Clear All Videos" id="lhW-Du-fSD">
+                                        <connections>
+                                            <action selector="clearAllVideos:" destination="whP-gf-Uak" id="pr5-Qc-Uve"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="Mvr-aV-6Um" firstAttribute="top" secondItem="rjl-9S-NqH" secondAttribute="bottom" id="2QH-wN-JBd"/>
+                            <constraint firstItem="rjl-9S-NqH" firstAttribute="leading" secondItem="TpU-gO-2f1" secondAttribute="leading" id="3WD-Uz-fON"/>
+                            <constraint firstItem="rjl-9S-NqH" firstAttribute="top" secondItem="K7V-Ca-9M2" secondAttribute="bottom" id="Blq-Dg-nZa"/>
                             <constraint firstAttribute="trailing" secondItem="K7V-Ca-9M2" secondAttribute="trailing" id="IiH-3W-E9J"/>
-                            <constraint firstItem="MNd-IY-Q0j" firstAttribute="top" secondItem="K7V-Ca-9M2" secondAttribute="bottom" constant="60" id="Ki7-cm-FUq"/>
-                            <constraint firstItem="Mvr-aV-6Um" firstAttribute="top" secondItem="MNd-IY-Q0j" secondAttribute="bottom" constant="60" id="b4l-Bq-bHP"/>
-                            <constraint firstItem="MNd-IY-Q0j" firstAttribute="centerX" secondItem="TpU-gO-2f1" secondAttribute="centerX" id="bK7-cK-4Ol"/>
+                            <constraint firstAttribute="trailing" secondItem="rjl-9S-NqH" secondAttribute="trailing" id="J8w-et-VQF"/>
                             <constraint firstItem="K7V-Ca-9M2" firstAttribute="leading" secondItem="TpU-gO-2f1" secondAttribute="leading" id="eRO-IH-Gj8"/>
                             <constraint firstItem="K7V-Ca-9M2" firstAttribute="top" secondItem="TpU-gO-2f1" secondAttribute="top" id="qvK-7i-tKl"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="makeVideoBtn" destination="MNd-IY-Q0j" id="TDc-gB-EYy"/>
+                        <outlet property="clearVideoBtnItem" destination="lhW-Du-fSD" id="CEk-Z6-3Cy"/>
+                        <outlet property="makeVideoBtnItem" destination="Y32-Sa-QMr" id="yGp-DS-xtJ"/>
                         <outlet property="tableView" destination="K7V-Ca-9M2" id="7bq-1N-n1G"/>
                     </connections>
                 </viewController>

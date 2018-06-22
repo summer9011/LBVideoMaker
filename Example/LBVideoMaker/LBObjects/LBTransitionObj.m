@@ -21,11 +21,11 @@
 
 - (instancetype)initWithFromVolume:(CGFloat)fromVolume
                           toVolume:(CGFloat)toVolume
-                         timeRange:(CMTimeRange)timeRange {
+                      durationTime:(CMTime)durationTime {
     if (self = [super init]) {
         self.fromVolume = fromVolume;
         self.toVolume = toVolume;
-        self.timeRange = timeRange;
+        self.timeRange = CMTimeRangeMake(kCMTimeZero, durationTime);
     }
     return self;
 }
@@ -39,11 +39,11 @@
 
 - (instancetype)initWithFromAlpha:(CGFloat)fromAlpha
                           toAlpha:(CGFloat)toAlpha
-                        timeRange:(CMTimeRange)timeRange {
+                     durationTime:(CMTime)durationTime {
     if (self = [super init]) {
         self.fromAlpha = fromAlpha;
         self.toAlpha = toAlpha;
-        self.timeRange = timeRange;
+        self.timeRange = CMTimeRangeMake(kCMTimeZero, durationTime);
     }
     return self;
 }
@@ -51,6 +51,8 @@
 @end
 
 @implementation LBMaskTransitionObj
+
+@synthesize isAppear;
 
 @end
 
@@ -61,11 +63,13 @@
 
 - (instancetype)initWithFromColor:(UIColor *)fromColor
                           toColor:(UIColor *)toColor
-                        timeRange:(CMTimeRange)timeRange {
+                     durationTime:(CMTime)durationTime
+                         isAppear:(BOOL)isAppear {
     if (self = [super init]) {
         self.fromColor = fromColor;
         self.toColor = toColor;
-        self.timeRange = timeRange;
+        self.timeRange = CMTimeRangeMake(kCMTimeZero, durationTime);
+        self.isAppear = isAppear;
     }
     return self;
 }

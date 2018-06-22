@@ -126,10 +126,10 @@
         assetTrack = [asset tracksWithMediaType:AVMediaTypeVideo].firstObject;
         AVMutableVideoCompositionLayerInstruction *layerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:track];
         if (videoEnvironment.appear) {
-            [LBTransitionHelper addTransition:videoEnvironment.appear toLayerInstruction:layerInstruction];
+            [LBTransitionHelper addTransition:videoEnvironment.appear toLayerInstruction:layerInstruction atStartTime:videoEnvironment.timeRange.start];
         }
         if (videoEnvironment.disappear) {
-            [LBTransitionHelper addTransition:videoEnvironment.disappear toLayerInstruction:layerInstruction];
+            [LBTransitionHelper addTransition:videoEnvironment.disappear toLayerInstruction:layerInstruction atStartTime:videoEnvironment.timeRange.start];
         }
         
         AVMutableVideoCompositionInstruction *instruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
@@ -155,11 +155,11 @@
         AVMutableAudioMixInputParameters *audioMixInputParameters = [AVMutableAudioMixInputParameters audioMixInputParametersWithTrack:track];
         if (audioEnvironment.appear) {
             existAudioTransition = YES;
-            [LBTransitionHelper addTransition:audioEnvironment.appear toAudioMixInputParameters:audioMixInputParameters];
+            [LBTransitionHelper addTransition:audioEnvironment.appear toAudioMixInputParameters:audioMixInputParameters atStartTime:audioEnvironment.timeRange.start];
         }
         if (audioEnvironment.disappear) {
             existAudioTransition = YES;
-            [LBTransitionHelper addTransition:audioEnvironment.disappear toAudioMixInputParameters:audioMixInputParameters];
+            [LBTransitionHelper addTransition:audioEnvironment.disappear toAudioMixInputParameters:audioMixInputParameters atStartTime:audioEnvironment.timeRange.start];
         }
         if (existAudioTransition) {
             [self.audioMixInputParameters addObject:audioMixInputParameters];
@@ -220,18 +220,59 @@
               toAnimationLayer:(CALayer *)animationLayer {
     CALayer *sceneLayer = [CALayer layer];
     sceneLayer.frame = animationLayer.bounds;
-    sceneLayer.opacity = 0.f;
+    int R = (arc4random() % 256);
+    int G = (arc4random() % 256);
+    int B = (arc4random() % 256);
+    sceneLayer.backgroundColor = [UIColor colorWithRed:R/255.f green:G/255.f blue:B/255.f alpha:1.f].CGColor;
+    sceneLayer.opacity = (scene.sortType == LBSceneSortFirst && !scene.appear)?1:0;
     [animationLayer addSublayer:sceneLayer];
     
     if (scene.appear) {
-        [LBTransitionHelper addTransition:scene.appear withLayer:sceneLayer toParentLayer:animationLayer];
+        CMTime startTime = scene.appear.timeRange.start;
+        if (scene.sortType == LBSceneSortFirst) {
+            startTime = CMTimeAdd(startTime, CMTimeMake(1, scene.contentVideo.framePerSecond));
+        }
+        scene.appear.timeRange = CMTimeRangeMake(startTime, scene.appear.timeRange.duration);
+        
+        [LBTransitionHelper addTransition:scene.appear
+                              atStartTime:scene.timeRange.start
+                         keepDurationTime:scene.timeRange.duration
+                                withLayer:sceneLayer
+                            toParentLayer:animationLayer];
     } else {
-        [LBTransitionHelper addDefaultAppearTransitionWithLayer:sceneLayer toParentLayer:animationLayer];
+        if (scene.sortType != LBSceneSortFirst) {
+            [LBTransitionHelper addDefaultTransitionInTimeRange:scene.timeRange
+                                               keepDurationTime:scene.timeRange.duration
+                                                      withLayer:sceneLayer
+                                                  toParentLayer:animationLayer
+                                                withVideoFrames:scene.contentVideo.framePerSecond
+                                                       isAppear:YES];
+        }
     }
+    
+    CMTime sceneEndTime = CMTimeAdd(scene.timeRange.start, scene.timeRange.duration);
+    CMTime keepDurationTime = CMTimeSubtract(scene.contentVideo.totalVideoTime, sceneEndTime);
     if (scene.disappear) {
-        [LBTransitionHelper addTransition:scene.disappear withLayer:sceneLayer toParentLayer:animationLayer];
+        CMTime durationTime = scene.disappear.timeRange.duration;
+        if (scene.sortType == LBSceneSortLast) {
+            durationTime = CMTimeSubtract(durationTime, CMTimeMake(1, scene.contentVideo.framePerSecond));
+        }
+        scene.disappear.timeRange = CMTimeRangeMake(scene.disappear.timeRange.start, durationTime);
+        
+        [LBTransitionHelper addTransition:scene.disappear
+                              atStartTime:scene.timeRange.start
+                         keepDurationTime:keepDurationTime
+                                withLayer:sceneLayer
+                            toParentLayer:animationLayer];
     } else {
-        [LBTransitionHelper addDefaultDisappearTransitionWithLayer:sceneLayer toParentLayer:animationLayer];
+        if (scene.sortType != LBSceneSortLast) {
+            [LBTransitionHelper addDefaultTransitionInTimeRange:scene.timeRange
+                                               keepDurationTime:keepDurationTime
+                                                      withLayer:sceneLayer
+                                                  toParentLayer:animationLayer
+                                                withVideoFrames:scene.contentVideo.framePerSecond
+                                                       isAppear:NO];
+        }
     }
     
     if (scene.persons) {

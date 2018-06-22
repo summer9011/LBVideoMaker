@@ -15,7 +15,8 @@
 
 @interface LBViewController () <UITableViewDataSource, UITableViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIButton *makeVideoBtn;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *makeVideoBtnItem;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *clearVideoBtnItem;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic, strong) NSMutableArray<NSDate *> *videoDates;
@@ -106,7 +107,7 @@
 }
 
 - (IBAction)makeVideo:(id)sender {
-    self.makeVideoBtn.enabled = NO;
+    self.makeVideoBtnItem.enabled = NO;
     
     NSString *dir = NSTemporaryDirectory();
     NSString *name = [[NSUUID UUID].UUIDString lowercaseString];
@@ -121,7 +122,7 @@
                                NSLog(@"progress %f", progress);
                            }
                              resultBlock:^(BOOL success, NSError *error) {
-                                 self.makeVideoBtn.enabled = YES;
+                                 self.makeVideoBtnItem.enabled = YES;
                                  
                                  if (success) {
                                      NSIndexPath *insertIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
@@ -132,6 +133,25 @@
                                      NSLog(@"error %@", error);
                                  }
                              }];
+}
+
+- (IBAction)clearAllVideos:(id)sender {
+    self.clearVideoBtnItem.enabled = NO;
+    
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSString *exportDir = NSTemporaryDirectory();
+        NSArray<NSURL *> *fileContents = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:exportDir] includingPropertiesForKeys:nil options:0 error:nil];
+        [fileContents enumerateObjectsUsingBlock:^(NSURL * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [[NSFileManager defaultManager] removeItemAtURL:obj error:nil];
+        }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.videoDates removeAllObjects];
+            [self.videoURLDic removeAllObjects];
+            
+            [self.tableView reloadData];
+            self.clearVideoBtnItem.enabled = YES;
+        });
+    });
 }
 
 #pragma mark - UITableViewDataSource, UITableViewDelegate

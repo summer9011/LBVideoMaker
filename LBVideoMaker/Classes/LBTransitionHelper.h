@@ -12,12 +12,21 @@
 
 @interface LBTransitionHelper : NSObject
 
-+ (void)addTransition:(id<LBTransitionProtocol>)transition toLayerInstruction:(AVMutableVideoCompositionLayerInstruction *)layerInstruction;
++ (void)addTransition:(id<LBTransitionProtocol>)transition toLayerInstruction:(AVMutableVideoCompositionLayerInstruction *)layerInstruction atStartTime:(CMTime)startTime;
 
-+ (void)addTransition:(id<LBTransitionProtocol>)transition toAudioMixInputParameters:(AVMutableAudioMixInputParameters *)audioMixInputParameters;
++ (void)addTransition:(id<LBTransitionProtocol>)transition toAudioMixInputParameters:(AVMutableAudioMixInputParameters *)audioMixInputParameters atStartTime:(CMTime)startTime;
 
-+ (void)addTransition:(id<LBTransitionProtocol>)transition withLayer:(CALayer *)layer toParentLayer:(CALayer *)parentLayer;
-+ (void)addDefaultAppearTransitionWithLayer:(CALayer *)layer toParentLayer:(CALayer *)parentLayer;
-+ (void)addDefaultDisappearTransitionWithLayer:(CALayer *)layer toParentLayer:(CALayer *)parentLayer;
++ (void)addTransition:(id<LBTransitionProtocol>)transition
+          atStartTime:(CMTime)startTime
+     keepDurationTime:(CMTime)keepDurationTime
+            withLayer:(CALayer *)layer
+        toParentLayer:(CALayer *)parentLayer;
+
++ (void)addDefaultTransitionInTimeRange:(CMTimeRange)timeRange
+                       keepDurationTime:(CMTime)keepDurationTime
+                              withLayer:(CALayer *)layer
+                          toParentLayer:(CALayer *)parentLayer
+                        withVideoFrames:(int32_t)videoFrames
+                               isAppear:(BOOL)isAppear;
 
 @end

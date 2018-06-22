@@ -9,4 +9,14 @@
 
 @interface LBAnimationHelper : NSObject
 
++ (CAAnimation *)opacityAnimationWithFromOpacity:(CGFloat)fromOpacity
+                                       toOpacity:(CGFloat)toOpacity
+                                       beginTime:(CFTimeInterval)beginTime
+                                      duration:(CFTimeInterval)duration;
+
++ (CAAnimation *)contentAnimationWithFromImage:(UIImage *)fromImage
+                                       toImage:(UIImage *)toImage
+                                     beginTime:(CFTimeInterval)beginTime
+                                      duration:(CFTimeInterval)duration;
+
 @end

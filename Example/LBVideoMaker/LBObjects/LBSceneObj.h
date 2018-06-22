@@ -10,4 +10,7 @@
 
 @interface LBSceneObj : LBBaseObj <LBSceneProtocol>
 
+- (instancetype)initWithDurationTime:(CMTime)durationTime;
+- (instancetype)initWithDurationTime:(CMTime)durationTime sortType:(LBSceneSortType)sortType;
+
 @end

@@ -27,6 +27,9 @@
 @end
 
 @protocol LBMaskTransitionProtocol <LBTransitionProtocol>
+
+@property (nonatomic, assign) BOOL isAppear;
+
 @end
 
 @protocol LBColorMaskTransitionProtocol <LBMaskTransitionProtocol>

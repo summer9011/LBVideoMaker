@@ -12,10 +12,21 @@
 
 @synthesize timeRange;
 
-@synthesize appear;
-@synthesize disappear;
+@synthesize appear = _appear;
+@synthesize disappear = _disappear;
 
 @synthesize nextEnvironment;
+
+- (void)setAppear:(id<LBTransitionProtocol>)appear {
+    _appear = appear;
+    appear.timeRange = CMTimeRangeMake(kCMTimeZero, appear.timeRange.duration);
+}
+
+- (void)setDisappear:(id<LBTransitionProtocol>)disappear {
+    _disappear = disappear;
+    CMTime startTime = CMTimeSubtract(self.timeRange.duration, disappear.timeRange.duration);
+    disappear.timeRange = CMTimeRangeMake(startTime, disappear.timeRange.duration);
+}
 
 @end
 

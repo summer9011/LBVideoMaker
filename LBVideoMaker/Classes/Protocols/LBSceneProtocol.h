@@ -10,7 +10,17 @@
 #import "LBTransitionProtocol.h"
 #import "LBPersonProtocol.h"
 
+typedef NS_ENUM(NSUInteger, LBSceneSortType) {
+    LBSceneSortDefault = 0,
+    LBSceneSortFirst = 1,
+    LBSceneSortLast = 2
+};
+
+@protocol LBVideoProtocol;
+
 @protocol LBSceneProtocol <NSObject, LBTimeProtocol>
+
+@property (nonatomic, assign) LBSceneSortType sortType;
 
 @property (nonatomic, strong) NSArray<id<LBPersonProtocol>> *persons;
 
@@ -18,5 +28,7 @@
 @property (nonatomic, strong) id<LBTransitionProtocol> disappear;
 
 @property (nonatomic, strong) id<LBSceneProtocol> nextScene;
+
+@property (nonatomic, weak) id<LBVideoProtocol> contentVideo;
 
 @end
