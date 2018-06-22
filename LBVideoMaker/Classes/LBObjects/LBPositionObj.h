@@ -1,5 +1,5 @@
 //
-//  LBBehaviorObj.h
+//  LBPositionObj.h
 //  LBVideoMaker_Example
 //
 //  Created by 赵立波 on 2018/6/15.
@@ -7,7 +7,8 @@
 //
 
 #import "LBBaseObj.h"
+#import "LBPositionProtocol.h"
 
-@interface LBBehaviorObj : LBBaseObj <LBBehaviorProtocol>
+@interface LBPositionObj : LBBaseObj <LBPositionProtocol>
 
 @end

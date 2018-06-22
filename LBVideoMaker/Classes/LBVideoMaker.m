@@ -126,10 +126,10 @@
         assetTrack = [asset tracksWithMediaType:AVMediaTypeVideo].firstObject;
         AVMutableVideoCompositionLayerInstruction *layerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:track];
         if (videoEnvironment.appear) {
-            [LBTransitionHelper addTransition:videoEnvironment.appear toLayerInstruction:layerInstruction atStartTime:videoEnvironment.timeRange.start];
+            [LBTransitionHelper addTransition:videoEnvironment.appear toLayerInstruction:layerInstruction];
         }
         if (videoEnvironment.disappear) {
-            [LBTransitionHelper addTransition:videoEnvironment.disappear toLayerInstruction:layerInstruction atStartTime:videoEnvironment.timeRange.start];
+            [LBTransitionHelper addTransition:videoEnvironment.disappear toLayerInstruction:layerInstruction];
         }
         
         AVMutableVideoCompositionInstruction *instruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
@@ -155,11 +155,11 @@
         AVMutableAudioMixInputParameters *audioMixInputParameters = [AVMutableAudioMixInputParameters audioMixInputParametersWithTrack:track];
         if (audioEnvironment.appear) {
             existAudioTransition = YES;
-            [LBTransitionHelper addTransition:audioEnvironment.appear toAudioMixInputParameters:audioMixInputParameters atStartTime:audioEnvironment.timeRange.start];
+            [LBTransitionHelper addTransition:audioEnvironment.appear toAudioMixInputParameters:audioMixInputParameters];
         }
         if (audioEnvironment.disappear) {
             existAudioTransition = YES;
-            [LBTransitionHelper addTransition:audioEnvironment.disappear toAudioMixInputParameters:audioMixInputParameters atStartTime:audioEnvironment.timeRange.start];
+            [LBTransitionHelper addTransition:audioEnvironment.disappear toAudioMixInputParameters:audioMixInputParameters];
         }
         if (existAudioTransition) {
             [self.audioMixInputParameters addObject:audioMixInputParameters];
@@ -172,10 +172,10 @@
             timeRange = CMTimeRangeMake(kCMTimeZero, environment.timeRange.duration);
         } else {
             timeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
-            CMTime startTime = CMTimeAdd(environment.timeRange.start, asset.duration);
+            CMTime startTime = CMTimeAdd(environment.absoluteStartTime, asset.duration);
             [track insertEmptyTimeRange:CMTimeRangeMake(startTime, leaveCMTime)];
         }
-        [track insertTimeRange:timeRange ofTrack:assetTrack atTime:environment.timeRange.start error:nil];
+        [track insertTimeRange:timeRange ofTrack:assetTrack atTime:environment.absoluteStartTime error:nil];
     }
     if (environment.nextEnvironment) {
         [self insertTrackWithEnvironment:environment.nextEnvironment
@@ -232,13 +232,12 @@
         scene.appear.timeRange = CMTimeRangeMake(startTime, scene.appear.timeRange.duration);
         
         [LBTransitionHelper addTransition:scene.appear
-                              atStartTime:scene.timeRange.start
                          keepDurationTime:scene.timeRange.duration
                                 withLayer:sceneLayer
                             toParentLayer:animationLayer];
     } else {
         if (scene.sortType != LBSceneSortFirst) {
-            [LBTransitionHelper addDefaultTransitionInTimeRange:scene.timeRange
+            [LBTransitionHelper addDefaultTransitionInContenter:scene
                                                keepDurationTime:scene.timeRange.duration
                                                       withLayer:sceneLayer
                                                   toParentLayer:animationLayer
@@ -247,8 +246,7 @@
         }
     }
     
-    CMTime sceneEndTime = CMTimeAdd(scene.timeRange.start, scene.timeRange.duration);
-    CMTime keepDurationTime = CMTimeSubtract(scene.contentVideo.totalVideoTime, sceneEndTime);
+    CMTime keepDurationTime = CMTimeSubtract(scene.contentVideo.totalVideoTime, CMTimeRangeGetEnd(scene.timeRange));
     if (scene.disappear) {
         CMTime durationTime = scene.disappear.timeRange.duration;
         if (scene.sortType == LBSceneSortLast) {
@@ -257,13 +255,12 @@
         scene.disappear.timeRange = CMTimeRangeMake(scene.disappear.timeRange.start, durationTime);
         
         [LBTransitionHelper addTransition:scene.disappear
-                              atStartTime:scene.timeRange.start
                          keepDurationTime:keepDurationTime
                                 withLayer:sceneLayer
                             toParentLayer:animationLayer];
     } else {
         if (scene.sortType != LBSceneSortLast) {
-            [LBTransitionHelper addDefaultTransitionInTimeRange:scene.timeRange
+            [LBTransitionHelper addDefaultTransitionInContenter:scene
                                                keepDurationTime:keepDurationTime
                                                       withLayer:sceneLayer
                                                   toParentLayer:animationLayer

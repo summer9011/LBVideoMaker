@@ -7,6 +7,7 @@
 //
 
 #import "LBBaseObj.h"
+#import "LBTimeProtocol.h"
 
 @interface LBTimeObj : LBBaseObj <LBTimeProtocol>
 

@@ -7,10 +7,12 @@
 //
 
 #import "LBPersonObj.h"
+#import "LBSceneProtocol.h"
 
 @implementation LBPersonObj
 
 @synthesize timeRange;
+@synthesize absoluteStartTime;
 
 @synthesize appearance;
 
@@ -22,8 +24,8 @@
 @synthesize moves;
 @synthesize behaviors;
 
-@synthesize appear;
-@synthesize disappear;
+@synthesize appear = _appear;
+@synthesize disappear = _disappear;
 
 @synthesize contentScene;
 
@@ -85,6 +87,28 @@
     self.percentSize = CGSizeZero;
     self.specificSize = CGSizeZero;
     self.percentRect = CGRectZero;
+}
+
+#pragma mark - Getting
+
+- (CMTime)absoluteStartTime {
+    CMTime startTime = self.timeRange.start;
+    if (self.contentScene) {
+        startTime = CMTimeAdd(self.contentScene.timeRange.start, startTime);
+    }
+    return startTime;
+}
+
+#pragma mark - Setting
+
+- (void)setAppear:(id<LBTransitionProtocol>)appear {
+    _appear = appear;
+    appear.contenter = self;
+}
+
+- (void)setDisappear:(id<LBTransitionProtocol>)disappear {
+    _disappear = disappear;
+    disappear.contenter = self;
 }
 
 @end

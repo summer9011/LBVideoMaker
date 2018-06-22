@@ -11,6 +11,19 @@
 @implementation LBTransitionObj
 
 @synthesize timeRange;
+@synthesize absoluteStartTime;
+
+@synthesize contenter;
+
+#pragma mark - Getting
+
+- (CMTime)absoluteStartTime {
+    CMTime startTime = self.timeRange.start;
+    if (self.contenter) {
+        startTime = CMTimeAdd(self.contenter.timeRange.start, startTime);
+    }
+    return startTime;
+}
 
 @end
 

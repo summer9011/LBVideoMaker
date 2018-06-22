@@ -13,4 +13,6 @@
 
 @property (nonatomic, assign) CMTimeRange timeRange;
 
+@property (nonatomic, assign, readonly) CMTime absoluteStartTime;
+
 @end

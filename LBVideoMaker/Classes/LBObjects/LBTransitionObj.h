@@ -7,6 +7,7 @@
 //
 
 #import "LBBaseObj.h"
+#import "LBTransitionProtocol.h"
 
 @interface LBTransitionObj : LBBaseObj <LBTransitionProtocol>
 

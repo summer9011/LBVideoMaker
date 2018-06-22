@@ -12,41 +12,37 @@
 
 @implementation LBTransitionHelper
 
-+ (void)addTransition:(id<LBTransitionProtocol>)transition toLayerInstruction:(AVMutableVideoCompositionLayerInstruction *)layerInstruction atStartTime:(CMTime)startTime {
++ (void)addTransition:(id<LBTransitionProtocol>)transition toLayerInstruction:(AVMutableVideoCompositionLayerInstruction *)layerInstruction {
     if ([transition conformsToProtocol:@protocol(LBAlphaTransitionProtocol)]) {
         id<LBAlphaTransitionProtocol> alphaTransition = (id<LBAlphaTransitionProtocol>)transition;
-        [layerInstruction setOpacityRampFromStartOpacity:alphaTransition.fromAlpha toEndOpacity:alphaTransition.toAlpha timeRange:CMTimeRangeMake(CMTimeAdd(startTime, alphaTransition.timeRange.start), alphaTransition.timeRange.duration)];
+        [layerInstruction setOpacityRampFromStartOpacity:alphaTransition.fromAlpha toEndOpacity:alphaTransition.toAlpha timeRange:CMTimeRangeMake(alphaTransition.absoluteStartTime, alphaTransition.timeRange.duration)];
     }
 }
 
-+ (void)addTransition:(id<LBTransitionProtocol>)transition toAudioMixInputParameters:(AVMutableAudioMixInputParameters *)audioMixInputParameters atStartTime:(CMTime)startTime {
++ (void)addTransition:(id<LBTransitionProtocol>)transition toAudioMixInputParameters:(AVMutableAudioMixInputParameters *)audioMixInputParameters {
     if ([transition conformsToProtocol:@protocol(LBVolumeTransitionProtocol)]) {
         id<LBVolumeTransitionProtocol> volumeTransition = (id<LBVolumeTransitionProtocol>)transition;
-        [audioMixInputParameters setVolumeRampFromStartVolume:volumeTransition.fromVolume toEndVolume:volumeTransition.toVolume timeRange:CMTimeRangeMake(CMTimeAdd(startTime, volumeTransition.timeRange.start), volumeTransition.timeRange.duration)];
+        [audioMixInputParameters setVolumeRampFromStartVolume:volumeTransition.fromVolume toEndVolume:volumeTransition.toVolume timeRange:CMTimeRangeMake(volumeTransition.absoluteStartTime, volumeTransition.timeRange.duration)];
     }
 }
 
 + (void)addTransition:(id<LBTransitionProtocol>)transition
-          atStartTime:(CMTime)startTime
      keepDurationTime:(CMTime)keepDurationTime
             withLayer:(CALayer *)layer
         toParentLayer:(CALayer *)parentLayer {
     if ([transition conformsToProtocol:@protocol(LBColorMaskTransitionProtocol)]) {
         [self addColorMaskTransition:(id<LBColorMaskTransitionProtocol>)transition
-                         atStartTime:startTime
                     keepDurationTime:keepDurationTime
                            withLayer:layer
                        toParentLayer:parentLayer];
     } else if ([transition conformsToProtocol:@protocol(LBAlphaTransitionProtocol)]) {
         [self addAlphaTransition:(id<LBAlphaTransitionProtocol>)transition
-                     atStartTime:startTime
                 keepDurationTime:keepDurationTime
                        withLayer:layer];
     }
 }
 
 + (void)addColorMaskTransition:(id<LBColorMaskTransitionProtocol>)transition
-                   atStartTime:(CMTime)startTime
               keepDurationTime:(CMTime)keepDurationTime
                      withLayer:(CALayer *)layer
                toParentLayer:(CALayer *)parentLayer {
@@ -57,7 +53,7 @@
     BOOL isDefaultChange = isFromColorNull && isToColorNull;
     BOOL isAlphaChange = !isContentChange && !isDefaultChange;
     
-    CFTimeInterval beginTime = CMTimeGetSeconds(CMTimeAdd(startTime, transition.timeRange.start));
+    CFTimeInterval beginTime = CMTimeGetSeconds(transition.absoluteStartTime);
     CFTimeInterval duration = CMTimeGetSeconds(transition.timeRange.duration);
     
     CALayer *colorMaskLayer = nil;
@@ -93,31 +89,27 @@
     if (colorMaskLayer) {
         [colorMaskLayer addAnimation:animation forKey:nil];
         
-        LBDefaultTransitionObj *alphaTransitionObj = [LBDefaultTransitionObj new];
-        alphaTransitionObj.fromAlpha = transition.isAppear?0:1;
-        alphaTransitionObj.toAlpha = transition.isAppear?1:0;
-        alphaTransitionObj.timeRange = transition.timeRange;
+        LBDefaultTransitionObj *alphaTransitionObj = [[LBDefaultTransitionObj alloc] initWithFromAlpha:transition.isAppear?0:1
+                                                                                               toAlpha:transition.isAppear?1:0
+                                                                                             contenter:transition.contenter
+                                                                                             timeRange:transition.timeRange];
         [self addAlphaTransition:alphaTransitionObj
-                     atStartTime:startTime
                 keepDurationTime:keepDurationTime
                        withLayer:layer];
     }
 }
 
 + (void)addAlphaTransition:(id<LBAlphaTransitionProtocol>)transition
-               atStartTime:(CMTime)startTime
           keepDurationTime:(CMTime)keepDurationTime
                  withLayer:(CALayer *)layer {
-    CMTime beginCMTime = CMTimeAdd(startTime, transition.timeRange.start);
-    
-    CFTimeInterval beginTime = CMTimeGetSeconds(beginCMTime);
+    CFTimeInterval beginTime = CMTimeGetSeconds(transition.absoluteStartTime);
     CFTimeInterval duration = CMTimeGetSeconds(transition.timeRange.duration);
     CAAnimation *transitionAnimation = [LBAnimationHelper opacityAnimationWithFromOpacity:transition.fromAlpha
                                                                                 toOpacity:transition.toAlpha
                                                                                 beginTime:beginTime
                                                                                  duration:duration];
     
-    beginTime = CMTimeGetSeconds(CMTimeAdd(beginCMTime, transition.timeRange.duration));
+    beginTime = CMTimeGetSeconds(CMTimeAdd(transition.absoluteStartTime, transition.timeRange.duration));
     duration = CMTimeGetSeconds(CMTimeSubtract(keepDurationTime, transition.timeRange.duration));
     CAAnimation *keepAnimation = [LBAnimationHelper opacityAnimationWithFromOpacity:transition.toAlpha
                                                                           toOpacity:transition.toAlpha
@@ -128,7 +120,7 @@
     [layer addAnimation:keepAnimation forKey:nil];
 }
 
-+ (void)addDefaultTransitionInTimeRange:(CMTimeRange)timeRange
++ (void)addDefaultTransitionInContenter:(id<LBTimeProtocol>)contenter
                        keepDurationTime:(CMTime)keepDurationTime
                               withLayer:(CALayer *)layer
                           toParentLayer:(CALayer *)parentLayer
@@ -137,16 +129,17 @@
     CMTime durationTime = CMTimeMake(0.2, videoFrames);
     LBDefaultTransitionObj *defaultTransition = [LBDefaultTransitionObj new];
     if (isAppear) {
-        defaultTransition.fromAlpha = 0;
-        defaultTransition.toAlpha = 1;
-        defaultTransition.timeRange = CMTimeRangeMake(kCMTimeZero, durationTime);
+        defaultTransition = [[LBDefaultTransitionObj alloc] initWithFromAlpha:0
+                                                                      toAlpha:1
+                                                                    contenter:contenter
+                                                                    timeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     } else {
-        defaultTransition.fromAlpha = 1;
-        defaultTransition.toAlpha = 0;
-        defaultTransition.timeRange = CMTimeRangeMake(CMTimeSubtract(timeRange.duration, durationTime), durationTime);
+        defaultTransition = [[LBDefaultTransitionObj alloc] initWithFromAlpha:1
+                                                                      toAlpha:0
+                                                                    contenter:contenter
+                                                                    timeRange:CMTimeRangeMake(CMTimeSubtract(contenter.timeRange.duration, durationTime), durationTime)];
     }
     [self addTransition:defaultTransition
-            atStartTime:timeRange.start
        keepDurationTime:keepDurationTime
               withLayer:layer
           toParentLayer:parentLayer];

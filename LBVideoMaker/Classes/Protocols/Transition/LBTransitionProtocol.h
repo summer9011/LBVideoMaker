@@ -10,6 +10,8 @@
 
 @protocol LBTransitionProtocol <NSObject, LBTimeProtocol>
 
+@property (nonatomic, weak) id<LBTimeProtocol> contenter;
+
 @end
 
 @protocol LBVolumeTransitionProtocol <LBTransitionProtocol>

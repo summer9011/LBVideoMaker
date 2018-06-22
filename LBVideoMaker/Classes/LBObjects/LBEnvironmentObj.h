@@ -7,6 +7,7 @@
 //
 
 #import "LBBaseObj.h"
+#import "LBEnvironmentProtocol.h"
 
 @interface LBEnvironmentObj : LBBaseObj <LBEnvironmentProtocol>
 

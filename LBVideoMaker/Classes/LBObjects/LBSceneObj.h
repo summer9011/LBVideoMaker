@@ -7,6 +7,7 @@
 //
 
 #import "LBBaseObj.h"
+#import "LBSceneProtocol.h"
 
 @interface LBSceneObj : LBBaseObj <LBSceneProtocol>
 

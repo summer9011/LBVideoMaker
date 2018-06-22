@@ -11,19 +11,30 @@
 @implementation LBEnvironmentObj
 
 @synthesize timeRange;
+@synthesize absoluteStartTime;
 
 @synthesize appear = _appear;
 @synthesize disappear = _disappear;
 
 @synthesize nextEnvironment;
 
+#pragma mark - Getting
+
+- (CMTime)absoluteStartTime {
+    return self.timeRange.start;
+}
+
+#pragma mark - Setting
+
 - (void)setAppear:(id<LBTransitionProtocol>)appear {
     _appear = appear;
+    appear.contenter = self;
     appear.timeRange = CMTimeRangeMake(kCMTimeZero, appear.timeRange.duration);
 }
 
 - (void)setDisappear:(id<LBTransitionProtocol>)disappear {
     _disappear = disappear;
+    disappear.contenter = self;
     CMTime startTime = CMTimeSubtract(self.timeRange.duration, disappear.timeRange.duration);
     disappear.timeRange = CMTimeRangeMake(startTime, disappear.timeRange.duration);
 }

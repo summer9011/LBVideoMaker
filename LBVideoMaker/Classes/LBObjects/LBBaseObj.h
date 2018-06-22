@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@import LBVideoMaker;
-
 @interface LBBaseObj : NSObject
 
 @end

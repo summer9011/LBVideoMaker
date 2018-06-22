@@ -11,6 +11,7 @@
 @implementation LBSceneObj
 
 @synthesize timeRange = _timeRange;
+@synthesize absoluteStartTime;
 
 @synthesize sortType;
 
@@ -44,8 +45,13 @@
 }
 
 - (void)resetNextSceneTimeRange:(id<LBSceneProtocol>)nextScene {
-    CMTime nextSceneStartTime = CMTimeAdd(self.timeRange.start, self.timeRange.duration);
-    nextScene.timeRange = CMTimeRangeMake(nextSceneStartTime, nextScene.timeRange.duration);
+    nextScene.timeRange = CMTimeRangeMake(CMTimeRangeGetEnd(self.timeRange), nextScene.timeRange.duration);
+}
+
+#pragma mark - Getting
+
+- (CMTime)absoluteStartTime {
+    return self.timeRange.start;
 }
 
 #pragma mark - Setting
@@ -68,8 +74,7 @@
             personTimeRange.start = self.timeRange.duration;
         }
         
-        CMTime endTime = CMTimeAdd(personTimeRange.start, obj.timeRange.duration);
-        CFTimeInterval overTime = CMTimeGetSeconds(CMTimeSubtract(endTime, self.timeRange.duration));
+        CFTimeInterval overTime = CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(personTimeRange), self.timeRange.duration));
         if (overTime > 0) {
             personTimeRange.duration = CMTimeSubtract(self.timeRange.duration, personTimeRange.start);
         }
@@ -85,13 +90,16 @@
 
 - (void)setAppear:(id<LBTransitionProtocol>)appear {
     _appear = appear;
+    appear.contenter = self;
     appear.timeRange = CMTimeRangeMake(kCMTimeZero, appear.timeRange.duration);
 }
 
 - (void)setDisappear:(id<LBTransitionProtocol>)disappear {
     _disappear = disappear;
+    disappear.contenter = self;
     CMTime startTime = CMTimeSubtract(self.timeRange.duration, disappear.timeRange.duration);
     disappear.timeRange = CMTimeRangeMake(startTime, disappear.timeRange.duration);
+    
 }
 
 @end

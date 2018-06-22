@@ -7,6 +7,7 @@
 //
 
 #import "LBBaseObj.h"
+#import "LBPersonProtocol.h"
 
 @interface LBPersonObj : LBBaseObj <LBPersonProtocol>
 

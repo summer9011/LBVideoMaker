@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LBVideoObj.h"
+
+@import LBVideoMaker;
 
 @interface LBDemoObj : NSObject
 

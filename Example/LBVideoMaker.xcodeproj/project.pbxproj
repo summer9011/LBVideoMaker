@@ -21,15 +21,6 @@
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
-		6E00992920D3566D00023293 /* LBBehaviorObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00992820D3566D00023293 /* LBBehaviorObj.m */; };
-		6E00992F20D356A200023293 /* LBPersonObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00992E20D356A200023293 /* LBPersonObj.m */; };
-		6E00993220D356B000023293 /* LBPositionObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00993120D356B000023293 /* LBPositionObj.m */; };
-		6E00993520D356BD00023293 /* LBSceneObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00993420D356BD00023293 /* LBSceneObj.m */; };
-		6E00993820D356CA00023293 /* LBTimeObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00993720D356CA00023293 /* LBTimeObj.m */; };
-		6E00993B20D356D700023293 /* LBVideoObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00993A20D356D700023293 /* LBVideoObj.m */; };
-		6E00993E20D356E900023293 /* LBEnvironmentObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00993D20D356E900023293 /* LBEnvironmentObj.m */; };
-		6E00994120D356F400023293 /* LBTransitionObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00994020D356F400023293 /* LBTransitionObj.m */; };
-		6E00994420D3587300023293 /* LBBaseObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00994320D3587300023293 /* LBBaseObj.m */; };
 		6E00995020D360BC00023293 /* 1.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 6E00994620D360BC00023293 /* 1.JPG */; };
 		6E00995120D360BC00023293 /* 2.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 6E00994720D360BC00023293 /* 2.JPG */; };
 		6E00995220D360BC00023293 /* 3.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 6E00994820D360BC00023293 /* 3.JPG */; };
@@ -81,24 +72,6 @@
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		6030C7D74A224EB9384E38A6 /* Pods_LBVideoMaker_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LBVideoMaker_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
-		6E00992720D3566D00023293 /* LBBehaviorObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBBehaviorObj.h; sourceTree = "<group>"; };
-		6E00992820D3566D00023293 /* LBBehaviorObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBBehaviorObj.m; sourceTree = "<group>"; };
-		6E00992D20D356A200023293 /* LBPersonObj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBPersonObj.h; sourceTree = "<group>"; };
-		6E00992E20D356A200023293 /* LBPersonObj.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBPersonObj.m; sourceTree = "<group>"; };
-		6E00993020D356B000023293 /* LBPositionObj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBPositionObj.h; sourceTree = "<group>"; };
-		6E00993120D356B000023293 /* LBPositionObj.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBPositionObj.m; sourceTree = "<group>"; };
-		6E00993320D356BD00023293 /* LBSceneObj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBSceneObj.h; sourceTree = "<group>"; };
-		6E00993420D356BD00023293 /* LBSceneObj.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBSceneObj.m; sourceTree = "<group>"; };
-		6E00993620D356CA00023293 /* LBTimeObj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBTimeObj.h; sourceTree = "<group>"; };
-		6E00993720D356CA00023293 /* LBTimeObj.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBTimeObj.m; sourceTree = "<group>"; };
-		6E00993920D356D700023293 /* LBVideoObj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBVideoObj.h; sourceTree = "<group>"; };
-		6E00993A20D356D700023293 /* LBVideoObj.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBVideoObj.m; sourceTree = "<group>"; };
-		6E00993C20D356E900023293 /* LBEnvironmentObj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBEnvironmentObj.h; sourceTree = "<group>"; };
-		6E00993D20D356E900023293 /* LBEnvironmentObj.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBEnvironmentObj.m; sourceTree = "<group>"; };
-		6E00993F20D356F400023293 /* LBTransitionObj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBTransitionObj.h; sourceTree = "<group>"; };
-		6E00994020D356F400023293 /* LBTransitionObj.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBTransitionObj.m; sourceTree = "<group>"; };
-		6E00994220D3587300023293 /* LBBaseObj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBBaseObj.h; sourceTree = "<group>"; };
-		6E00994320D3587300023293 /* LBBaseObj.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBBaseObj.m; sourceTree = "<group>"; };
 		6E00994620D360BC00023293 /* 1.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.JPG; sourceTree = "<group>"; };
 		6E00994720D360BC00023293 /* 2.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.JPG; sourceTree = "<group>"; };
 		6E00994820D360BC00023293 /* 3.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3.JPG; sourceTree = "<group>"; };
@@ -194,7 +167,6 @@
 			isa = PBXGroup;
 			children = (
 				6E00994520D360BC00023293 /* Resources */,
-				6E00992620D3566D00023293 /* LBObjects */,
 				6003F59C195388D20070C39A /* LBAppDelegate.h */,
 				6003F59D195388D20070C39A /* LBAppDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
@@ -248,31 +220,6 @@
 				49BDEEAA2A1862B502E46C6E /* LICENSE */,
 			);
 			name = "Podspec Metadata";
-			sourceTree = "<group>";
-		};
-		6E00992620D3566D00023293 /* LBObjects */ = {
-			isa = PBXGroup;
-			children = (
-				6E00994220D3587300023293 /* LBBaseObj.h */,
-				6E00994320D3587300023293 /* LBBaseObj.m */,
-				6E00992720D3566D00023293 /* LBBehaviorObj.h */,
-				6E00992820D3566D00023293 /* LBBehaviorObj.m */,
-				6E00992D20D356A200023293 /* LBPersonObj.h */,
-				6E00992E20D356A200023293 /* LBPersonObj.m */,
-				6E00993020D356B000023293 /* LBPositionObj.h */,
-				6E00993120D356B000023293 /* LBPositionObj.m */,
-				6E00993320D356BD00023293 /* LBSceneObj.h */,
-				6E00993420D356BD00023293 /* LBSceneObj.m */,
-				6E00993620D356CA00023293 /* LBTimeObj.h */,
-				6E00993720D356CA00023293 /* LBTimeObj.m */,
-				6E00993920D356D700023293 /* LBVideoObj.h */,
-				6E00993A20D356D700023293 /* LBVideoObj.m */,
-				6E00993C20D356E900023293 /* LBEnvironmentObj.h */,
-				6E00993D20D356E900023293 /* LBEnvironmentObj.m */,
-				6E00993F20D356F400023293 /* LBTransitionObj.h */,
-				6E00994020D356F400023293 /* LBTransitionObj.m */,
-			);
-			path = LBObjects;
 			sourceTree = "<group>";
 		};
 		6E00994520D360BC00023293 /* Resources */ = {
@@ -466,19 +413,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E00993220D356B000023293 /* LBPositionObj.m in Sources */,
 				6ECF594B20DD218700FF839E /* LBDemoObj.m in Sources */,
 				6003F59E195388D20070C39A /* LBAppDelegate.m in Sources */,
-				6E00993820D356CA00023293 /* LBTimeObj.m in Sources */,
-				6E00993E20D356E900023293 /* LBEnvironmentObj.m in Sources */,
 				6003F5A7195388D20070C39A /* LBViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
-				6E00992F20D356A200023293 /* LBPersonObj.m in Sources */,
-				6E00994120D356F400023293 /* LBTransitionObj.m in Sources */,
-				6E00993B20D356D700023293 /* LBVideoObj.m in Sources */,
-				6E00994420D3587300023293 /* LBBaseObj.m in Sources */,
-				6E00993520D356BD00023293 /* LBSceneObj.m in Sources */,
-				6E00992920D3566D00023293 /* LBBehaviorObj.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

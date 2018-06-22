@@ -7,6 +7,7 @@
 //
 
 #import "LBBaseObj.h"
+#import "LBVideoProtocol.h"
 
 #import "LBBehaviorObj.h"
 #import "LBPersonObj.h"
