@@ -282,20 +282,19 @@
 }
 
 - (void)addPersonLayerWithPerson:(id<LBPersonProtocol>)person toSceneLayer:(CALayer *)sceneLayer {
+    CGSize sceneSize = sceneLayer.bounds.size;
+    CGRect frame = CGRectZero;
     if (CGSizeEqualToSize(person.specificSize, CGSizeZero)) {
-        CGSize sceneSize = sceneLayer.bounds.size;
-        CGRect frame = CGRectZero;
         frame.origin.x = person.percentRect.origin.x * sceneSize.width;
-        frame.origin.y = person.percentRect.origin.y * sceneSize.height;
+        frame.origin.y = (1 - person.percentRect.origin.y - person.percentRect.size.height) * sceneSize.height;
         frame.size.width = person.percentRect.size.width * sceneSize.width;
         frame.size.height = person.percentRect.size.height * sceneSize.height;
-        person.appearance.frame = frame;
     } else {
-        person.appearance.position = person.percentCenter;
-        CGRect bounds = CGRectZero;
-        bounds.size = person.specificSize;
-        person.appearance.bounds = bounds;
+        frame.origin.x = person.percentCenter.x * sceneSize.width - person.specificSize.width * 0.5;
+        frame.origin.y = (1 - person.percentCenter.y) * sceneSize.height - person.specificSize.height * 0.5;
+        frame.size = person.specificSize;
     }
+    person.appearance.frame = frame;
     person.appearance.opaque = (person.appear)?1:0;
     [sceneLayer addSublayer:person.appearance];
     
@@ -308,10 +307,6 @@
     if (person.disappear) {
         
     } else {
-        
-    }
-    
-    if (person.moves) {
         
     }
     

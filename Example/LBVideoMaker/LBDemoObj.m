@@ -24,11 +24,11 @@
 
 + (NSArray<LBSceneObj *> *)createScenesWithVideo:(LBVideoObj *)videoObj {
     LBSceneObj *headerSceneObj = [self createHeaderSceneWithDurationTime:CMTimeMakeWithSeconds(2.3, videoObj.framePerSecond)];
-    headerSceneObj.backgroundColor = [UIColor redColor];
+    headerSceneObj.backgroundColor = [UIColor lightGrayColor];
     LBSceneObj *stepSceneObj = [self createStepSceneWithDurationTime:CMTimeMakeWithSeconds(4, videoObj.framePerSecond)];
-    stepSceneObj.backgroundColor = [UIColor yellowColor];
+    stepSceneObj.backgroundColor = [UIColor brownColor];
     LBSceneObj *footerSceneObj = [self createFooterSceneWithDurationTime:CMTimeMakeWithSeconds(1.3, videoObj.framePerSecond)];
-    footerSceneObj.backgroundColor = [UIColor blueColor];
+    footerSceneObj.backgroundColor = [UIColor darkGrayColor];
     
     headerSceneObj.nextScene = stepSceneObj;
     stepSceneObj.nextScene = footerSceneObj;
@@ -63,7 +63,7 @@
     CALayer *titleLayer = [CALayer layer];
     titleLayer.backgroundColor = [UIColor redColor].CGColor;
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:titleLayer
-                                                       percentCenter:CGPointMake(0.5, 0.5)
+                                                       percentCenter:CGPointMake(0.1, 0.1)
                                                         specificSize:CGSizeMake(100, 100)
                                                            timeRange:timeRange];
     CMTime transitionTime = CMTimeMakeWithSeconds(0.4, timeRange.duration.timescale);

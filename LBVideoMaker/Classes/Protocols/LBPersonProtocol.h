@@ -22,7 +22,6 @@
 @property (nonatomic, assign) CGSize specificSize;
 @property (nonatomic, assign) CGRect percentRect;
 
-@property (nonatomic, strong) NSArray<id<LBPositionProtocol>> *moves;
 @property (nonatomic, strong) NSArray<id<LBBehaviorProtocol>> *behaviors;
 
 @property (nonatomic, strong) id<LBTransitionProtocol> appear;

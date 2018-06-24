@@ -21,7 +21,6 @@
 @synthesize specificSize;
 @synthesize percentRect;
 
-@synthesize moves;
 @synthesize behaviors;
 
 @synthesize appear = _appear;
