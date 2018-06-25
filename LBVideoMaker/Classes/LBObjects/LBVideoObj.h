@@ -12,7 +12,6 @@
 #import "LBBehaviorObj.h"
 #import "LBPersonObj.h"
 #import "LBSceneObj.h"
-#import "LBTimeObj.h"
 #import "LBEnvironmentObj.h"
 #import "LBTransitionObj.h"
 

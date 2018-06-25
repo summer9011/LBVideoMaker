@@ -33,4 +33,28 @@
     return animation;
 }
 
++ (CAAnimation *)contentsAnimationWithImages:(NSArray<UIImage *> *)images
+                                   beginTime:(CFTimeInterval)beginTime
+                                    duration:(CFTimeInterval)duration
+                                 repeatCount:(NSUInteger)repeatCount {
+    NSMutableArray *cgImages = [NSMutableArray array];
+    NSMutableArray<NSNumber *> *keyTimes = [NSMutableArray array];
+    [images enumerateObjectsUsingBlock:^(UIImage * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [cgImages addObject:(id)obj.CGImage];
+        if (idx == 0) {
+            [keyTimes addObject:@0];
+        } else {
+            [keyTimes addObject:@(idx/(CGFloat)(images.count - 1))];
+        }
+    }];
+    
+    CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"contents"];
+    animation.values = cgImages;
+    animation.beginTime = beginTime;
+    animation.duration = duration;
+    animation.repeatCount = repeatCount;
+    animation.keyTimes = keyTimes;
+    return animation;
+}
+
 @end

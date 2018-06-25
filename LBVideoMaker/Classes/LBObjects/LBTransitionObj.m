@@ -19,7 +19,7 @@
 #pragma mark - Getting
 
 - (CMTimeRange)absoluteUsableTimeRange {
-    
+    return CMTimeRangeMake(self.absoluteStartTime, self.timeRange.duration);
 }
 
 - (CMTime)absoluteStartTime {

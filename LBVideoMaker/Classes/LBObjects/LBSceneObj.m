@@ -52,15 +52,15 @@
 #pragma mark - Getting
 
 - (CMTimeRange)absoluteUsableTimeRange {
-    CMTimeRange usableTimeRange = self.timeRange;
+    CMTime startTime = self.absoluteStartTime;
     if (self.appear) {
-        usableTimeRange.start = CMTimeSubtract(usableTimeRange.start, self.appear.timeRange.duration);
-        usableTimeRange.duration = CMTimeSubtract(usableTimeRange.duration, self.appear.timeRange.duration);
+        startTime = CMTimeAdd(self.appear.timeRange.duration, startTime);
     }
+    CMTime endTime = CMTimeAdd(self.absoluteStartTime, self.timeRange.duration);
     if (self.disappear) {
-        usableTimeRange.duration = CMTimeSubtract(usableTimeRange.duration, self.disappear.timeRange.duration);
+        endTime = CMTimeSubtract(endTime, self.disappear.timeRange.duration);
     }
-    return usableTimeRange;
+    return CMTimeRangeFromTimeToTime(startTime, endTime);
 }
 
 - (CMTime)absoluteStartTime {

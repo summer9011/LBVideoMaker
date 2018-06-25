@@ -13,8 +13,12 @@
 
 @end
 
-@interface LBContentsAnimationBehaviorObj : LBBehaviorObj <LBContentsAnimationBehaviorProtocol>
+@interface LBContentsGradientBehaviorObj : LBBehaviorObj <LBContentsGradientBehaviorProtocol>
 
 - (instancetype)initWithImages:(NSArray<UIImage *> *)images timeRange:(CMTimeRange)timeRange;
+
+@end
+
+@interface LBMovesBehaviorObj : LBBehaviorObj <LBMovesBehaviorProtocol>
 
 @end

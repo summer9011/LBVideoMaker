@@ -19,4 +19,9 @@
                                      beginTime:(CFTimeInterval)beginTime
                                       duration:(CFTimeInterval)duration;
 
++ (CAAnimation *)contentsAnimationWithImages:(NSArray<UIImage *> *)images
+                                   beginTime:(CFTimeInterval)beginTime
+                                    duration:(CFTimeInterval)duration
+                                 repeatCount:(NSUInteger)repeatCount;
+
 @end

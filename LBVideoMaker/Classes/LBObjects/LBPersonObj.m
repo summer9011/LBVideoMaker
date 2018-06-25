@@ -22,13 +22,12 @@
 @synthesize specificSize;
 @synthesize percentRect;
 
-@synthesize behaviors;
+@synthesize behaviors = _behaviors;
 
 @synthesize appear = _appear;
 @synthesize disappear = _disappear;
 
 @synthesize contentScene;
-@synthesize availableTimeRange;
 
 - (instancetype)initWithAppearance:(CALayer *)appearance
                        percentRect:(CGRect)percentRect
@@ -93,7 +92,15 @@
 #pragma mark - Getting
 
 - (CMTimeRange)absoluteUsableTimeRange {
-    
+    CMTime startTime = self.absoluteStartTime;
+    if (self.appear) {
+        startTime = CMTimeAdd(self.appear.timeRange.duration, startTime);
+    }
+    CMTime endTime = CMTimeAdd(self.absoluteStartTime, self.timeRange.duration);
+    if (self.disappear) {
+        endTime = CMTimeSubtract(endTime, self.disappear.timeRange.duration);
+    }
+    return CMTimeRangeFromTimeToTime(startTime, endTime);
 }
 
 - (CMTime)absoluteStartTime {
@@ -105,6 +112,13 @@
 }
 
 #pragma mark - Setting
+
+- (void)setBehaviors:(NSArray<id<LBBehaviorProtocol>> *)behaviors {
+    _behaviors = behaviors;
+    [behaviors enumerateObjectsUsingBlock:^(id<LBBehaviorProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        obj.contentPerson = self;
+    }];
+}
 
 - (void)setAppear:(id<LBTransitionProtocol>)appear {
     _appear = appear;

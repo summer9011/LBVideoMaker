@@ -8,6 +8,7 @@
 #import "LBVideoMaker.h"
 
 #import "LBTransitionHelper.h"
+#import "LBBehaviorHelper.h"
 
 @import AVFoundation;
 @import KVOController;
@@ -277,7 +278,8 @@
     }
 }
 
-- (void)addPersonLayerWithPerson:(id<LBPersonProtocol>)person toSceneLayer:(CALayer *)sceneLayer {
+- (void)addPersonLayerWithPerson:(id<LBPersonProtocol>)person
+                    toSceneLayer:(CALayer *)sceneLayer {
     CGSize sceneSize = sceneLayer.bounds.size;
     CGRect frame = CGRectZero;
     if (CGSizeEqualToSize(person.specificSize, CGSizeZero)) {
@@ -310,7 +312,25 @@
     }
     
     if (person.behaviors) {
-        
+        [person.behaviors enumerateObjectsUsingBlock:^(id<LBBehaviorProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [self addPersonBehaviorWithBehavior:obj
+                                withPersonLayer:person.appearance
+                                   toSceneLayer:sceneLayer];
+        }];
+    }
+}
+
+- (void)addPersonBehaviorWithBehavior:(id<LBBehaviorProtocol>)behavior
+                      withPersonLayer:(CALayer *)personLayer
+                         toSceneLayer:(CALayer *)sceneLayer {
+    [LBBehaviorHelper addBehavior:behavior
+                  withPersonLayer:personLayer
+                     toSceneLayer:sceneLayer];
+    
+    if (behavior.nextBehavior) {
+        [self addPersonBehaviorWithBehavior:behavior.nextBehavior
+                            withPersonLayer:personLayer
+                               toSceneLayer:sceneLayer];
     }
 }
 

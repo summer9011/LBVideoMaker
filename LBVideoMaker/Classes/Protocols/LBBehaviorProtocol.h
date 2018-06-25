@@ -12,7 +12,7 @@
 
 @protocol LBBehaviorProtocol <NSObject, LBTimeProtocol>
 
-@property (nonatomic, assign) BOOL repeatCount;
+@property (nonatomic, assign) NSUInteger repeatCount;
 
 @property (nonatomic, weak) id<LBBehaviorProtocol> nextBehavior;
 
@@ -20,8 +20,12 @@
 
 @end
 
-@protocol LBContentsAnimationBehaviorProtocol <LBBehaviorProtocol>
+@protocol LBContentsGradientBehaviorProtocol <LBBehaviorProtocol>
 
 @property (nonatomic, strong) NSArray<UIImage *> *images;
+
+@end
+
+@protocol LBMovesBehaviorProtocol <LBBehaviorProtocol>
 
 @end

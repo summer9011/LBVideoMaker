@@ -127,7 +127,7 @@
         [images addObject:[UIImage imageWithContentsOfFile:obj.absoluteString]];
     }];
     
-    LBContentsAnimationBehaviorObj *behaviorObj = [[LBContentsAnimationBehaviorObj alloc] initWithImages:images timeRange:timeRange];
+    LBContentsGradientBehaviorObj *behaviorObj = [[LBContentsGradientBehaviorObj alloc] initWithImages:images timeRange:timeRange];
     personObj.behaviors = @[behaviorObj];
     
     return personObj;

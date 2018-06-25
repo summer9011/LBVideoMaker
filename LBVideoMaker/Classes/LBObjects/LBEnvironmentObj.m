@@ -10,27 +10,31 @@
 
 @implementation LBEnvironmentObj
 
-@synthesize timeRange;
+@synthesize timeRange = _timeRange;
 @synthesize absoluteUsableTimeRange;
 @synthesize absoluteStartTime;
 
 @synthesize appear = _appear;
 @synthesize disappear = _disappear;
 
-@synthesize nextEnvironment;
+@synthesize nextEnvironment = _nextEnvironment;
+
+- (void)resetNextEnvironmentTimeRange:(id<LBEnvironmentProtocol>)nextEnvironment {
+    nextEnvironment.timeRange = CMTimeRangeMake(CMTimeRangeGetEnd(self.timeRange), nextEnvironment.timeRange.duration);
+}
 
 #pragma mark - Getting
 
 - (CMTimeRange)absoluteUsableTimeRange {
-    CMTimeRange usableTimeRange = self.timeRange;
+    CMTime startTime = self.absoluteStartTime;
     if (self.appear) {
-        usableTimeRange.start = CMTimeSubtract(usableTimeRange.start, self.appear.timeRange.duration);
-        usableTimeRange.duration = CMTimeSubtract(usableTimeRange.duration, self.appear.timeRange.duration);
+        startTime = CMTimeAdd(self.appear.timeRange.duration, startTime);
     }
+    CMTime endTime = CMTimeAdd(self.absoluteStartTime, self.timeRange.duration);
     if (self.disappear) {
-        usableTimeRange.duration = CMTimeSubtract(usableTimeRange.duration, self.disappear.timeRange.duration);
+        endTime = CMTimeSubtract(endTime, self.disappear.timeRange.duration);
     }
-    return usableTimeRange;
+    return CMTimeRangeFromTimeToTime(startTime, endTime);
 }
 
 - (CMTime)absoluteStartTime {
@@ -38,6 +42,18 @@
 }
 
 #pragma mark - Setting
+
+- (void)setTimeRange:(CMTimeRange)timeRange {
+    _timeRange = timeRange;
+    if (self.nextEnvironment) {
+        [self resetNextEnvironmentTimeRange:self.nextEnvironment];
+    }
+}
+
+- (void)setNextEnvironment:(id<LBEnvironmentProtocol>)nextEnvironment {
+    _nextEnvironment = nextEnvironment;
+    [self resetNextEnvironmentTimeRange:nextEnvironment];
+}
 
 - (void)setAppear:(id<LBTransitionProtocol>)appear {
     _appear = appear;
