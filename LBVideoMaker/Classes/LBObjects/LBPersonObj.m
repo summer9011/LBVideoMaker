@@ -93,7 +93,7 @@
 - (CMTime)absoluteStartTime {
     CMTime startTime = self.timeRange.start;
     if (self.contentScene) {
-        startTime = CMTimeAdd(self.contentScene.timeRange.start, startTime);
+        startTime = CMTimeAdd(self.contentScene.absoluteStartTime, startTime);
     }
     return startTime;
 }
@@ -103,11 +103,14 @@
 - (void)setAppear:(id<LBTransitionProtocol>)appear {
     _appear = appear;
     appear.contenter = self;
+    appear.timeRange = CMTimeRangeMake(kCMTimeZero, appear.timeRange.duration);
 }
 
 - (void)setDisappear:(id<LBTransitionProtocol>)disappear {
     _disappear = disappear;
     disappear.contenter = self;
+    CMTime startTime = CMTimeSubtract(self.timeRange.duration, disappear.timeRange.duration);
+    disappear.timeRange = CMTimeRangeMake(startTime, disappear.timeRange.duration);
 }
 
 @end

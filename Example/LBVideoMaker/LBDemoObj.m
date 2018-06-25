@@ -39,11 +39,12 @@
 #pragma mark - Header Scene
 + (LBSceneObj *)createHeaderSceneWithDurationTime:(CMTime)durationTime {
     LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime sortType:LBSceneSortFirst];
+//    sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromColor:[UIColor whiteColor] toColor:nil durationTime:CMTimeMakeWithSeconds(0.4, durationTime.timescale) isAppear:YES];
     sceneObj.disappear = [[LBColorMaskTransitionObj alloc] initWithFromColor:nil toColor:[UIColor whiteColor] durationTime:CMTimeMakeWithSeconds(0.4, durationTime.timescale) isAppear:NO];
     
     CMTimeRange logoTimeRange = CMTimeRangeMake(kCMTimeZero, durationTime);
     LBPersonObj *logoPersonObj = [self createLogoPersonWithTimeRange:logoTimeRange];
-    CMTimeRange titleTimeRange = CMTimeRangeMake(CMTimeMakeWithSeconds(0.5, durationTime.timescale), CMTimeMakeWithSeconds(2, durationTime.timescale));
+    CMTimeRange titleTimeRange = CMTimeRangeMake(CMTimeMakeWithSeconds(0.5, durationTime.timescale), CMTimeMakeWithSeconds(1, durationTime.timescale));
     LBPersonObj *titlePersonObj = [self createTitlePersonWithTimeRange:titleTimeRange];
     sceneObj.persons = @[logoPersonObj,titlePersonObj];
     
@@ -56,6 +57,8 @@
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:logoLayer
                                                          percentRect:CGRectMake(0.2, 0.2, 0.6, 0.6)
                                                            timeRange:timeRange];
+    CMTime transitionTime = CMTimeMakeWithSeconds(0.4, timeRange.duration.timescale);
+    personObj.appear = [[LBAlphaTransitionObj alloc] initWithFromAlpha:0 toAlpha:1 durationTime:transitionTime];
     return personObj;
 }
 

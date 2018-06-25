@@ -20,7 +20,7 @@
 - (CMTime)absoluteStartTime {
     CMTime startTime = self.timeRange.start;
     if (self.contenter) {
-        startTime = CMTimeAdd(self.contenter.timeRange.start, startTime);
+        startTime = CMTimeAdd(self.contenter.absoluteStartTime, startTime);
     }
     return startTime;
 }

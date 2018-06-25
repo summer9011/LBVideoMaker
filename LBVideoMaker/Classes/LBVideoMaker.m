@@ -198,6 +198,7 @@
     
     CALayer *animationLayer = [CALayer layer];
     animationLayer.frame = layerRect;
+    animationLayer.geometryFlipped = YES;
     [parentLayer addSublayer:animationLayer];
     
     [self addSceneLayersWithScenes:scenes
@@ -225,12 +226,6 @@
     [animationLayer addSublayer:sceneLayer];
     
     if (scene.appear) {
-        CMTime startTime = scene.appear.timeRange.start;
-        if (scene.sortType == LBSceneSortFirst) {
-            startTime = CMTimeAdd(startTime, CMTimeMake(1, scene.contentVideo.framePerSecond));
-        }
-        scene.appear.timeRange = CMTimeRangeMake(startTime, scene.appear.timeRange.duration);
-        
         [LBTransitionHelper addTransition:scene.appear
                          keepDurationTime:scene.timeRange.duration
                                 withLayer:sceneLayer
@@ -286,28 +281,45 @@
     CGRect frame = CGRectZero;
     if (CGSizeEqualToSize(person.specificSize, CGSizeZero)) {
         frame.origin.x = person.percentRect.origin.x * sceneSize.width;
-        frame.origin.y = (1 - person.percentRect.origin.y - person.percentRect.size.height) * sceneSize.height;
+        frame.origin.y = person.percentRect.origin.y * sceneSize.height;
         frame.size.width = person.percentRect.size.width * sceneSize.width;
         frame.size.height = person.percentRect.size.height * sceneSize.height;
     } else {
         frame.origin.x = person.percentCenter.x * sceneSize.width - person.specificSize.width * 0.5;
-        frame.origin.y = (1 - person.percentCenter.y) * sceneSize.height - person.specificSize.height * 0.5;
+        frame.origin.y = person.percentCenter.y * sceneSize.height - person.specificSize.height * 0.5;
         frame.size = person.specificSize;
     }
     person.appearance.frame = frame;
-    person.appearance.opaque = (person.appear)?1:0;
+    person.appearance.opacity = (!person.appear)?1:0;
     [sceneLayer addSublayer:person.appearance];
     
     if (person.appear) {
-        
+        [LBTransitionHelper addTransition:person.appear
+                         keepDurationTime:person.timeRange.duration
+                                withLayer:person.appearance
+                            toParentLayer:sceneLayer];
     } else {
-        
+        [LBTransitionHelper addDefaultTransitionInContenter:person
+                                           keepDurationTime:person.timeRange.duration
+                                                  withLayer:person.appearance
+                                              toParentLayer:sceneLayer
+                                            withVideoFrames:person.timeRange.duration.timescale
+                                                   isAppear:YES];
     }
     
+    CMTime keepDurationTime = CMTimeSubtract(person.contentScene.timeRange.duration, CMTimeRangeGetEnd(person.timeRange));
     if (person.disappear) {
-        
+        [LBTransitionHelper addTransition:person.disappear
+                         keepDurationTime:keepDurationTime
+                                withLayer:person.appearance
+                            toParentLayer:sceneLayer];
     } else {
-        
+        [LBTransitionHelper addDefaultTransitionInContenter:person
+                                           keepDurationTime:keepDurationTime
+                                                  withLayer:person.appearance
+                                              toParentLayer:sceneLayer
+                                            withVideoFrames:person.timeRange.duration.timescale
+                                                   isAppear:NO];
     }
     
     if (person.behaviors) {

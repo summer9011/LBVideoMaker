@@ -54,6 +54,9 @@
     BOOL isAlphaChange = !isContentChange && !isDefaultChange;
     
     CFTimeInterval beginTime = CMTimeGetSeconds(transition.absoluteStartTime);
+    if (beginTime == 0.f) {
+        beginTime = AVCoreAnimationBeginTimeAtZero;
+    }
     CFTimeInterval duration = CMTimeGetSeconds(transition.timeRange.duration);
     
     CALayer *colorMaskLayer = nil;
@@ -103,6 +106,9 @@
           keepDurationTime:(CMTime)keepDurationTime
                  withLayer:(CALayer *)layer {
     CFTimeInterval beginTime = CMTimeGetSeconds(transition.absoluteStartTime);
+    if (beginTime == 0.f) {
+        beginTime = AVCoreAnimationBeginTimeAtZero;
+    }
     CFTimeInterval duration = CMTimeGetSeconds(transition.timeRange.duration);
     CAAnimation *transitionAnimation = [LBAnimationHelper opacityAnimationWithFromOpacity:transition.fromAlpha
                                                                                 toOpacity:transition.toAlpha
