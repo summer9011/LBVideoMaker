@@ -40,3 +40,7 @@
 @property (nonatomic, strong) UIColor *toColor;
 
 @end
+
+@protocol LBBlurMaskTransitionProtocol <LBMaskTransitionProtocol>
+
+@end

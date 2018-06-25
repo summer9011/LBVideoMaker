@@ -10,14 +10,39 @@
 
 @implementation LBLayerHelper
 
-+ (CALayer *)headLayerWithLogoPath:(NSString *)logoPath title:(NSString *)title subTitle:(NSString *)subTitle author:(NSString *)author sign:(NSString *)sign videoSize:(CGSize)videoSize {
-    return [self layerWithLogoPath:logoPath title:title subTitle:subTitle author:author sign:sign videoSize:videoSize];
++ (CALayer *)headLayerWithLogoPath:(NSString *)logoPath
+                             title:(NSString *)title
+                          subTitle:(NSString *)subTitle
+                            author:(NSString *)author
+                              sign:(NSString *)sign
+                         videoSize:(CGSize)videoSize {
+    return [self layerWithLogoPath:logoPath
+                             title:title
+                          subTitle:subTitle
+                            author:author
+                              sign:sign
+                         videoSize:videoSize];
 }
-+ (CALayer *)footLayerWithLogoPath:(NSString *)logoPath title:(NSString *)title subTitle:(NSString *)subTitle author:(NSString *)author sign:(NSString *)sign videoSize:(CGSize)videoSize {
-    return [self layerWithLogoPath:logoPath title:title subTitle:subTitle author:author sign:sign videoSize:videoSize];
++ (CALayer *)footLayerWithLogoPath:(NSString *)logoPath
+                             title:(NSString *)title
+                          subTitle:(NSString *)subTitle
+                            author:(NSString *)author
+                              sign:(NSString *)sign
+                         videoSize:(CGSize)videoSize {
+    return [self layerWithLogoPath:logoPath
+                             title:title
+                          subTitle:subTitle
+                            author:author
+                              sign:sign
+                         videoSize:videoSize];
 }
 
-+ (CALayer *)layerWithLogoPath:(NSString *)logoPath title:(NSString *)title subTitle:(NSString *)subTitle author:(NSString *)author sign:(NSString *)sign videoSize:(CGSize)videoSize {
++ (CALayer *)layerWithLogoPath:(NSString *)logoPath
+                         title:(NSString *)title
+                      subTitle:(NSString *)subTitle
+                        author:(NSString *)author
+                          sign:(NSString *)sign
+                     videoSize:(CGSize)videoSize {
     CALayer *contentLayer = [CALayer layer];
     
     //logo layer
@@ -159,7 +184,8 @@
     return contentLayer;
 }
 
-+ (CALayer *)stepLayerWithImageURL:(NSURL *)imageURL videoSize:(CGSize)videoSize {
++ (CALayer *)stepLayerWithImageURL:(NSURL *)imageURL
+                         videoSize:(CGSize)videoSize {
     CALayer *coverLayer = [CALayer layer];
     coverLayer.contentsGravity = kCAGravityResizeAspectFill;
     coverLayer.contents = (__bridge id _Nullable)([LBImageHelper blurImage:[UIImage imageWithContentsOfFile:imageURL.absoluteString]].CGImage);
@@ -178,6 +204,17 @@
     coverLayer.frame = coverRect;
     
     return coverLayer;
+}
+
++ (CALayer *)compareLayerWithBeforeImageURL:(NSURL *)beforeImageURL
+                              afterImageURL:(NSURL *)afterImageURL
+                                  videoSize:(CGSize)videoSize {
+    
+}
+
++ (CALayer *)detailLayerWithDetail:(NSString *)detail
+                         videoSize:(CGSize)videoSize {
+    
 }
 
 @end

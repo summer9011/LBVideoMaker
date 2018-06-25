@@ -12,10 +12,28 @@
 
 @interface LBLayerHelper : NSObject
 
-+ (CALayer *)headLayerWithLogoPath:(NSString *)logoPath title:(NSString *)title subTitle:(NSString *)subTitle author:(NSString *)author sign:(NSString *)sign videoSize:(CGSize)videoSize;
-+ (CALayer *)footLayerWithLogoPath:(NSString *)logoPath title:(NSString *)title subTitle:(NSString *)subTitle author:(NSString *)author sign:(NSString *)sign videoSize:(CGSize)videoSize;
++ (CALayer *)headLayerWithLogoPath:(NSString *)logoPath
+                             title:(NSString *)title
+                          subTitle:(NSString *)subTitle
+                            author:(NSString *)author
+                              sign:(NSString *)sign
+                         videoSize:(CGSize)videoSize;
++ (CALayer *)footLayerWithLogoPath:(NSString *)logoPath
+                             title:(NSString *)title
+                          subTitle:(NSString *)subTitle
+                            author:(NSString *)author
+                              sign:(NSString *)sign
+                         videoSize:(CGSize)videoSize;
 
-+ (CALayer *)stepLayerWithImageURL:(NSURL *)imageURL videoSize:(CGSize)videoSize;
++ (CALayer *)stepLayerWithImageURL:(NSURL *)imageURL
+                         videoSize:(CGSize)videoSize;
 + (CALayer *)stepContentLayerWithVideoSize:(CGSize)videoSize;
+
++ (CALayer *)compareLayerWithBeforeImageURL:(NSURL *)beforeImageURL
+                              afterImageURL:(NSURL *)afterImageURL
+                                  videoSize:(CGSize)videoSize;
+
++ (CALayer *)detailLayerWithDetail:(NSString *)detail
+                         videoSize:(CGSize)videoSize;
 
 @end

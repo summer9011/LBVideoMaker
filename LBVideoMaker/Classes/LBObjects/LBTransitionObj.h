@@ -41,3 +41,10 @@
                          isAppear:(BOOL)isAppear;
 
 @end
+
+@interface LBBlurMaskTransitionObj : LBMaskTransitionObj <LBBlurMaskTransitionProtocol>
+
+- (instancetype)initWithDurationTime:(CMTime)durationTime
+                           isAppear:(BOOL)isAppear;
+
+@end

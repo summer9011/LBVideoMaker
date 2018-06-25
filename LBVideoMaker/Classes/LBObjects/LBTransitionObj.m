@@ -93,3 +93,16 @@
 }
 
 @end
+
+@implementation LBBlurMaskTransitionObj
+
+- (instancetype)initWithDurationTime:(CMTime)durationTime
+                            isAppear:(BOOL)isAppear {
+    if (self = [super init]) {
+        self.timeRange = CMTimeRangeMake(kCMTimeZero, durationTime);
+        self.isAppear = isAppear;
+    }
+    return self;
+}
+
+@end
