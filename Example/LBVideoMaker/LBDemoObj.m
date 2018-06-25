@@ -7,14 +7,39 @@
 //
 
 #import "LBDemoObj.h"
+#import "LBLayerHelper.h"
 
 @implementation LBDemoObj
+
++ (NSString *)logoPath {
+    return [[NSBundle mainBundle] pathForResource:@"logo" ofType:@"png"];
+}
+
++ (NSString *)title {
+    return @"Glam Summer 2018";
+}
+
++ (NSString *)subTitle {
+    return @"Created by Angela Smith";
+}
+
++ (NSString *)author {
+    return @"Angela Smith";
+}
+
++ (NSString *)sign {
+    return @"Powered by Perfect365 PRO";
+}
+
++ (CGSize)videoSize {
+    return CGSizeMake(720, 720);
+}
 
 #pragma mark - Demo
 #pragma mark - Video
 
 + (LBVideoObj *)createDemoObj {
-    LBVideoObj *videoObj = [[LBVideoObj alloc] initWithFramePerSecond:30];
+    LBVideoObj *videoObj = [[LBVideoObj alloc] initWithFramePerSecond:30 videoSize:[LBDemoObj videoSize]];
     videoObj.scenes = [self createScenesWithVideo:videoObj];
     videoObj.environments = [self createEnvironmentsWithVideo:videoObj];
     return videoObj;
@@ -23,12 +48,9 @@
 #pragma mark - Create Scenes
 
 + (NSArray<LBSceneObj *> *)createScenesWithVideo:(LBVideoObj *)videoObj {
-    LBSceneObj *headerSceneObj = [self createHeaderSceneWithDurationTime:CMTimeMakeWithSeconds(2.3, videoObj.framePerSecond)];
-    headerSceneObj.backgroundColor = [UIColor lightGrayColor];
-    LBSceneObj *stepSceneObj = [self createStepSceneWithDurationTime:CMTimeMakeWithSeconds(4, videoObj.framePerSecond)];
-    stepSceneObj.backgroundColor = [UIColor brownColor];
-    LBSceneObj *footerSceneObj = [self createFooterSceneWithDurationTime:CMTimeMakeWithSeconds(1.3, videoObj.framePerSecond)];
-    footerSceneObj.backgroundColor = [UIColor darkGrayColor];
+    LBSceneObj *headerSceneObj = [self createHeaderSceneWithDurationTime:CMTimeMakeWithSeconds(2.7, videoObj.framePerSecond)];
+    LBSceneObj *stepSceneObj = [self createStepSceneWithDurationTime:CMTimeMakeWithSeconds(4.4, videoObj.framePerSecond)];
+    LBSceneObj *footerSceneObj = [self createFooterSceneWithDurationTime:CMTimeMakeWithSeconds(1.7, videoObj.framePerSecond)];
     
     headerSceneObj.nextScene = stepSceneObj;
     stepSceneObj.nextScene = footerSceneObj;
@@ -36,59 +58,79 @@
     return @[headerSceneObj];
 }
 
-#pragma mark - Header Scene
+#pragma mark - Header/Footer Scene
 + (LBSceneObj *)createHeaderSceneWithDurationTime:(CMTime)durationTime {
     LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime sortType:LBSceneSortFirst];
-//    sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromColor:[UIColor whiteColor] toColor:nil durationTime:CMTimeMakeWithSeconds(0.4, durationTime.timescale) isAppear:YES];
-    sceneObj.disappear = [[LBColorMaskTransitionObj alloc] initWithFromColor:nil toColor:[UIColor whiteColor] durationTime:CMTimeMakeWithSeconds(0.4, durationTime.timescale) isAppear:NO];
-    
-    CMTimeRange logoTimeRange = CMTimeRangeMake(kCMTimeZero, durationTime);
-    LBPersonObj *logoPersonObj = [self createLogoPersonWithTimeRange:logoTimeRange];
-    CMTimeRange titleTimeRange = CMTimeRangeMake(CMTimeMakeWithSeconds(0.5, durationTime.timescale), CMTimeMakeWithSeconds(1, durationTime.timescale));
-    LBPersonObj *titlePersonObj = [self createTitlePersonWithTimeRange:titleTimeRange];
-    sceneObj.persons = @[logoPersonObj,titlePersonObj];
-    
+    sceneObj.disappear = [[LBColorMaskTransitionObj alloc] initWithFromColor:nil toColor:[UIColor whiteColor] durationTime:CMTimeMakeWithSeconds(0.2, durationTime.timescale) isAppear:NO];
+    LBPersonObj *logoPersonObj = [self createLogoPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
+    sceneObj.persons = @[logoPersonObj];
+    return sceneObj;
+}
+
++ (LBSceneObj *)createFooterSceneWithDurationTime:(CMTime)durationTime {
+    LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime sortType:LBSceneSortLast];
+    sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromColor:[UIColor whiteColor] toColor:nil durationTime:CMTimeMakeWithSeconds(0.2, durationTime.timescale) isAppear:YES];
+    LBPersonObj *logoPersonObj = [self createLogoPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
+    sceneObj.persons = @[logoPersonObj];
     return sceneObj;
 }
 
 + (LBPersonObj *)createLogoPersonWithTimeRange:(CMTimeRange)timeRange {
-    CALayer *logoLayer = [CALayer layer];
-    logoLayer.backgroundColor = [UIColor greenColor].CGColor;
-    LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:logoLayer
-                                                         percentRect:CGRectMake(0.2, 0.2, 0.6, 0.6)
-                                                           timeRange:timeRange];
-    CMTime transitionTime = CMTimeMakeWithSeconds(0.4, timeRange.duration.timescale);
-    personObj.appear = [[LBAlphaTransitionObj alloc] initWithFromAlpha:0 toAlpha:1 durationTime:transitionTime];
-    return personObj;
-}
-
-+ (LBPersonObj *)createTitlePersonWithTimeRange:(CMTimeRange)timeRange {
-    CALayer *titleLayer = [CALayer layer];
-    titleLayer.backgroundColor = [UIColor redColor].CGColor;
-    LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:titleLayer
-                                                       percentCenter:CGPointMake(0.1, 0.1)
-                                                        specificSize:CGSizeMake(100, 100)
-                                                           timeRange:timeRange];
-    CMTime transitionTime = CMTimeMakeWithSeconds(0.4, timeRange.duration.timescale);
-    personObj.appear = [[LBAlphaTransitionObj alloc] initWithFromAlpha:0 toAlpha:1 durationTime:transitionTime];
-    personObj.disappear = [[LBAlphaTransitionObj alloc] initWithFromAlpha:1 toAlpha:0 durationTime:transitionTime];
-    return personObj;
+    CALayer *logoLayer = [LBLayerHelper headLayerWithLogoPath:[LBDemoObj logoPath]
+                                                        title:[LBDemoObj title]
+                                                     subTitle:[LBDemoObj subTitle]
+                                                       author:[LBDemoObj author]
+                                                         sign:[LBDemoObj sign]
+                                                    videoSize:[LBDemoObj videoSize]];
+    
+    return [[LBPersonObj alloc] initWithAppearance:logoLayer
+                                     percentCenter:CGPointMake(0.5, 0.45)
+                                      specificSize:logoLayer.bounds.size
+                                         timeRange:timeRange];
 }
 
 #pragma mark - Step Scene
 + (LBSceneObj *)createStepSceneWithDurationTime:(CMTime)durationTime {
     LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime];
-    CMTime transitionTime = CMTimeMakeWithSeconds(0.4, durationTime.timescale);
+    CMTime transitionTime = CMTimeMakeWithSeconds(0.2, durationTime.timescale);
     sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromColor:[UIColor whiteColor] toColor:nil durationTime:transitionTime isAppear:YES];
     sceneObj.disappear = [[LBColorMaskTransitionObj alloc] initWithFromColor:nil toColor:[UIColor whiteColor] durationTime:transitionTime isAppear:NO];
+    LBPersonObj *backgroundPersonObj = [self createStepBackgroundPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
+    LBPersonObj *stepPersonObj = [self createStepPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
+    sceneObj.persons = @[backgroundPersonObj,stepPersonObj];
     return sceneObj;
 }
 
-#pragma mark - Footer Scene
-+ (LBSceneObj *)createFooterSceneWithDurationTime:(CMTime)durationTime {
-    LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime sortType:LBSceneSortLast];
-    sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromColor:[UIColor whiteColor] toColor:nil durationTime:CMTimeMakeWithSeconds(0.4, durationTime.timescale) isAppear:YES];
-    return sceneObj;
++ (LBPersonObj *)createStepBackgroundPersonWithTimeRange:(CMTimeRange)timeRange {
+    NSURL *imageURL = [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"1" ofType:@"JPG"]];
+    CALayer *stepLayer = [LBLayerHelper stepLayerWithImageURL:imageURL videoSize:[LBDemoObj videoSize]];
+    
+    return [[LBPersonObj alloc] initWithAppearance:stepLayer
+                                       percentRect:CGRectMake(0, 0, 1, 1)
+                                         timeRange:timeRange];
+}
+
++ (LBPersonObj *)createStepPersonWithTimeRange:(CMTimeRange)timeRange {
+    CALayer *stepLayer = [LBLayerHelper stepContentLayerWithVideoSize:[LBDemoObj videoSize]];
+    LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:stepLayer
+                                                         percentRect:CGRectMake(0, 0, 1, 1)
+                                                           timeRange:timeRange];
+    
+    NSArray<NSURL *> *imageURLs = @[
+                                    [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"1" ofType:@"JPG"]],
+                                    [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"2" ofType:@"JPG"]],
+                                    [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"3" ofType:@"JPG"]],
+                                    [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"4" ofType:@"JPG"]]
+                                    ];
+    NSMutableArray<UIImage *> *images = [NSMutableArray array];
+    [imageURLs enumerateObjectsUsingBlock:^(NSURL * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [images addObject:[UIImage imageWithContentsOfFile:obj.absoluteString]];
+    }];
+    
+    LBContentsAnimationBehaviorObj *behaviorObj = [[LBContentsAnimationBehaviorObj alloc] initWithImages:images timeRange:timeRange];
+    personObj.behaviors = @[behaviorObj];
+    
+    return personObj;
 }
 
 #pragma mark - Create Environments

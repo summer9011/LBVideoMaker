@@ -12,3 +12,9 @@
 @interface LBBehaviorObj : LBBaseObj <LBBehaviorProtocol>
 
 @end
+
+@interface LBContentsAnimationBehaviorObj : LBBehaviorObj <LBContentsAnimationBehaviorProtocol>
+
+- (instancetype)initWithImages:(NSArray<UIImage *> *)images timeRange:(CMTimeRange)timeRange;
+
+@end

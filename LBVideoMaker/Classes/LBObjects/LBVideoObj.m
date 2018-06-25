@@ -12,13 +12,15 @@
 
 @synthesize framePerSecond = _framePerSecond;
 @synthesize totalVideoTime;
+@synthesize videoSize = _videoSize;
 
 @synthesize environments;
 @synthesize scenes = _scenes;
 
-- (instancetype)initWithFramePerSecond:(int32_t)framePerSecond {
+- (instancetype)initWithFramePerSecond:(int32_t)framePerSecond videoSize:(CGSize)videoSize {
     if (self = [super init]) {
         _framePerSecond = framePerSecond;
+        _videoSize = videoSize;
     }
     return self;
 }

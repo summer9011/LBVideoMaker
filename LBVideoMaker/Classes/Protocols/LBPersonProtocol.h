@@ -7,7 +7,6 @@
 
 #import <Foundation/Foundation.h>
 #import "LBTimeProtocol.h"
-#import "LBPositionProtocol.h"
 #import "LBBehaviorProtocol.h"
 #import "LBTransitionProtocol.h"
 

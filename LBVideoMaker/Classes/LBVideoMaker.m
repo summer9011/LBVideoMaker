@@ -50,6 +50,7 @@
         [self.audioMixInputParameters removeAllObjects];
         
         AVMutableComposition *composition = [AVMutableComposition composition];
+        composition.naturalSize = video.videoSize;
         
         [self insertTracksWithEnvironments:video.environments
                                composition:composition];
@@ -298,13 +299,6 @@
                          keepDurationTime:person.timeRange.duration
                                 withLayer:person.appearance
                             toParentLayer:sceneLayer];
-    } else {
-        [LBTransitionHelper addDefaultTransitionInContenter:person
-                                           keepDurationTime:person.timeRange.duration
-                                                  withLayer:person.appearance
-                                              toParentLayer:sceneLayer
-                                            withVideoFrames:person.timeRange.duration.timescale
-                                                   isAppear:YES];
     }
     
     CMTime keepDurationTime = CMTimeSubtract(person.contentScene.timeRange.duration, CMTimeRangeGetEnd(person.timeRange));
@@ -313,13 +307,6 @@
                          keepDurationTime:keepDurationTime
                                 withLayer:person.appearance
                             toParentLayer:sceneLayer];
-    } else {
-        [LBTransitionHelper addDefaultTransitionInContenter:person
-                                           keepDurationTime:keepDurationTime
-                                                  withLayer:person.appearance
-                                              toParentLayer:sceneLayer
-                                            withVideoFrames:person.timeRange.duration.timescale
-                                                   isAppear:NO];
     }
     
     if (person.behaviors) {

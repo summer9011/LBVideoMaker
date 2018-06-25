@@ -12,7 +12,7 @@
 @protocol LBTimeProtocol <NSObject>
 
 @property (nonatomic, assign) CMTimeRange timeRange;
-
+@property (nonatomic, assign, readonly) CMTimeRange absoluteUsableTimeRange;
 @property (nonatomic, assign, readonly) CMTime absoluteStartTime;
 
 @end

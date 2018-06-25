@@ -6,8 +6,22 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LBPositionProtocol.h"
+#import "LBTimeProtocol.h"
 
-@protocol LBBehaviorProtocol <NSObject, LBPositionProtocol>
+@protocol LBPersonProtocol;
+
+@protocol LBBehaviorProtocol <NSObject, LBTimeProtocol>
+
+@property (nonatomic, assign) BOOL repeatCount;
+
+@property (nonatomic, weak) id<LBBehaviorProtocol> nextBehavior;
+
+@property (nonatomic, weak) id<LBPersonProtocol> contentPerson;
+
+@end
+
+@protocol LBContentsAnimationBehaviorProtocol <LBBehaviorProtocol>
+
+@property (nonatomic, strong) NSArray<UIImage *> *images;
 
 @end

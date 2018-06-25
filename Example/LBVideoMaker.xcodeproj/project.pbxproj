@@ -31,6 +31,7 @@
 		6E00995720D360BC00023293 /* p1.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E00994D20D360BC00023293 /* p1.png */; };
 		6E00995820D360BC00023293 /* p2.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E00994E20D360BC00023293 /* p2.png */; };
 		6E00995920D360BC00023293 /* p3.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E00994F20D360BC00023293 /* p3.png */; };
+		6E00997120E0DB6F00023293 /* LBLayerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00997020E0DB6F00023293 /* LBLayerHelper.m */; };
 		6ECF594B20DD218700FF839E /* LBDemoObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF594A20DD218700FF839E /* LBDemoObj.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
@@ -82,6 +83,8 @@
 		6E00994D20D360BC00023293 /* p1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = p1.png; sourceTree = "<group>"; };
 		6E00994E20D360BC00023293 /* p2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = p2.png; sourceTree = "<group>"; };
 		6E00994F20D360BC00023293 /* p3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = p3.png; sourceTree = "<group>"; };
+		6E00996F20E0DB6F00023293 /* LBLayerHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBLayerHelper.h; sourceTree = "<group>"; };
+		6E00997020E0DB6F00023293 /* LBLayerHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBLayerHelper.m; sourceTree = "<group>"; };
 		6ECF594920DD218700FF839E /* LBDemoObj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBDemoObj.h; sourceTree = "<group>"; };
 		6ECF594A20DD218700FF839E /* LBDemoObj.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBDemoObj.m; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -174,6 +177,8 @@
 				6003F5A6195388D20070C39A /* LBViewController.m */,
 				6ECF594920DD218700FF839E /* LBDemoObj.h */,
 				6ECF594A20DD218700FF839E /* LBDemoObj.m */,
+				6E00996F20E0DB6F00023293 /* LBLayerHelper.h */,
+				6E00997020E0DB6F00023293 /* LBLayerHelper.m */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -413,6 +418,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E00997120E0DB6F00023293 /* LBLayerHelper.m in Sources */,
 				6ECF594B20DD218700FF839E /* LBDemoObj.m in Sources */,
 				6003F59E195388D20070C39A /* LBAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* LBViewController.m in Sources */,

@@ -12,6 +12,7 @@
 @implementation LBPersonObj
 
 @synthesize timeRange;
+@synthesize absoluteUsableTimeRange;
 @synthesize absoluteStartTime;
 
 @synthesize appearance;
@@ -27,6 +28,7 @@
 @synthesize disappear = _disappear;
 
 @synthesize contentScene;
+@synthesize availableTimeRange;
 
 - (instancetype)initWithAppearance:(CALayer *)appearance
                        percentRect:(CGRect)percentRect
@@ -89,6 +91,10 @@
 }
 
 #pragma mark - Getting
+
+- (CMTimeRange)absoluteUsableTimeRange {
+    
+}
 
 - (CMTime)absoluteStartTime {
     CMTime startTime = self.timeRange.start;

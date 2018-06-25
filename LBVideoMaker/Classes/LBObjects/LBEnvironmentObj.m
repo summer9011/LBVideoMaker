@@ -11,6 +11,7 @@
 @implementation LBEnvironmentObj
 
 @synthesize timeRange;
+@synthesize absoluteUsableTimeRange;
 @synthesize absoluteStartTime;
 
 @synthesize appear = _appear;
@@ -19,6 +20,18 @@
 @synthesize nextEnvironment;
 
 #pragma mark - Getting
+
+- (CMTimeRange)absoluteUsableTimeRange {
+    CMTimeRange usableTimeRange = self.timeRange;
+    if (self.appear) {
+        usableTimeRange.start = CMTimeSubtract(usableTimeRange.start, self.appear.timeRange.duration);
+        usableTimeRange.duration = CMTimeSubtract(usableTimeRange.duration, self.appear.timeRange.duration);
+    }
+    if (self.disappear) {
+        usableTimeRange.duration = CMTimeSubtract(usableTimeRange.duration, self.disappear.timeRange.duration);
+    }
+    return usableTimeRange;
+}
 
 - (CMTime)absoluteStartTime {
     return self.timeRange.start;

@@ -13,6 +13,7 @@
 
 @property (nonatomic, assign, readonly) int32_t framePerSecond;
 @property (nonatomic, assign, readonly) CMTime totalVideoTime;
+@property (nonatomic, assign, readonly) CGSize videoSize;
 
 @property (nonatomic, strong) NSSet<id<LBEnvironmentProtocol>> *environments;
 @property (nonatomic, strong) NSArray<id<LBSceneProtocol>> *scenes;

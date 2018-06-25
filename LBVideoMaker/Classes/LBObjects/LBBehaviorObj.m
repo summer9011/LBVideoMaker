@@ -7,15 +7,45 @@
 //
 
 #import "LBBehaviorObj.h"
+#import "LBPersonProtocol.h"
 
 @implementation LBBehaviorObj
 
 @synthesize timeRange;
+@synthesize absoluteUsableTimeRange;
 @synthesize absoluteStartTime;
 
-@synthesize fromPoint;
-@synthesize toPoint;
+@synthesize repeatCount;
+@synthesize nextBehavior;
+@synthesize contentPerson;
 
-@synthesize path;
+@end
+
+
+@implementation LBContentsAnimationBehaviorObj
+
+@synthesize images;
+
+- (instancetype)initWithImages:(NSArray<UIImage *> *)images timeRange:(CMTimeRange)timeRange {
+    if (self = [super init]) {
+        self.images = images;
+        self.timeRange = timeRange;
+    }
+    return self;
+}
+
+#pragma mark - Getting
+
+- (CMTimeRange)absoluteUsableTimeRange {
+    
+}
+
+- (CMTime)absoluteStartTime {
+    CMTime startTime = self.timeRange.start;
+    if (self.contentPerson) {
+        startTime = CMTimeAdd(self.contentPerson.absoluteStartTime, startTime);
+    }
+    return startTime;
+}
 
 @end

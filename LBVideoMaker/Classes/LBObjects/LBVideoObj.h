@@ -11,7 +11,6 @@
 
 #import "LBBehaviorObj.h"
 #import "LBPersonObj.h"
-#import "LBPositionObj.h"
 #import "LBSceneObj.h"
 #import "LBTimeObj.h"
 #import "LBEnvironmentObj.h"
@@ -19,6 +18,6 @@
 
 @interface LBVideoObj : LBBaseObj <LBVideoProtocol>
 
-- (instancetype)initWithFramePerSecond:(int32_t)framePerSecond;
+- (instancetype)initWithFramePerSecond:(int32_t)framePerSecond videoSize:(CGSize)videoSize;
 
 @end
