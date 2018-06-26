@@ -16,11 +16,6 @@
 
 @property (nonatomic, strong) CALayer *appearance;
 
-@property (nonatomic, assign) CGPoint percentCenter;
-@property (nonatomic, assign) CGSize percentSize;
-@property (nonatomic, assign) CGSize specificSize;
-@property (nonatomic, assign) CGRect percentRect;
-
 @property (nonatomic, strong) NSArray<id<LBBehaviorProtocol>> *behaviors;
 
 @property (nonatomic, strong) id<LBTransitionProtocol> appear;

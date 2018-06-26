@@ -138,7 +138,7 @@
                                          context:nil].size;
     CGFloat signTopOffset = 4;
     
-    CGFloat headTopOffset = 20;
+    CGFloat headTopOffset = -40;
     CGSize headSize = CGSizeZero;
     headSize.width = imageSize.width;
     if (titleSize.width + textRightOffset > headSize.width) {
@@ -409,7 +409,7 @@
     CALayer *backgroundLayer = [CALayer layer];
     backgroundLayer.cornerRadius = 10;
     
-    CGFloat backgroundTopOffset = 30;
+    CGFloat backgroundTopOffset = -40;
     
     CGRect backgroundRect = CGRectZero;
     backgroundRect.size = backgroundSize;

@@ -12,17 +12,6 @@
 @interface LBPersonObj : LBBaseObj <LBPersonProtocol>
 
 - (instancetype)initWithAppearance:(CALayer *)appearance
-                       percentRect:(CGRect)percentRect
-                         timeRange:(CMTimeRange)timeRange;
-
-- (instancetype)initWithAppearance:(CALayer *)appearance
-                     percentCenter:(CGPoint)percentCenter
-                       percentSize:(CGSize)percentSize
-                         timeRange:(CMTimeRange)timeRange;
-
-- (instancetype)initWithAppearance:(CALayer *)appearance
-                     percentCenter:(CGPoint)percentCenter
-                      specificSize:(CGSize)specificSize
                          timeRange:(CMTimeRange)timeRange;
 
 @end

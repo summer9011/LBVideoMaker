@@ -32,7 +32,7 @@
 }
 
 + (NSString *)detail {
-    return @"asfdsdkfjsa;ldfjsldfhasldhflskjdfha123kshfoisbflajsk12fhsaklfhaslfd123";
+    return @"asfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdk";
 }
 
 + (CGSize)videoSize {
@@ -119,8 +119,6 @@
                                                     videoSize:[LBDemoObj videoSize]];
     
     return [[LBPersonObj alloc] initWithAppearance:logoLayer
-                                     percentCenter:CGPointMake(0.5, 0.45)
-                                      specificSize:logoLayer.bounds.size
                                          timeRange:timeRange];
 }
 
@@ -148,16 +146,13 @@
     NSURL *imageURL = [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"1" ofType:@"JPG"]];
     CALayer *stepLayer = [LBLayerHelper stepLayerWithImageURL:imageURL
                                                     videoSize:[LBDemoObj videoSize]];
-    
     return [[LBPersonObj alloc] initWithAppearance:stepLayer
-                                       percentRect:CGRectMake(0, 0, 1, 1)
                                          timeRange:timeRange];
 }
 
 + (LBPersonObj *)createStepPersonWithTimeRange:(CMTimeRange)timeRange {
     CALayer *stepLayer = [LBLayerHelper stepContentLayerWithVideoSize:[LBDemoObj videoSize]];
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:stepLayer
-                                                         percentRect:CGRectMake(0, 0, 1, 1)
                                                            timeRange:timeRange];
     
     NSArray<NSURL *> *imageURLs = @[
@@ -202,7 +197,6 @@
     CALayer *compareLayer = [LBLayerHelper compareLayerWithContents:[LBDemoObj compareImage]
                                                           videoSize:[LBDemoObj videoSize]];
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:compareLayer
-                                                         percentRect:CGRectMake(0, 0, 1, 1)
                                                            timeRange:timeRange];
     
     return personObj;
@@ -212,8 +206,6 @@
     CALayer *detailLayer = [LBLayerHelper detailLayerWithDetail:[LBDemoObj detail]
                                                       videoSize:[LBDemoObj videoSize]];
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:detailLayer
-                                                       percentCenter:CGPointMake(0.24, 0.913)
-                                                        specificSize:detailLayer.bounds.size
                                                            timeRange:timeRange];
     
     CMTime transitionTime = CMTimeMakeWithSeconds(0.2, timeRange.duration.timescale);
@@ -245,7 +237,6 @@
     CALayer *compareLayer = [LBLayerHelper compareLayerWithContents:[LBDemoObj blurCompareImage]
                                                           videoSize:[LBDemoObj videoSize]];
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:compareLayer
-                                                         percentRect:CGRectMake(0, 0, 1, 1)
                                                            timeRange:timeRange];
     
     return personObj;
@@ -274,8 +265,6 @@
     CALayer *productLayer = [LBLayerHelper productLayerWithProducts:products
                                                           videoSize:[LBDemoObj videoSize]];
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:productLayer
-                                                       percentCenter:CGPointMake(0.5, 0.46)
-                                                        specificSize:productLayer.bounds.size
                                                            timeRange:timeRange];
     CMTime transitionTime = CMTimeMakeWithSeconds(0.2, timeRange.duration.timescale);
     personObj.appear = [[LBAlphaTransitionObj alloc] initWithFromAlpha:0
@@ -310,8 +299,6 @@
                                                            videoSize:[LBDemoObj videoSize]];
     
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:watermarkLayer
-                                                       percentCenter:CGPointMake(0.5, 0.915)
-                                                        specificSize:watermarkLayer.bounds.size
                                                            timeRange:timeRange];
     CMTime transitionTime = CMTimeMakeWithSeconds(0.2, timeRange.duration.timescale);
     personObj.appear = [[LBAlphaTransitionObj alloc] initWithFromAlpha:0

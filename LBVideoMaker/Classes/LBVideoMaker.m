@@ -280,18 +280,6 @@
 - (void)addPersonLayerWithPerson:(id<LBPersonProtocol>)person
                     toSceneLayer:(CALayer *)sceneLayer {
     CGSize sceneSize = sceneLayer.bounds.size;
-    CGRect frame = CGRectZero;
-    if (CGSizeEqualToSize(person.specificSize, CGSizeZero)) {
-        frame.origin.x = person.percentRect.origin.x * sceneSize.width;
-        frame.origin.y = person.percentRect.origin.y * sceneSize.height;
-        frame.size.width = person.percentRect.size.width * sceneSize.width;
-        frame.size.height = person.percentRect.size.height * sceneSize.height;
-    } else {
-        frame.origin.x = person.percentCenter.x * sceneSize.width - person.specificSize.width * 0.5;
-        frame.origin.y = person.percentCenter.y * sceneSize.height - person.specificSize.height * 0.5;
-        frame.size = person.specificSize;
-    }
-    person.appearance.frame = frame;
     person.appearance.opacity = (!person.appear)?1:0;
     [sceneLayer addSublayer:person.appearance];
     

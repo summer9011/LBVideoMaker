@@ -25,12 +25,10 @@
                                        toImage:(UIImage *)toImage
                                      beginTime:(CFTimeInterval)beginTime
                                       duration:(CFTimeInterval)duration {
-    CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"contents"];
-    animation.values = @[(id)fromImage.CGImage, (id)toImage.CGImage];
-    animation.beginTime = beginTime;
-    animation.duration = duration;
-    animation.keyTimes = @[@0, @1];
-    return animation;
+    return [self contentsAnimationWithImages:@[fromImage, toImage]
+                                   beginTime:beginTime
+                                    duration:duration
+                                 repeatCount:1];
 }
 
 + (CAAnimation *)contentsAnimationWithImages:(NSArray<UIImage *> *)images
