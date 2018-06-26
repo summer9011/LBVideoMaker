@@ -6,12 +6,11 @@
 //
 
 #import "LBVideoMaker.h"
+#import <KVOController/KVOController.h>
+#import <AVFoundation/AVFoundation.h>
 
 #import "LBTransitionHelper.h"
 #import "LBBehaviorHelper.h"
-
-@import AVFoundation;
-@import KVOController;
 
 @interface LBVideoMaker ()
 

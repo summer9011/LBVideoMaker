@@ -6,8 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@import AVFoundation;
+#import <AVFoundation/AVFoundation.h>
 
 @protocol LBTimeProtocol <NSObject>
 

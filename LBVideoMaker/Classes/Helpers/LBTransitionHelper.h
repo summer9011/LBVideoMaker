@@ -6,9 +6,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
 #import "LBTransitionProtocol.h"
-
-@import AVFoundation;
 
 @interface LBTransitionHelper : NSObject
 
