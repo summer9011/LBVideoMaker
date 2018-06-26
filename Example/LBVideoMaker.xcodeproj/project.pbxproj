@@ -301,7 +301,7 @@
 				ORGANIZATIONNAME = "胡萝卜_小波波";
 				TargetAttributes = {
 					6003F589195388D20070C39A = {
-						DevelopmentTeam = U9A4TD7GB4;
+						DevelopmentTeam = 7KD22EQFBB;
 					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
@@ -556,7 +556,7 @@
 			baseConfigurationReference = 4F495CAB19FB42785DDA4328 /* Pods-LBVideoMaker_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = U9A4TD7GB4;
+				DEVELOPMENT_TEAM = 7KD22EQFBB;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LBVideoMaker/LBVideoMaker-Prefix.pch";
 				INFOPLIST_FILE = "LBVideoMaker/LBVideoMaker-Info.plist";
@@ -572,7 +572,7 @@
 			baseConfigurationReference = 805AC189D1EAAC805569BF75 /* Pods-LBVideoMaker_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = U9A4TD7GB4;
+				DEVELOPMENT_TEAM = 7KD22EQFBB;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LBVideoMaker/LBVideoMaker-Prefix.pch";
 				INFOPLIST_FILE = "LBVideoMaker/LBVideoMaker-Info.plist";
