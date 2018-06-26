@@ -39,6 +39,11 @@
         [self addAlphaTransition:(id<LBAlphaTransitionProtocol>)transition
                 keepDurationTime:keepDurationTime
                        withLayer:layer];
+    } else if ([transition conformsToProtocol:@protocol(LBContentsMaskTransitionProtocol)]) {
+        [self addContentsMaskTransition:(id<LBContentsMaskTransitionProtocol>)transition
+                       keepDurationTime:keepDurationTime
+                              withLayer:layer
+                          toParentLayer:parentLayer];
     }
 }
 
@@ -121,9 +126,28 @@
                                                                           toOpacity:transition.toAlpha
                                                                           beginTime:beginTime
                                                                            duration:duration];
+    keepAnimation.removedOnCompletion = NO;
+    keepAnimation.fillMode = kCAFillModeForwards;
     
     [layer addAnimation:transitionAnimation forKey:nil];
     [layer addAnimation:keepAnimation forKey:nil];
+}
+
++ (void)addContentsMaskTransition:(id<LBContentsMaskTransitionProtocol>)transition
+                 keepDurationTime:(CMTime)keepDurationTime
+                        withLayer:(CALayer *)layer
+                    toParentLayer:(CALayer *)parentLayer {
+    CFTimeInterval beginTime = CMTimeGetSeconds(transition.absoluteStartTime);
+    if (beginTime == 0.f) {
+        beginTime = AVCoreAnimationBeginTimeAtZero;
+    }
+    CFTimeInterval duration = CMTimeGetSeconds(transition.timeRange.duration);
+    
+    CAAnimation *animation = [LBAnimationHelper contentAnimationWithFromImage:transition.fromImage
+                                                                      toImage:transition.toImage
+                                                                    beginTime:beginTime
+                                                                     duration:duration];
+    [layer addAnimation:animation forKey:nil];
 }
 
 + (void)addDefaultTransitionInContenter:(id<LBTimeProtocol>)contenter

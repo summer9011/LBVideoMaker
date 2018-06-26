@@ -32,11 +32,23 @@
 }
 
 + (NSString *)detail {
-    return @"asfdsdkfjsa;ldfjsldfhasldhflskjdfhakshfoisbflajskfhsaklfhaslfd";
+    return @"asfdsdkfjsa;ldfjsldfhasldhflskjdfha123kshfoisbflajsk12fhsaklfhaslfd123";
 }
 
 + (CGSize)videoSize {
     return CGSizeMake(720, 720);
+}
+
++ (UIImage *)compareImage {
+    NSURL *beforeImageURL = [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"1" ofType:@"JPG"]];
+    NSURL *afterImageURL = [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"4" ofType:@"JPG"]];
+    return [LBLayerHelper compareLayerImageWithBeforeImageURL:beforeImageURL
+                                                afterImageURL:afterImageURL
+                                                    videoSize:[LBDemoObj videoSize]];
+}
+
++ (UIImage *)blurCompareImage {
+    return [LBImageHelper blurImage:[LBDemoObj compareImage]];
 }
 
 #pragma mark - Demo
@@ -54,7 +66,7 @@
 + (NSArray<LBSceneObj *> *)createScenesWithVideo:(LBVideoObj *)videoObj {
     LBSceneObj *headerSceneObj = [self createHeaderSceneWithDurationTime:CMTimeMakeWithSeconds(2.7, videoObj.framePerSecond)];
     LBSceneObj *stepSceneObj = [self createStepSceneWithDurationTime:CMTimeMakeWithSeconds(4.4, videoObj.framePerSecond)];
-    LBSceneObj *compareSceneObj = [self createCompareSceneWithDurationTime:CMTimeMakeWithSeconds(2.4, videoObj.framePerSecond)];
+    LBSceneObj *compareSceneObj = [self createCompareSceneWithDurationTime:CMTimeMakeWithSeconds(2.5, videoObj.framePerSecond)];
     LBSceneObj *productsSceneObj = [self createProductsSceneWithDurationTime:CMTimeMakeWithSeconds(2.4, videoObj.framePerSecond)];
     LBSceneObj *footerSceneObj = [self createFooterSceneWithDurationTime:CMTimeMakeWithSeconds(1.7, videoObj.framePerSecond)];
     
@@ -63,7 +75,10 @@
     compareSceneObj.nextScene = productsSceneObj;
     productsSceneObj.nextScene = footerSceneObj;
     
-    return @[headerSceneObj];
+    LBSceneObj *watermarkSceneObj = [self createWaterMarkSceneWithDurationTime:CMTimeMakeWithSeconds(15.7, videoObj.framePerSecond)];
+    watermarkSceneObj.backgroundColor = [UIColor clearColor];
+    
+    return @[headerSceneObj,watermarkSceneObj];
 }
 
 #pragma mark - Header/Footer Scene
@@ -166,28 +181,28 @@
 #pragma mark - Compare Scene
 + (LBSceneObj *)createCompareSceneWithDurationTime:(CMTime)durationTime {
     LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime];
-    CMTime transitionTime = CMTimeMakeWithSeconds(0.2, durationTime.timescale);
+    CMTime appearTransitionTime = CMTimeMakeWithSeconds(0.2, durationTime.timescale);
     sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromColor:[UIColor whiteColor]
                                                                   toColor:nil
-                                                             durationTime:transitionTime
+                                                             durationTime:appearTransitionTime
                                                                  isAppear:YES];
-    sceneObj.disappear = [[LBBlurMaskTransitionObj alloc] initWithDurationTime:transitionTime
-                                                                      isAppear:NO];
+    CMTime disAppearTransitionTime = CMTimeMakeWithSeconds(0.8, durationTime.timescale);
+    sceneObj.disappear = [[LBContentsMaskTransitionObj alloc] initWithFromImage:[LBDemoObj compareImage]
+                                                                        toImage:[LBDemoObj blurCompareImage]
+                                                                   durationTime:disAppearTransitionTime
+                                                                       isAppear:NO];
     
-    LBPersonObj *compareImagesPersonObj = [self createCompareImagesPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
-    LBPersonObj *detailPersonObj = [self createDetailPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
+    LBPersonObj *compareImagesPersonObj = [self createCompareImagesPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, CMTimeSubtract(durationTime, disAppearTransitionTime))];
+    LBPersonObj *detailPersonObj = [self createDetailPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, CMTimeSubtract(durationTime, disAppearTransitionTime))];
     sceneObj.persons = @[compareImagesPersonObj,detailPersonObj];
     return sceneObj;
 }
 
 + (LBPersonObj *)createCompareImagesPersonWithTimeRange:(CMTimeRange)timeRange {
-    NSURL *beforeImageURL = [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"1" ofType:@"JPG"]];
-    NSURL *afterImageURL = [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"4" ofType:@"JPG"]];
-    CALayer *compareLayer = [LBLayerHelper compareLayerWithBeforeImageURL:beforeImageURL
-                                                            afterImageURL:afterImageURL
-                                                                videoSize:[LBDemoObj videoSize]];
+    CALayer *compareLayer = [LBLayerHelper compareLayerWithContents:[LBDemoObj compareImage]
+                                                          videoSize:[LBDemoObj videoSize]];
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:compareLayer
-                                                       percentCenter:CGPointMake(0, 0) specificSize:compareLayer.bounds.size
+                                                         percentRect:CGRectMake(0, 0, 1, 1)
                                                            timeRange:timeRange];
     
     return personObj;
@@ -197,8 +212,14 @@
     CALayer *detailLayer = [LBLayerHelper detailLayerWithDetail:[LBDemoObj detail]
                                                       videoSize:[LBDemoObj videoSize]];
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:detailLayer
-                                                       percentCenter:CGPointMake(0, 0) specificSize:detailLayer.bounds.size
+                                                       percentCenter:CGPointMake(0.24, 0.913)
+                                                        specificSize:detailLayer.bounds.size
                                                            timeRange:timeRange];
+    
+    CMTime transitionTime = CMTimeMakeWithSeconds(0.2, timeRange.duration.timescale);
+    personObj.disappear = [[LBAlphaTransitionObj alloc] initWithFromAlpha:1
+                                                                  toAlpha:0
+                                                             durationTime:transitionTime];
     
     return personObj;
 }
@@ -213,17 +234,93 @@
                                                                     isAppear:NO];
     
     LBPersonObj *backgroundPersonObj = [self createProductsBackgroundPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
-    LBPersonObj *pageProductPersonObj = [self createPageProductPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
+    CMTime pageProductStartTime = CMTimeMakeWithSeconds(0.3, durationTime.timescale);
+    CMTime pageProductDurationTime = CMTimeSubtract(CMTimeSubtract(durationTime, pageProductStartTime), transitionTime);
+    LBPersonObj *pageProductPersonObj = [self createPageProductPersonWithTimeRange:CMTimeRangeMake(pageProductStartTime, pageProductDurationTime)];
     sceneObj.persons = @[backgroundPersonObj,pageProductPersonObj];
     return sceneObj;
 }
 
 + (LBPersonObj *)createProductsBackgroundPersonWithTimeRange:(CMTimeRange)timeRange {
+    CALayer *compareLayer = [LBLayerHelper compareLayerWithContents:[LBDemoObj blurCompareImage]
+                                                          videoSize:[LBDemoObj videoSize]];
+    LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:compareLayer
+                                                         percentRect:CGRectMake(0, 0, 1, 1)
+                                                           timeRange:timeRange];
     
+    return personObj;
 }
 
 + (LBPersonObj *)createPageProductPersonWithTimeRange:(CMTimeRange)timeRange {
+    NSArray *products = @[
+                          @{
+                              @"title": @"11111111FFFFFFFFFFFFFFFFFFFFFFF",
+                              @"url": [[NSBundle mainBundle] pathForResource:@"p1" ofType:@"png"]
+                              },
+                          @{
+                              @"title": @"22222222FFFFFFFFFFFFFFFFFFFFFFF",
+                              @"url": [[NSBundle mainBundle] pathForResource:@"p2" ofType:@"png"]
+                              },
+                          @{
+                              @"title": @"33333333FFFFFFFFFFFFFFFFFFFFFFF",
+                              @"url": [[NSBundle mainBundle] pathForResource:@"p3" ofType:@"png"]
+                              },
+                          @{
+                              @"title": @"44444444FFFFFFFFFFFFFFFFFFFFFFF",
+                              @"url": [[NSBundle mainBundle] pathForResource:@"p2" ofType:@"png"]
+                              },
+                          ];
     
+    CALayer *productLayer = [LBLayerHelper productLayerWithProducts:products
+                                                          videoSize:[LBDemoObj videoSize]];
+    LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:productLayer
+                                                       percentCenter:CGPointMake(0.5, 0.46)
+                                                        specificSize:productLayer.bounds.size
+                                                           timeRange:timeRange];
+    CMTime transitionTime = CMTimeMakeWithSeconds(0.2, timeRange.duration.timescale);
+    personObj.appear = [[LBAlphaTransitionObj alloc] initWithFromAlpha:0
+                                                               toAlpha:1
+                                                          durationTime:transitionTime];
+    personObj.disappear = [[LBAlphaTransitionObj alloc] initWithFromAlpha:1
+                                                                  toAlpha:0
+                                                             durationTime:transitionTime];
+    return personObj;
+}
+
+#pragma mark - Watermark Scene
+
++ (LBSceneObj *)createWaterMarkSceneWithDurationTime:(CMTime)durationTime {
+    LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime
+                                                           sortType:LBSceneSortFirst];
+    CMTimeRange whiteWatermarkPersonTimeRange = CMTimeRangeMake(CMTimeMakeWithSeconds(2.7, durationTime.timescale), CMTimeMakeWithSeconds(4.4, durationTime.timescale));
+    LBPersonObj *whiteWatermarkPersonObj = [self createWatermarkPersonWithTimeRange:whiteWatermarkPersonTimeRange color:[UIColor whiteColor]];
+    CMTimeRange blackWatermarkPersonTimeRange = CMTimeRangeMake(CMTimeRangeGetEnd(whiteWatermarkPersonTimeRange), CMTimeMakeWithSeconds(4.9, durationTime.timescale));
+    LBPersonObj *blackWatermarkPersonObj = [self createWatermarkPersonWithTimeRange:blackWatermarkPersonTimeRange color:[UIColor blackColor]];
+    sceneObj.persons = @[whiteWatermarkPersonObj,blackWatermarkPersonObj];
+    
+    return sceneObj;
+}
+
++ (LBPersonObj *)createWatermarkPersonWithTimeRange:(CMTimeRange)timeRange color:(UIColor *)color {
+    CALayer *watermarkLayer = [LBLayerHelper watermarkLayerWithTitle:[LBDemoObj title]
+                                                            subTitle:[LBDemoObj subTitle]
+                                                              author:[LBDemoObj author]
+                                                                sign:[LBDemoObj sign]
+                                                               color:color
+                                                           videoSize:[LBDemoObj videoSize]];
+    
+    LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:watermarkLayer
+                                                       percentCenter:CGPointMake(0.5, 0.915)
+                                                        specificSize:watermarkLayer.bounds.size
+                                                           timeRange:timeRange];
+    CMTime transitionTime = CMTimeMakeWithSeconds(0.2, timeRange.duration.timescale);
+    personObj.appear = [[LBAlphaTransitionObj alloc] initWithFromAlpha:0
+                                                               toAlpha:1
+                                                          durationTime:transitionTime];
+    personObj.disappear = [[LBAlphaTransitionObj alloc] initWithFromAlpha:1
+                                                                  toAlpha:0
+                                                             durationTime:transitionTime];
+    return personObj;
 }
 
 #pragma mark - Create Environments

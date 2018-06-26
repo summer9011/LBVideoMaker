@@ -11,5 +11,6 @@
 
 + (UIImage *)blurImage:(UIImage *)image;
 + (UIImage *)createImageWithColor:(UIColor *)color;
++ (UIImage *)imageWithLayer:(CALayer *)layer;
 
 @end

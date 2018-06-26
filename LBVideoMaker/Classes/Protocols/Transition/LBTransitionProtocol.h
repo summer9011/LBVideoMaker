@@ -41,6 +41,9 @@
 
 @end
 
-@protocol LBBlurMaskTransitionProtocol <LBMaskTransitionProtocol>
+@protocol LBContentsMaskTransitionProtocol <LBMaskTransitionProtocol>
+
+@property (nonatomic, strong) UIImage *fromImage;
+@property (nonatomic, strong) UIImage *toImage;
 
 @end

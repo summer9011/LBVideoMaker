@@ -29,11 +29,22 @@
                          videoSize:(CGSize)videoSize;
 + (CALayer *)stepContentLayerWithVideoSize:(CGSize)videoSize;
 
-+ (CALayer *)compareLayerWithBeforeImageURL:(NSURL *)beforeImageURL
-                              afterImageURL:(NSURL *)afterImageURL
-                                  videoSize:(CGSize)videoSize;
-
++ (UIImage *)compareLayerImageWithBeforeImageURL:(NSURL *)beforeImageURL
+                                   afterImageURL:(NSURL *)afterImageURL
+                                       videoSize:(CGSize)videoSize;
++ (CALayer *)compareLayerWithContents:(UIImage *)content
+                            videoSize:(CGSize)videoSize;
 + (CALayer *)detailLayerWithDetail:(NSString *)detail
                          videoSize:(CGSize)videoSize;
+
++ (CALayer *)productLayerWithProducts:(NSArray<NSDictionary *> *)products
+                            videoSize:(CGSize)videoSize;
+
++ (CALayer *)watermarkLayerWithTitle:(NSString *)title
+                            subTitle:(NSString *)subTitle
+                              author:(NSString *)author
+                                sign:(NSString *)sign
+                               color:(UIColor *)color
+                           videoSize:(CGSize)videoSize;
 
 @end

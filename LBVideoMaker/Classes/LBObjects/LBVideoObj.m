@@ -44,16 +44,7 @@
 #pragma mark - Getting
 
 - (CMTime)totalVideoTime {
-    __block CMTime totalVideoTime = kCMTimeZero;
-    [self.scenes enumerateObjectsUsingBlock:^(id<LBSceneProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (idx == 0) {
-            totalVideoTime = [self getSceneRelationTimeWithScene:obj];
-        } else {
-            CMTime sceneTime = [self getSceneRelationTimeWithScene:obj];
-            totalVideoTime = CMTimeAdd(totalVideoTime, sceneTime);
-        }
-    }];
-    return totalVideoTime;
+    return [self getSceneRelationTimeWithScene:self.scenes.firstObject];
 }
 
 #pragma mark - Setting

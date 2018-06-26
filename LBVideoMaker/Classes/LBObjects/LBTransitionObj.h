@@ -42,9 +42,11 @@
 
 @end
 
-@interface LBBlurMaskTransitionObj : LBMaskTransitionObj <LBBlurMaskTransitionProtocol>
+@interface LBContentsMaskTransitionObj : LBMaskTransitionObj <LBContentsMaskTransitionProtocol>
 
-- (instancetype)initWithDurationTime:(CMTime)durationTime
+- (instancetype)initWithFromImage:(UIImage *)fromImage
+                          toImage:(UIImage *)toImage
+                     durationTime:(CMTime)durationTime
                            isAppear:(BOOL)isAppear;
 
 @end

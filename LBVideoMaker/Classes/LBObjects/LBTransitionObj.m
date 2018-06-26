@@ -94,11 +94,18 @@
 
 @end
 
-@implementation LBBlurMaskTransitionObj
+@implementation LBContentsMaskTransitionObj
 
-- (instancetype)initWithDurationTime:(CMTime)durationTime
-                            isAppear:(BOOL)isAppear {
+@synthesize fromImage;
+@synthesize toImage;
+
+- (instancetype)initWithFromImage:(UIImage *)fromImage
+                          toImage:(UIImage *)toImage
+                     durationTime:(CMTime)durationTime
+                         isAppear:(BOOL)isAppear {
     if (self = [super init]) {
+        self.fromImage = fromImage;
+        self.toImage = toImage;
         self.timeRange = CMTimeRangeMake(kCMTimeZero, durationTime);
         self.isAppear = isAppear;
     }

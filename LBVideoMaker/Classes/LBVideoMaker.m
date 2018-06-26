@@ -309,6 +309,15 @@
                          keepDurationTime:keepDurationTime
                                 withLayer:person.appearance
                             toParentLayer:sceneLayer];
+    } else {
+        if (CMTimeGetSeconds(keepDurationTime) > 0) {
+            [LBTransitionHelper addDefaultTransitionInContenter:person
+                                               keepDurationTime:keepDurationTime
+                                                      withLayer:person.appearance
+                                                  toParentLayer:sceneLayer
+                                                withVideoFrames:person.contentScene.timeRange.duration.timescale
+                                                       isAppear:NO];
+        }
     }
     
     if (person.behaviors) {

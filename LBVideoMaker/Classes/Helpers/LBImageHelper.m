@@ -29,5 +29,13 @@
     UIGraphicsEndImageContext();
     return theImage;
 }
++ (UIImage *)imageWithLayer:(CALayer *)layer {
+    UIGraphicsBeginImageContext(layer.bounds.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [layer renderInContext:context];
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
+}
 
 @end
