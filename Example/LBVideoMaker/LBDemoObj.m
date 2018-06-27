@@ -151,7 +151,6 @@
                                                  whiteWatermarkDurationTime:CMTimeMakeWithSeconds(stepTotalTime, videoObj.framePerSecond)
                                                  blackWatermarkDurationTime:CMTimeMakeWithSeconds(compareTotalTime + productsTotalTime, videoObj.framePerSecond)
                                                           totalDurationTime:totalDurationTime];
-    watermarkSceneObj.backgroundColor = [UIColor clearColor];
     
     return @[headerSceneObj,watermarkSceneObj];
 }
@@ -214,7 +213,7 @@
     LBPersonObj *backgroundPersonObj = [self createStepBackgroundPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     LBPersonObj *stepPersonObj = [self createStepPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     
-    CMTime offsetTime = CMTimeMakeWithSeconds(0.2, durationTime.timescale);
+    CMTime offsetTime = CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], durationTime.timescale);
     CMTime toolDurationTime = CMTimeMakeWithSeconds(2, durationTime.timescale);
     
     CMTime toolBeginTime = CMTimeAdd(transitionTime, offsetTime);
@@ -231,7 +230,7 @@
     
     sceneObj.persons = @[backgroundPersonObj,
                          stepPersonObj,
-//                         eyeToolPersonObj,
+                         eyeToolPersonObj,
 //                         faceToolPersonObj,
 //                         lipToolPersonObj
                          ];
@@ -290,7 +289,7 @@
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:toolLayer
                                                            timeRange:timeRange];
     
-    CMTime transitionTime = CMTimeMakeWithSeconds(0.2, timeRange.duration.timescale);
+    CMTime transitionTime = CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], timeRange.duration.timescale);
     personObj.appear = [[LBAlphaTransitionObj alloc] initWithFromValue:@0
                                                                toValue:@1
                                                           durationTime:transitionTime];
@@ -375,8 +374,8 @@
     
     LBPersonObj *backgroundPersonObj = [self createProductsBackgroundPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     
-    CMTime pageProductStartTime = CMTimeMakeWithSeconds(0.3, durationTime.timescale);
-    CMTime pageProductDurationTime = CMTimeSubtract(CMTimeSubtract(durationTime, pageProductStartTime), transitionTime);
+    CMTime pageProductStartTime = CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], durationTime.timescale);
+    CMTime pageProductDurationTime = CMTimeSubtract(durationTime, CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime]*2, durationTime.timescale));
     CMTimeRange pageProductTimeRange = CMTimeRangeMake(pageProductStartTime, pageProductDurationTime);
     LBPersonObj *pageProductPersonObj = [self createPageProductPersonWithTimeRange:pageProductTimeRange];
     sceneObj.persons = @[backgroundPersonObj,pageProductPersonObj];

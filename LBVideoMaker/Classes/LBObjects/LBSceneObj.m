@@ -28,7 +28,6 @@
 
 - (instancetype)initWithDurationTime:(CMTime)durationTime {
     if (self = [super init]) {
-        self.backgroundColor = [UIColor whiteColor];
         self.timeRange = CMTimeRangeMake(kCMTimeZero, durationTime);
         self.sortType = LBSceneSortDefault;
     }
@@ -68,8 +67,8 @@
         
         CMTimeRange personTimeRange = obj.timeRange;
         CFTimeInterval greaterTime = CMTimeGetSeconds(CMTimeSubtract(obj.timeRange.start, self.timeRange.duration));
-        if (greaterTime > 0) {
-            personTimeRange.start = self.timeRange.duration;
+        if (greaterTime >= 0) {
+            personTimeRange.start = CMTimeSubtract(self.timeRange.duration, CMTimeMake(1, self.timeRange.duration.timescale));
         }
         
         CFTimeInterval overTime = CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(personTimeRange), self.timeRange.duration));

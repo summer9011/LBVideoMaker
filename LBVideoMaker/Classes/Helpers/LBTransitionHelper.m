@@ -122,6 +122,7 @@
                                                                                 beginTime:beginTime
                                                                                  duration:duration
                                                                        timingFunctionName:nil];
+    [layer addAnimation:transitionAnimation forKey:nil];
     
     beginTime = CMTimeGetSeconds(CMTimeAdd(transition.absoluteStartTime, transition.timeRange.duration));
     duration = CMTimeGetSeconds(CMTimeSubtract(keepDurationTime, transition.timeRange.duration));
@@ -130,10 +131,6 @@
                                                                           beginTime:beginTime
                                                                            duration:duration
                                                                  timingFunctionName:nil];
-    keepAnimation.removedOnCompletion = NO;
-    keepAnimation.fillMode = kCAFillModeForwards;
-    
-    [layer addAnimation:transitionAnimation forKey:nil];
     [layer addAnimation:keepAnimation forKey:nil];
 }
 

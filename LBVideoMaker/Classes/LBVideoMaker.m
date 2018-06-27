@@ -222,7 +222,9 @@
               toAnimationLayer:(CALayer *)animationLayer {
     CALayer *sceneLayer = [CALayer layer];
     sceneLayer.frame = animationLayer.bounds;
-    sceneLayer.backgroundColor = scene.backgroundColor.CGColor;
+    if (scene.backgroundColor) {
+        sceneLayer.backgroundColor = scene.backgroundColor.CGColor;
+    }
     sceneLayer.opacity = (scene.sortType == LBSceneSortFirst && !scene.appear)?1:0;
     [animationLayer addSublayer:sceneLayer];
     
@@ -242,12 +244,11 @@
         }
     }
     
-    CMTime deleteTime = CMTimeSubtract(CMTimeRangeGetEnd(scene.timeRange), CMTimeMake(1, scene.timeRange.duration.timescale));
-    CMTime keepDurationTime = CMTimeSubtract(scene.contentVideo.totalVideoTime, deleteTime);
+    CMTime keepDurationTime = CMTimeSubtract(scene.contentVideo.totalVideoTime, CMTimeRangeGetEnd(scene.timeRange));
     if (scene.disappear) {
         CMTime durationTime = scene.disappear.timeRange.duration;
         if (scene.sortType == LBSceneSortLast) {
-            durationTime = CMTimeSubtract(durationTime, CMTimeMake(1, scene.contentVideo.framePerSecond));
+            durationTime = CMTimeSubtract(durationTime, CMTimeMake(1, scene.timeRange.duration.timescale));
         }
         scene.disappear.timeRange = CMTimeRangeMake(scene.disappear.timeRange.start, durationTime);
         
@@ -280,7 +281,7 @@
 
 - (void)addPersonLayerWithPerson:(id<LBPersonProtocol>)person
                     toSceneLayer:(CALayer *)sceneLayer {
-    person.appearance.opacity = (!person.appear)?1:0;
+    person.appearance.opacity = (person.contentScene.sortType == LBSceneSortFirst && !person.appear)?1:0;
     [sceneLayer addSublayer:person.appearance];
     
     if (person.appear) {
@@ -288,17 +289,31 @@
                          keepDurationTime:person.timeRange.duration
                                 withLayer:person.appearance
                             toParentLayer:sceneLayer];
+    } else {
+        if (person.contentScene.sortType != LBSceneSortFirst) {
+            [LBTransitionHelper addDefaultTransitionInHost:person
+                                          keepDurationTime:person.timeRange.duration
+                                                 withLayer:person.appearance
+                                             toParentLayer:sceneLayer
+                                           withVideoFrames:person.contentScene.timeRange.duration.timescale
+                                                  isAppear:YES];
+        }
     }
     
-    CMTime deleteTime = CMTimeSubtract(CMTimeRangeGetEnd(person.timeRange), CMTimeMake(1, person.timeRange.duration.timescale));
-    CMTime keepDurationTime = CMTimeSubtract(person.contentScene.timeRange.duration, deleteTime);
+    CMTime keepDurationTime = CMTimeSubtract(person.contentScene.timeRange.duration, CMTimeRangeGetEnd(person.timeRange));
     if (person.disappear) {
+        CMTime durationTime = person.disappear.timeRange.duration;
+        if (person.contentScene.sortType == LBSceneSortLast) {
+            durationTime = CMTimeSubtract(durationTime, CMTimeMake(1, person.timeRange.duration.timescale));
+        }
+        person.disappear.timeRange = CMTimeRangeMake(person.disappear.timeRange.start, durationTime);
+        
         [LBTransitionHelper addTransition:person.disappear
                          keepDurationTime:keepDurationTime
                                 withLayer:person.appearance
                             toParentLayer:sceneLayer];
     } else {
-        if (CMTimeGetSeconds(keepDurationTime) > 0) {
+        if (person.contentScene.sortType != LBSceneSortLast) {
             [LBTransitionHelper addDefaultTransitionInHost:person
                                           keepDurationTime:keepDurationTime
                                                  withLayer:person.appearance
