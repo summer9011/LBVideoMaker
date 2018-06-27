@@ -12,7 +12,6 @@
 @implementation LBBehaviorObj
 
 @synthesize timeRange = _timeRange;
-@synthesize absoluteUsableTimeRange;
 @synthesize absoluteStartTime;
 
 @synthesize repeatCount;
@@ -34,10 +33,6 @@
 }
 
 #pragma mark - Getting
-
-- (CMTimeRange)absoluteUsableTimeRange {
-    return CMTimeRangeMake(self.absoluteStartTime, self.timeRange.duration);
-}
 
 - (CMTime)absoluteStartTime {
     CMTime startTime = self.timeRange.start;

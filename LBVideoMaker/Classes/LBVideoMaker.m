@@ -242,7 +242,8 @@
         }
     }
     
-    CMTime keepDurationTime = CMTimeSubtract(scene.contentVideo.totalVideoTime, CMTimeRangeGetEnd(scene.timeRange));
+    CMTime deleteTime = CMTimeSubtract(CMTimeRangeGetEnd(scene.timeRange), CMTimeMake(1, scene.timeRange.duration.timescale));
+    CMTime keepDurationTime = CMTimeSubtract(scene.contentVideo.totalVideoTime, deleteTime);
     if (scene.disappear) {
         CMTime durationTime = scene.disappear.timeRange.duration;
         if (scene.sortType == LBSceneSortLast) {
@@ -289,7 +290,8 @@
                             toParentLayer:sceneLayer];
     }
     
-    CMTime keepDurationTime = CMTimeSubtract(person.contentScene.timeRange.duration, CMTimeRangeGetEnd(person.timeRange));
+    CMTime deleteTime = CMTimeSubtract(CMTimeRangeGetEnd(person.timeRange), CMTimeMake(1, person.timeRange.duration.timescale));
+    CMTime keepDurationTime = CMTimeSubtract(person.contentScene.timeRange.duration, deleteTime);
     if (person.disappear) {
         [LBTransitionHelper addTransition:person.disappear
                          keepDurationTime:keepDurationTime

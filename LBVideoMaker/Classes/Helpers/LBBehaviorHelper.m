@@ -27,11 +27,11 @@
 + (void)addContentsGradientBehavior:(id<LBContentsGradientBehaviorProtocol>)behavior
                     withPersonLayer:(CALayer *)personLayer
                        toSceneLayer:(CALayer *)sceneLayer {
-    CFTimeInterval beginTime = CMTimeGetSeconds(behavior.absoluteUsableTimeRange.start);
+    CFTimeInterval beginTime = CMTimeGetSeconds(behavior.absoluteStartTime);
     if (beginTime == 0.f) {
         beginTime = AVCoreAnimationBeginTimeAtZero;
     }
-    CFTimeInterval duration = CMTimeGetSeconds(behavior.absoluteUsableTimeRange.duration);
+    CFTimeInterval duration = CMTimeGetSeconds(behavior.timeRange.duration);
     
     CAAnimation *animation = [LBAnimationHelper contentsAnimationWithImages:behavior.images
                                                                   beginTime:beginTime
@@ -44,11 +44,11 @@
 + (void)addMovesBehavior:(id<LBMovesBehaviorProtocol>)behavior
          withPersonLayer:(CALayer *)personLayer
             toSceneLayer:(CALayer *)sceneLayer {
-    CFTimeInterval beginTime = CMTimeGetSeconds(behavior.absoluteUsableTimeRange.start);
+    CFTimeInterval beginTime = CMTimeGetSeconds(behavior.absoluteStartTime);
     if (beginTime == 0.f) {
         beginTime = AVCoreAnimationBeginTimeAtZero;
     }
-    CFTimeInterval duration = CMTimeGetSeconds(behavior.absoluteUsableTimeRange.duration);
+    CFTimeInterval duration = CMTimeGetSeconds(behavior.timeRange.duration);
     
     CAAnimation *animation = [LBAnimationHelper positionAnimationWithPositions:behavior.positions
                                                                      beginTime:beginTime

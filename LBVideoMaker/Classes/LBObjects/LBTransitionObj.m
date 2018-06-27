@@ -11,7 +11,6 @@
 @implementation LBTransitionObj
 
 @synthesize timeRange;
-@synthesize absoluteUsableTimeRange;
 @synthesize absoluteStartTime;
 
 @synthesize fromValue;
@@ -31,10 +30,6 @@
 }
 
 #pragma mark - Getting
-
-- (CMTimeRange)absoluteUsableTimeRange {
-    return CMTimeRangeMake(self.absoluteStartTime, self.timeRange.duration);
-}
 
 - (CMTime)absoluteStartTime {
     CMTime startTime = self.timeRange.start;
