@@ -233,12 +233,12 @@
                             toParentLayer:animationLayer];
     } else {
         if (scene.sortType != LBSceneSortFirst) {
-            [LBTransitionHelper addDefaultTransitionInContenter:scene
-                                               keepDurationTime:scene.timeRange.duration
-                                                      withLayer:sceneLayer
-                                                  toParentLayer:animationLayer
-                                                withVideoFrames:scene.contentVideo.framePerSecond
-                                                       isAppear:YES];
+            [LBTransitionHelper addDefaultTransitionInHost:scene
+                                          keepDurationTime:scene.timeRange.duration
+                                                 withLayer:sceneLayer
+                                             toParentLayer:animationLayer
+                                           withVideoFrames:scene.contentVideo.framePerSecond
+                                                  isAppear:YES];
         }
     }
     
@@ -256,12 +256,12 @@
                             toParentLayer:animationLayer];
     } else {
         if (scene.sortType != LBSceneSortLast) {
-            [LBTransitionHelper addDefaultTransitionInContenter:scene
-                                               keepDurationTime:keepDurationTime
-                                                      withLayer:sceneLayer
-                                                  toParentLayer:animationLayer
-                                                withVideoFrames:scene.contentVideo.framePerSecond
-                                                       isAppear:NO];
+            [LBTransitionHelper addDefaultTransitionInHost:scene
+                                          keepDurationTime:keepDurationTime
+                                                 withLayer:sceneLayer
+                                             toParentLayer:animationLayer
+                                           withVideoFrames:scene.contentVideo.framePerSecond
+                                                  isAppear:NO];
         }
     }
     
@@ -297,12 +297,12 @@
                             toParentLayer:sceneLayer];
     } else {
         if (CMTimeGetSeconds(keepDurationTime) > 0) {
-            [LBTransitionHelper addDefaultTransitionInContenter:person
-                                               keepDurationTime:keepDurationTime
-                                                      withLayer:person.appearance
-                                                  toParentLayer:sceneLayer
-                                                withVideoFrames:person.contentScene.timeRange.duration.timescale
-                                                       isAppear:NO];
+            [LBTransitionHelper addDefaultTransitionInHost:person
+                                          keepDurationTime:keepDurationTime
+                                                 withLayer:person.appearance
+                                             toParentLayer:sceneLayer
+                                           withVideoFrames:person.contentScene.timeRange.duration.timescale
+                                                  isAppear:NO];
         }
     }
     

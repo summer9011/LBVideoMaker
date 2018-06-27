@@ -10,21 +10,24 @@
 
 @protocol LBTransitionProtocol <NSObject, LBTimeProtocol>
 
-@property (nonatomic, weak) id<LBTimeProtocol> contenter;
+@property (nonatomic, strong) id fromValue;
+@property (nonatomic, strong) id toValue;
+
+@property (nonatomic, weak) id<LBTimeProtocol> host;
 
 @end
 
 @protocol LBVolumeTransitionProtocol <LBTransitionProtocol>
 
-@property (nonatomic, assign) CGFloat fromVolume;
-@property (nonatomic, assign) CGFloat toVolume;
+@property (nonatomic, assign, readonly) CGFloat fromVolume;
+@property (nonatomic, assign, readonly) CGFloat toVolume;
 
 @end
 
 @protocol LBAlphaTransitionProtocol <LBTransitionProtocol>
 
-@property (nonatomic, assign) CGFloat fromAlpha;
-@property (nonatomic, assign) CGFloat toAlpha;
+@property (nonatomic, assign, readonly) CGFloat fromAlpha;
+@property (nonatomic, assign, readonly) CGFloat toAlpha;
 
 @end
 
@@ -36,14 +39,14 @@
 
 @protocol LBColorMaskTransitionProtocol <LBMaskTransitionProtocol>
 
-@property (nonatomic, strong) UIColor *fromColor;
-@property (nonatomic, strong) UIColor *toColor;
+@property (nonatomic, strong, readonly) UIColor *fromColor;
+@property (nonatomic, strong, readonly) UIColor *toColor;
 
 @end
 
 @protocol LBContentsMaskTransitionProtocol <LBMaskTransitionProtocol>
 
-@property (nonatomic, strong) UIImage *fromImage;
-@property (nonatomic, strong) UIImage *toImage;
+@property (nonatomic, strong, readonly) UIImage *fromImage;
+@property (nonatomic, strong, readonly) UIImage *toImage;
 
 @end

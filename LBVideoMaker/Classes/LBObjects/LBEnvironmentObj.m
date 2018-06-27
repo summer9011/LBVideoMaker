@@ -57,13 +57,13 @@
 
 - (void)setAppear:(id<LBTransitionProtocol>)appear {
     _appear = appear;
-    appear.contenter = self;
+    appear.host = self;
     appear.timeRange = CMTimeRangeMake(kCMTimeZero, appear.timeRange.duration);
 }
 
 - (void)setDisappear:(id<LBTransitionProtocol>)disappear {
     _disappear = disappear;
-    disappear.contenter = self;
+    disappear.host = self;
     CMTime startTime = CMTimeSubtract(self.timeRange.duration, disappear.timeRange.duration);
     disappear.timeRange = CMTimeRangeMake(startTime, disappear.timeRange.duration);
 }

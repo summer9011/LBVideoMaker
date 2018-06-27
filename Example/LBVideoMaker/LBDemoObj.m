@@ -85,10 +85,9 @@
 + (LBSceneObj *)createHeaderSceneWithDurationTime:(CMTime)durationTime {
     LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime
                                                            sortType:LBSceneSortFirst];
-    sceneObj.disappear = [[LBColorMaskTransitionObj alloc] initWithFromColor:nil
-                                                                     toColor:[UIColor whiteColor]
-                                                                durationTime:CMTimeMakeWithSeconds(0.2, durationTime.timescale)
-                                                                    isAppear:NO];
+    sceneObj.disappear = [[LBColorMaskTransitionObj alloc] initWithFromValue:nil
+                                                                     toValue:[UIColor whiteColor]
+                                                                durationTime:CMTimeMakeWithSeconds(0.2, durationTime.timescale) isAppear:NO];
     
     LBPersonObj *logoPersonObj = [self createLogoPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     sceneObj.persons = @[logoPersonObj];
@@ -99,8 +98,8 @@
 + (LBSceneObj *)createFooterSceneWithDurationTime:(CMTime)durationTime {
     LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime
                                                            sortType:LBSceneSortLast];
-    sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromColor:[UIColor whiteColor]
-                                                                  toColor:nil
+    sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromValue:[UIColor whiteColor]
+                                                                  toValue:nil
                                                              durationTime:CMTimeMakeWithSeconds(0.2, durationTime.timescale)
                                                                  isAppear:YES];
     
@@ -126,12 +125,12 @@
 + (LBSceneObj *)createStepSceneWithDurationTime:(CMTime)durationTime {
     LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime];
     CMTime transitionTime = CMTimeMakeWithSeconds(0.2, durationTime.timescale);
-    sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromColor:[UIColor whiteColor]
-                                                                  toColor:nil
+    sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromValue:[UIColor whiteColor]
+                                                                  toValue:nil
                                                              durationTime:transitionTime
                                                                  isAppear:YES];
-    sceneObj.disappear = [[LBColorMaskTransitionObj alloc] initWithFromColor:nil
-                                                                     toColor:[UIColor whiteColor]
+    sceneObj.disappear = [[LBColorMaskTransitionObj alloc] initWithFromValue:nil
+                                                                     toValue:[UIColor whiteColor]
                                                                 durationTime:transitionTime
                                                                     isAppear:NO];
     
@@ -177,13 +176,13 @@
 + (LBSceneObj *)createCompareSceneWithDurationTime:(CMTime)durationTime {
     LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime];
     CMTime appearTransitionTime = CMTimeMakeWithSeconds(0.2, durationTime.timescale);
-    sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromColor:[UIColor whiteColor]
-                                                                  toColor:nil
+    sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromValue:[UIColor whiteColor]
+                                                                  toValue:nil
                                                              durationTime:appearTransitionTime
                                                                  isAppear:YES];
     CMTime disAppearTransitionTime = CMTimeMakeWithSeconds(0.8, durationTime.timescale);
-    sceneObj.disappear = [[LBContentsMaskTransitionObj alloc] initWithFromImage:[LBDemoObj compareImage]
-                                                                        toImage:[LBDemoObj blurCompareImage]
+    sceneObj.disappear = [[LBContentsMaskTransitionObj alloc] initWithFromValue:[LBDemoObj compareImage]
+                                                                        toValue:[LBDemoObj blurCompareImage]
                                                                    durationTime:disAppearTransitionTime
                                                                        isAppear:NO];
     
@@ -209,8 +208,8 @@
                                                            timeRange:timeRange];
     
     CMTime transitionTime = CMTimeMakeWithSeconds(0.2, timeRange.duration.timescale);
-    personObj.disappear = [[LBAlphaTransitionObj alloc] initWithFromAlpha:1
-                                                                  toAlpha:0
+    personObj.disappear = [[LBAlphaTransitionObj alloc] initWithFromValue:@1
+                                                                  toValue:@0
                                                              durationTime:transitionTime];
     
     return personObj;
@@ -220,8 +219,8 @@
 + (LBSceneObj *)createProductsSceneWithDurationTime:(CMTime)durationTime {
     LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime];
     CMTime transitionTime = CMTimeMakeWithSeconds(0.2, durationTime.timescale);
-    sceneObj.disappear = [[LBColorMaskTransitionObj alloc] initWithFromColor:nil
-                                                                     toColor:[UIColor whiteColor]
+    sceneObj.disappear = [[LBColorMaskTransitionObj alloc] initWithFromValue:nil
+                                                                     toValue:[UIColor whiteColor]
                                                                 durationTime:transitionTime
                                                                     isAppear:NO];
     
@@ -267,11 +266,11 @@
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:productLayer
                                                            timeRange:timeRange];
     CMTime transitionTime = CMTimeMakeWithSeconds(0.2, timeRange.duration.timescale);
-    personObj.appear = [[LBAlphaTransitionObj alloc] initWithFromAlpha:0
-                                                               toAlpha:1
+    personObj.appear = [[LBAlphaTransitionObj alloc] initWithFromValue:@0
+                                                               toValue:@1
                                                           durationTime:transitionTime];
-    personObj.disappear = [[LBAlphaTransitionObj alloc] initWithFromAlpha:1
-                                                                  toAlpha:0
+    personObj.disappear = [[LBAlphaTransitionObj alloc] initWithFromValue:@1
+                                                                  toValue:@0
                                                              durationTime:transitionTime];
     return personObj;
 }
@@ -301,11 +300,11 @@
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:watermarkLayer
                                                            timeRange:timeRange];
     CMTime transitionTime = CMTimeMakeWithSeconds(0.2, timeRange.duration.timescale);
-    personObj.appear = [[LBAlphaTransitionObj alloc] initWithFromAlpha:0
-                                                               toAlpha:1
+    personObj.appear = [[LBAlphaTransitionObj alloc] initWithFromValue:@0
+                                                               toValue:@1
                                                           durationTime:transitionTime];
-    personObj.disappear = [[LBAlphaTransitionObj alloc] initWithFromAlpha:1
-                                                                  toAlpha:0
+    personObj.disappear = [[LBAlphaTransitionObj alloc] initWithFromValue:@1
+                                                                  toValue:@0
                                                              durationTime:transitionTime];
     return personObj;
 }
@@ -333,14 +332,14 @@
     audioEnvironmentObj.timeRange = CMTimeRangeMake(kCMTimeZero, totalVideoTime);
     
     CMTime appearDurationTime = CMTimeMakeWithSeconds(2.3, totalVideoTime.timescale);
-    audioEnvironmentObj.appear = [[LBVolumeTransitionObj alloc] initWithFromVolume:0
-                                                                          toVolume:1
-                                                                      durationTime:appearDurationTime];
+    audioEnvironmentObj.appear = [[LBVolumeTransitionObj alloc] initWithFromValue:@0
+                                                                          toValue:@1
+                                                                     durationTime:appearDurationTime];
     
     CMTime disappearDurationTime = CMTimeMakeWithSeconds(1.3, totalVideoTime.timescale);
-    audioEnvironmentObj.disappear = [[LBVolumeTransitionObj alloc] initWithFromVolume:1
-                                                                             toVolume:0
-                                                                         durationTime:disappearDurationTime];
+    audioEnvironmentObj.disappear = [[LBVolumeTransitionObj alloc] initWithFromValue:@1
+                                                                             toValue:@0
+                                                                        durationTime:disappearDurationTime];
     
     return audioEnvironmentObj;
 }

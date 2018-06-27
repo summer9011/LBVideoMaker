@@ -8,7 +8,7 @@
 #import "LBTransitionHelper.h"
 #import "LBAnimationHelper.h"
 #import "LBImageHelper.h"
-#import "LBDefaultTransitionObj.h"
+#import "LBTransitionObj.h"
 
 @implementation LBTransitionHelper
 
@@ -99,7 +99,7 @@
         
         LBDefaultTransitionObj *alphaTransitionObj = [[LBDefaultTransitionObj alloc] initWithFromAlpha:transition.isAppear?0:1
                                                                                                toAlpha:transition.isAppear?1:0
-                                                                                             contenter:transition.contenter
+                                                                                                  host:transition.host
                                                                                              timeRange:transition.timeRange];
         [self addAlphaTransition:alphaTransitionObj
                 keepDurationTime:keepDurationTime
@@ -150,24 +150,24 @@
     [layer addAnimation:animation forKey:nil];
 }
 
-+ (void)addDefaultTransitionInContenter:(id<LBTimeProtocol>)contenter
-                       keepDurationTime:(CMTime)keepDurationTime
-                              withLayer:(CALayer *)layer
-                          toParentLayer:(CALayer *)parentLayer
-                        withVideoFrames:(int32_t)videoFrames
-                               isAppear:(BOOL)isAppear {
++ (void)addDefaultTransitionInHost:(id<LBTimeProtocol>)host
+                  keepDurationTime:(CMTime)keepDurationTime
+                         withLayer:(CALayer *)layer
+                     toParentLayer:(CALayer *)parentLayer
+                   withVideoFrames:(int32_t)videoFrames
+                          isAppear:(BOOL)isAppear {
     CMTime durationTime = CMTimeMake(0.2, videoFrames);
     LBDefaultTransitionObj *defaultTransition = [LBDefaultTransitionObj new];
     if (isAppear) {
         defaultTransition = [[LBDefaultTransitionObj alloc] initWithFromAlpha:0
                                                                       toAlpha:1
-                                                                    contenter:contenter
+                                                                         host:host
                                                                     timeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     } else {
         defaultTransition = [[LBDefaultTransitionObj alloc] initWithFromAlpha:1
                                                                       toAlpha:0
-                                                                    contenter:contenter
-                                                                    timeRange:CMTimeRangeMake(CMTimeSubtract(contenter.timeRange.duration, durationTime), durationTime)];
+                                                                         host:host
+                                                                    timeRange:CMTimeRangeMake(CMTimeSubtract(host.timeRange.duration, durationTime), durationTime)];
     }
     [self addTransition:defaultTransition
        keepDurationTime:keepDurationTime

@@ -20,11 +20,11 @@
             withLayer:(CALayer *)layer
         toParentLayer:(CALayer *)parentLayer;
 
-+ (void)addDefaultTransitionInContenter:(id<LBTimeProtocol>)contenter
-                       keepDurationTime:(CMTime)keepDurationTime
-                              withLayer:(CALayer *)layer
-                          toParentLayer:(CALayer *)parentLayer
-                        withVideoFrames:(int32_t)videoFrames
-                               isAppear:(BOOL)isAppear;
++ (void)addDefaultTransitionInHost:(id<LBTimeProtocol>)host
+                  keepDurationTime:(CMTime)keepDurationTime
+                         withLayer:(CALayer *)layer
+                     toParentLayer:(CALayer *)parentLayer
+                   withVideoFrames:(int32_t)videoFrames
+                          isAppear:(BOOL)isAppear;
 
 @end

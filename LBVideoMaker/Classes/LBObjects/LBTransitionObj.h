@@ -11,42 +11,39 @@
 
 @interface LBTransitionObj : LBBaseObj <LBTransitionProtocol>
 
-@end
-
-@interface LBVolumeTransitionObj : LBTransitionObj <LBVolumeTransitionProtocol>
-
-- (instancetype)initWithFromVolume:(CGFloat)fromVolume
-                          toVolume:(CGFloat)toVolume
-                      durationTime:(CMTime)durationTime;
-
-@end
-
-@interface LBAlphaTransitionObj : LBTransitionObj <LBAlphaTransitionProtocol>
-
-- (instancetype)initWithFromAlpha:(CGFloat)fromAlpha
-                          toAlpha:(CGFloat)toAlpha
+- (instancetype)initWithFromValue:(id)fromValue
+                          toValue:(id)toValue
                      durationTime:(CMTime)durationTime;
 
 @end
 
-@interface LBMaskTransitionObj : LBTransitionObj <LBMaskTransitionProtocol>
-
+@interface LBVolumeTransitionObj : LBTransitionObj <LBVolumeTransitionProtocol>
 @end
 
-@interface LBColorMaskTransitionObj : LBMaskTransitionObj <LBColorMaskTransitionProtocol>
+@interface LBAlphaTransitionObj : LBTransitionObj <LBAlphaTransitionProtocol>
+@end
 
-- (instancetype)initWithFromColor:(UIColor *)fromColor
-                          toColor:(UIColor *)toColor
+@interface LBMaskTransitionObj : LBTransitionObj <LBMaskTransitionProtocol>
+
+- (instancetype)initWithFromValue:(id)fromValue
+                          toValue:(id)toValue
                      durationTime:(CMTime)durationTime
                          isAppear:(BOOL)isAppear;
 
 @end
 
-@interface LBContentsMaskTransitionObj : LBMaskTransitionObj <LBContentsMaskTransitionProtocol>
+@interface LBColorMaskTransitionObj : LBMaskTransitionObj <LBColorMaskTransitionProtocol>
+@end
 
-- (instancetype)initWithFromImage:(UIImage *)fromImage
-                          toImage:(UIImage *)toImage
-                     durationTime:(CMTime)durationTime
-                           isAppear:(BOOL)isAppear;
+@interface LBContentsMaskTransitionObj : LBMaskTransitionObj <LBContentsMaskTransitionProtocol>
+@end
+
+
+@interface LBDefaultTransitionObj : LBAlphaTransitionObj
+
+- (instancetype)initWithFromAlpha:(CGFloat)fromAlpha
+                          toAlpha:(CGFloat)toAlpha
+                             host:(id<LBTimeProtocol>)host
+                        timeRange:(CMTimeRange)timeRange;
 
 @end

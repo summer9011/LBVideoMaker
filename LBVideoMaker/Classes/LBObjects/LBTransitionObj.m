@@ -14,7 +14,21 @@
 @synthesize absoluteUsableTimeRange;
 @synthesize absoluteStartTime;
 
-@synthesize contenter;
+@synthesize fromValue;
+@synthesize toValue;
+
+@synthesize host;
+
+- (instancetype)initWithFromValue:(id)fromValue
+                          toValue:(id)toValue
+                     durationTime:(CMTime)durationTime {
+    if (self = [super init]) {
+        self.fromValue = fromValue;
+        self.toValue = toValue;
+        self.timeRange = CMTimeRangeMake(kCMTimeZero, durationTime);
+    }
+    return self;
+}
 
 #pragma mark - Getting
 
@@ -24,8 +38,8 @@
 
 - (CMTime)absoluteStartTime {
     CMTime startTime = self.timeRange.start;
-    if (self.contenter) {
-        startTime = CMTimeAdd(self.contenter.absoluteStartTime, startTime);
+    if (self.host) {
+        startTime = CMTimeAdd(self.host.absoluteStartTime, startTime);
     }
     return startTime;
 }
@@ -34,16 +48,17 @@
 
 @implementation LBVolumeTransitionObj
 
-@synthesize fromVolume;
-@synthesize toVolume;
+@synthesize fromVolume = _fromVolume;
+@synthesize toVolume = _toVolume;
 
-- (instancetype)initWithFromVolume:(CGFloat)fromVolume
-                          toVolume:(CGFloat)toVolume
-                      durationTime:(CMTime)durationTime {
-    if (self = [super init]) {
-        self.fromVolume = fromVolume;
-        self.toVolume = toVolume;
-        self.timeRange = CMTimeRangeMake(kCMTimeZero, durationTime);
+- (instancetype)initWithFromValue:(id)fromValue
+                          toValue:(id)toValue
+                     durationTime:(CMTime)durationTime {
+    if (self  = [super initWithFromValue:fromValue
+                                 toValue:toValue
+                            durationTime:durationTime]) {
+        _fromVolume = [(NSNumber *)fromValue floatValue];
+        _toVolume = [(NSNumber *)toValue floatValue];
     }
     return self;
 }
@@ -52,16 +67,17 @@
 
 @implementation LBAlphaTransitionObj
 
-@synthesize fromAlpha;
-@synthesize toAlpha;
+@synthesize fromAlpha = _fromAlpha;
+@synthesize toAlpha = _toAlpha;
 
-- (instancetype)initWithFromAlpha:(CGFloat)fromAlpha
-                          toAlpha:(CGFloat)toAlpha
+- (instancetype)initWithFromValue:(id)fromValue
+                          toValue:(id)toValue
                      durationTime:(CMTime)durationTime {
-    if (self = [super init]) {
-        self.fromAlpha = fromAlpha;
-        self.toAlpha = toAlpha;
-        self.timeRange = CMTimeRangeMake(kCMTimeZero, durationTime);
+    if (self  = [super initWithFromValue:fromValue
+                                 toValue:toValue
+                            durationTime:durationTime]) {
+        _fromAlpha = [(NSNumber *)fromValue floatValue];
+        _toAlpha = [(NSNumber *)toValue floatValue];
     }
     return self;
 }
@@ -70,24 +86,37 @@
 
 @implementation LBMaskTransitionObj
 
-@synthesize isAppear;
+@synthesize isAppear = _isAppear;
+
+- (instancetype)initWithFromValue:(id)fromValue
+                          toValue:(id)toValue
+                     durationTime:(CMTime)durationTime
+                         isAppear:(BOOL)isAppear {
+    if (self  = [super initWithFromValue:fromValue
+                                 toValue:toValue
+                            durationTime:durationTime]) {
+        _isAppear = isAppear;
+    }
+    return self;
+}
 
 @end
 
 @implementation LBColorMaskTransitionObj
 
-@synthesize fromColor;
-@synthesize toColor;
+@synthesize fromColor = _fromColor;
+@synthesize toColor = _toColor;
 
-- (instancetype)initWithFromColor:(UIColor *)fromColor
-                          toColor:(UIColor *)toColor
+- (instancetype)initWithFromValue:(id)fromValue
+                          toValue:(id)toValue
                      durationTime:(CMTime)durationTime
                          isAppear:(BOOL)isAppear {
-    if (self = [super init]) {
-        self.fromColor = fromColor;
-        self.toColor = toColor;
-        self.timeRange = CMTimeRangeMake(kCMTimeZero, durationTime);
-        self.isAppear = isAppear;
+    if (self  = [super initWithFromValue:fromValue
+                                 toValue:toValue
+                            durationTime:durationTime
+                                isAppear:isAppear]) {
+        _fromColor = fromValue;
+        _toColor = toValue;
     }
     return self;
 }
@@ -96,18 +125,39 @@
 
 @implementation LBContentsMaskTransitionObj
 
-@synthesize fromImage;
-@synthesize toImage;
+@synthesize fromImage = _fromImage;
+@synthesize toImage = _toImage;
 
-- (instancetype)initWithFromImage:(UIImage *)fromImage
-                          toImage:(UIImage *)toImage
+- (instancetype)initWithFromValue:(id)fromValue
+                          toValue:(id)toValue
                      durationTime:(CMTime)durationTime
                          isAppear:(BOOL)isAppear {
-    if (self = [super init]) {
-        self.fromImage = fromImage;
-        self.toImage = toImage;
-        self.timeRange = CMTimeRangeMake(kCMTimeZero, durationTime);
-        self.isAppear = isAppear;
+    if (self  = [super initWithFromValue:fromValue
+                                 toValue:toValue
+                            durationTime:durationTime
+                                isAppear:isAppear]) {
+        _fromImage = fromValue;
+        _toImage = toValue;
+    }
+    return self;
+}
+
+@end
+
+
+
+
+@implementation LBDefaultTransitionObj
+
+- (instancetype)initWithFromAlpha:(CGFloat)fromAlpha
+                          toAlpha:(CGFloat)toAlpha
+                             host:(id<LBTimeProtocol>)host
+                        timeRange:(CMTimeRange)timeRange {
+    if (self = [super initWithFromValue:@(fromAlpha)
+                                toValue:@(toAlpha)
+                           durationTime:timeRange.duration]) {
+        self.host = host;
+        self.timeRange = timeRange;
     }
     return self;
 }
