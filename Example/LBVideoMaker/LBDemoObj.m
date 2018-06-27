@@ -136,7 +136,7 @@
     LBPersonObj *stepPersonObj = [self createStepPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     
     CMTime offsetTime = CMTimeMakeWithSeconds(0.2, durationTime.timescale);
-    CMTime toolDurationTime = CMTimeMakeWithSeconds(1, durationTime.timescale);
+    CMTime toolDurationTime = CMTimeMakeWithSeconds(2, durationTime.timescale);
     
     CMTime toolBeginTime = CMTimeAdd(transitionTime, offsetTime);
     CMTimeRange timeRange = CMTimeRangeMake(toolBeginTime, toolDurationTime);
@@ -153,8 +153,8 @@
     sceneObj.persons = @[backgroundPersonObj,
                          stepPersonObj,
                          eyeToolPersonObj,
-                         faceToolPersonObj,
-                         lipToolPersonObj
+//                         faceToolPersonObj,
+//                         lipToolPersonObj
                          ];
     
     return sceneObj;
@@ -172,15 +172,15 @@
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:stepLayer
                                                            timeRange:timeRange];
     
-    NSArray<NSURL *> *imageURLs = @[
-                                    [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"1" ofType:@"JPG"]],
-                                    [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"2" ofType:@"JPG"]],
-                                    [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"3" ofType:@"JPG"]],
-                                    [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"4" ofType:@"JPG"]]
-                                    ];
+    NSArray<NSString *> *imagePaths = @[
+                                        [[NSBundle mainBundle] pathForResource:@"1" ofType:@"JPG"],
+                                        [[NSBundle mainBundle] pathForResource:@"2" ofType:@"JPG"],
+                                        [[NSBundle mainBundle] pathForResource:@"3" ofType:@"JPG"],
+                                        [[NSBundle mainBundle] pathForResource:@"4" ofType:@"JPG"]
+                                        ];
     NSMutableArray<UIImage *> *images = [NSMutableArray array];
-    [imageURLs enumerateObjectsUsingBlock:^(NSURL * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [images addObject:[UIImage imageWithContentsOfFile:obj.absoluteString]];
+    [imagePaths enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [images addObject:[UIImage imageWithContentsOfFile:obj]];
     }];
     
     LBContentsGradientBehaviorObj *behaviorObj = [[LBContentsGradientBehaviorObj alloc] initWithImages:images
@@ -191,20 +191,22 @@
 }
 
 + (LBPersonObj *)createStepToolPersonWithImageName:(NSString *)imageName timeRange:(CMTimeRange)timeRange {
-    CGPoint fromPoint = CGPointMake(200, 200);
-    CGPoint toPoint = CGPointMake(250, 250);
+    CGPoint point1 = CGPointMake(200, 200);
+    CGPoint point2 = CGPointMake(220, 200);
+    CGPoint point3 = CGPointMake(220, 220);
+    CGPoint point4 = CGPointMake(200, 220);
     
     NSString *imagePath = [[NSBundle mainBundle] pathForResource:imageName ofType:@"png"];
     CALayer *toolLayer = [LBLayerHelper imageLayerWithImagePath:imagePath
                                                       videoSize:[LBDemoObj videoSize]];
     CGPoint position = toolLayer.position;
-    position = fromPoint;
+    position = point1;
     toolLayer.position = position;
     
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:toolLayer
                                                            timeRange:timeRange];
     
-    CMTime transitionTime = CMTimeMake(0.1, timeRange.duration.timescale);
+    CMTime transitionTime = CMTimeMakeWithSeconds(0.2, timeRange.duration.timescale);
     personObj.appear = [[LBAlphaTransitionObj alloc] initWithFromValue:@0
                                                                toValue:@1
                                                           durationTime:transitionTime];
@@ -213,10 +215,10 @@
                                                              durationTime:transitionTime];
     
     NSArray *positions = @[
-                           [NSValue valueWithCGPoint:fromPoint],
-                           [NSValue valueWithCGPoint:toPoint],
-                           [NSValue valueWithCGPoint:fromPoint],
-                           [NSValue valueWithCGPoint:toPoint]
+                           [NSValue valueWithCGPoint:point1],
+                           [NSValue valueWithCGPoint:point2],
+                           [NSValue valueWithCGPoint:point3],
+                           [NSValue valueWithCGPoint:point4]
                            ];
     LBMovesBehaviorObj *behavior = [[LBMovesBehaviorObj alloc] initWithPositions:positions timeRange:timeRange];
     behavior.timingFunctionNames = @[
