@@ -16,12 +16,15 @@
 @synthesize absoluteStartTime;
 
 @synthesize repeatCount;
+@synthesize timingFunctionNames;
+
 @synthesize nextBehavior = _nextBehavior;
 @synthesize contentPerson;
 
 - (instancetype)init {
     if (self = [super init]) {
         self.repeatCount = 1;
+        self.timingFunctionNames = nil;
     }
     return self;
 }
@@ -77,5 +80,23 @@
 
 @implementation LBMovesBehaviorObj
 
+@synthesize positions;
+@synthesize path;
+
+- (instancetype)initWithPositions:(NSArray<NSValue *> *)positions timeRange:(CMTimeRange)timeRange {
+    if (self = [super init]) {
+        self.positions = positions;
+        self.timeRange = timeRange;
+    }
+    return self;
+}
+
+- (instancetype)initWithPath:(UIBezierPath *)path timeRange:(CMTimeRange)timeRange {
+    if (self = [super init]) {
+        self.path = path;
+        self.timeRange = timeRange;
+    }
+    return self;
+}
 
 @end

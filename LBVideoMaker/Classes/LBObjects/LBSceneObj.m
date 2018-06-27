@@ -37,9 +37,7 @@
 }
 
 - (instancetype)initWithDurationTime:(CMTime)durationTime sortType:(LBSceneSortType)sortType {
-    if (self = [super init]) {
-        self.backgroundColor = [UIColor whiteColor];
-        self.timeRange = CMTimeRangeMake(kCMTimeZero, durationTime);
+    if (self = [self initWithDurationTime:durationTime]) {
         self.sortType = sortType;
     }
     return self;

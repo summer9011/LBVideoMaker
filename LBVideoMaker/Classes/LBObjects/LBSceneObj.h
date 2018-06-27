@@ -6,10 +6,10 @@
 //  Copyright © 2018年 胡萝卜_小波波. All rights reserved.
 //
 
-#import "LBBaseObj.h"
+#import <Foundation/Foundation.h>
 #import "LBSceneProtocol.h"
 
-@interface LBSceneObj : LBBaseObj <LBSceneProtocol>
+@interface LBSceneObj : NSObject <LBSceneProtocol>
 
 - (instancetype)initWithDurationTime:(CMTime)durationTime;
 - (instancetype)initWithDurationTime:(CMTime)durationTime sortType:(LBSceneSortType)sortType;

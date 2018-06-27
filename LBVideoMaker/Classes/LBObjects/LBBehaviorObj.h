@@ -6,10 +6,10 @@
 //  Copyright © 2018年 胡萝卜_小波波. All rights reserved.
 //
 
-#import "LBBaseObj.h"
+#import <Foundation/Foundation.h>
 #import "LBBehaviorProtocol.h"
 
-@interface LBBehaviorObj : LBBaseObj <LBBehaviorProtocol>
+@interface LBBehaviorObj : NSObject <LBBehaviorProtocol>
 
 @end
 
@@ -20,5 +20,8 @@
 @end
 
 @interface LBMovesBehaviorObj : LBBehaviorObj <LBMovesBehaviorProtocol>
+
+- (instancetype)initWithPositions:(NSArray<NSValue *> *)positions timeRange:(CMTimeRange)timeRange;
+- (instancetype)initWithPath:(UIBezierPath *)path timeRange:(CMTimeRange)timeRange;
 
 @end

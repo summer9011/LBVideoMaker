@@ -32,7 +32,7 @@
 }
 
 + (NSString *)detail {
-    return @"asfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdkasfdsdk";
+    return @"Hello world 12345!";
 }
 
 + (CGSize)videoSize {
@@ -40,11 +40,9 @@
 }
 
 + (UIImage *)compareImage {
-    NSURL *beforeImageURL = [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"1" ofType:@"JPG"]];
-    NSURL *afterImageURL = [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"4" ofType:@"JPG"]];
-    return [LBLayerHelper compareLayerImageWithBeforeImageURL:beforeImageURL
-                                                afterImageURL:afterImageURL
-                                                    videoSize:[LBDemoObj videoSize]];
+    return [LBLayerHelper compareLayerImageWithBeforeImagePath:[[NSBundle mainBundle] pathForResource:@"1" ofType:@"JPG"]
+                                                afterImagePath:[[NSBundle mainBundle] pathForResource:@"4" ofType:@"JPG"]
+                                                     videoSize:[LBDemoObj videoSize]];
 }
 
 + (UIImage *)blurCompareImage {
@@ -136,15 +134,35 @@
     
     LBPersonObj *backgroundPersonObj = [self createStepBackgroundPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     LBPersonObj *stepPersonObj = [self createStepPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
-    sceneObj.persons = @[backgroundPersonObj,stepPersonObj];
+    
+    CMTime offsetTime = CMTimeMakeWithSeconds(0.2, durationTime.timescale);
+    CMTime toolDurationTime = CMTimeMakeWithSeconds(1, durationTime.timescale);
+    
+    CMTime toolBeginTime = CMTimeAdd(transitionTime, offsetTime);
+    CMTimeRange timeRange = CMTimeRangeMake(toolBeginTime, toolDurationTime);
+    LBPersonObj *eyeToolPersonObj = [self createStepToolPersonWithImageName:@"eye" timeRange:timeRange];
+    
+    toolBeginTime = CMTimeAdd(CMTimeRangeGetEnd(timeRange), offsetTime);
+    timeRange = CMTimeRangeMake(toolBeginTime, toolDurationTime);
+    LBPersonObj *faceToolPersonObj = [self createStepToolPersonWithImageName:@"face" timeRange:timeRange];
+    
+    toolBeginTime = CMTimeAdd(CMTimeRangeGetEnd(timeRange), offsetTime);
+    timeRange = CMTimeRangeMake(toolBeginTime, toolDurationTime);
+    LBPersonObj *lipToolPersonObj = [self createStepToolPersonWithImageName:@"lip" timeRange:timeRange];
+    
+    sceneObj.persons = @[backgroundPersonObj,
+                         stepPersonObj,
+                         eyeToolPersonObj,
+                         faceToolPersonObj,
+                         lipToolPersonObj
+                         ];
     
     return sceneObj;
 }
 
 + (LBPersonObj *)createStepBackgroundPersonWithTimeRange:(CMTimeRange)timeRange {
-    NSURL *imageURL = [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"1" ofType:@"JPG"]];
-    CALayer *stepLayer = [LBLayerHelper stepLayerWithImageURL:imageURL
-                                                    videoSize:[LBDemoObj videoSize]];
+    CALayer *stepLayer = [LBLayerHelper stepLayerWithImagePath:[[NSBundle mainBundle] pathForResource:@"1" ofType:@"JPG"]
+                                                     videoSize:[LBDemoObj videoSize]];
     return [[LBPersonObj alloc] initWithAppearance:stepLayer
                                          timeRange:timeRange];
 }
@@ -168,6 +186,45 @@
     LBContentsGradientBehaviorObj *behaviorObj = [[LBContentsGradientBehaviorObj alloc] initWithImages:images
                                                                                              timeRange:timeRange];
     personObj.behaviors = @[behaviorObj];
+    
+    return personObj;
+}
+
++ (LBPersonObj *)createStepToolPersonWithImageName:(NSString *)imageName timeRange:(CMTimeRange)timeRange {
+    CGPoint fromPoint = CGPointMake(200, 200);
+    CGPoint toPoint = CGPointMake(250, 250);
+    
+    NSString *imagePath = [[NSBundle mainBundle] pathForResource:imageName ofType:@"png"];
+    CALayer *toolLayer = [LBLayerHelper imageLayerWithImagePath:imagePath
+                                                      videoSize:[LBDemoObj videoSize]];
+    CGPoint position = toolLayer.position;
+    position = fromPoint;
+    toolLayer.position = position;
+    
+    LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:toolLayer
+                                                           timeRange:timeRange];
+    
+    CMTime transitionTime = CMTimeMake(0.1, timeRange.duration.timescale);
+    personObj.appear = [[LBAlphaTransitionObj alloc] initWithFromValue:@0
+                                                               toValue:@1
+                                                          durationTime:transitionTime];
+    personObj.disappear = [[LBAlphaTransitionObj alloc] initWithFromValue:@1
+                                                                  toValue:@0
+                                                             durationTime:transitionTime];
+    
+    NSArray *positions = @[
+                           [NSValue valueWithCGPoint:fromPoint],
+                           [NSValue valueWithCGPoint:toPoint],
+                           [NSValue valueWithCGPoint:fromPoint],
+                           [NSValue valueWithCGPoint:toPoint]
+                           ];
+    LBMovesBehaviorObj *behavior = [[LBMovesBehaviorObj alloc] initWithPositions:positions timeRange:timeRange];
+    behavior.timingFunctionNames = @[
+                                     kCAMediaTimingFunctionEaseIn,
+                                     kCAMediaTimingFunctionLinear,
+                                     kCAMediaTimingFunctionEaseOut
+                                     ];
+    personObj.behaviors = @[behavior];
     
     return personObj;
 }

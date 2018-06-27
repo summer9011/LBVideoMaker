@@ -6,7 +6,7 @@
 //  Copyright © 2018年 胡萝卜_小波波. All rights reserved.
 //
 
-#import "LBBaseObj.h"
+#import <Foundation/Foundation.h>
 #import "LBVideoProtocol.h"
 
 #import "LBBehaviorObj.h"
@@ -15,7 +15,7 @@
 #import "LBEnvironmentObj.h"
 #import "LBTransitionObj.h"
 
-@interface LBVideoObj : LBBaseObj <LBVideoProtocol>
+@interface LBVideoObj : NSObject <LBVideoProtocol>
 
 - (instancetype)initWithFramePerSecond:(int32_t)framePerSecond videoSize:(CGSize)videoSize;
 

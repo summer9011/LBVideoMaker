@@ -6,10 +6,10 @@
 //  Copyright © 2018年 胡萝卜_小波波. All rights reserved.
 //
 
-#import "LBBaseObj.h"
+#import <Foundation/Foundation.h>
 #import "LBPersonProtocol.h"
 
-@interface LBPersonObj : LBBaseObj <LBPersonProtocol>
+@interface LBPersonObj : NSObject <LBPersonProtocol>
 
 - (instancetype)initWithAppearance:(CALayer *)appearance
                          timeRange:(CMTimeRange)timeRange;

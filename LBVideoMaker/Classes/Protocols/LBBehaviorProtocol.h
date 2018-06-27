@@ -13,6 +13,7 @@
 @protocol LBBehaviorProtocol <NSObject, LBTimeProtocol>
 
 @property (nonatomic, assign) NSUInteger repeatCount;
+@property (nonatomic, strong) NSArray<NSString *> *timingFunctionNames;
 
 @property (nonatomic, weak) id<LBBehaviorProtocol> nextBehavior;
 
@@ -27,5 +28,8 @@
 @end
 
 @protocol LBMovesBehaviorProtocol <LBBehaviorProtocol>
+
+@property (nonatomic, strong) NSArray<NSValue *> *positions;
+@property (nonatomic, strong) UIBezierPath *path;
 
 @end

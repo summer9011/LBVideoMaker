@@ -6,10 +6,10 @@
 //  Copyright © 2018年 胡萝卜_小波波. All rights reserved.
 //
 
-#import "LBBaseObj.h"
+#import <Foundation/Foundation.h>
 #import "LBTransitionProtocol.h"
 
-@interface LBTransitionObj : LBBaseObj <LBTransitionProtocol>
+@interface LBTransitionObj : NSObject <LBTransitionProtocol>
 
 - (instancetype)initWithFromValue:(id)fromValue
                           toValue:(id)toValue

@@ -184,11 +184,11 @@
     return contentLayer;
 }
 
-+ (CALayer *)stepLayerWithImageURL:(NSURL *)imageURL
-                         videoSize:(CGSize)videoSize {
++ (CALayer *)stepLayerWithImagePath:(NSString *)imagePath
+                          videoSize:(CGSize)videoSize {
     CALayer *coverLayer = [CALayer layer];
     coverLayer.contentsGravity = kCAGravityResizeAspectFill;
-    coverLayer.contents = (__bridge id _Nullable)([LBImageHelper blurImage:[UIImage imageWithContentsOfFile:imageURL.absoluteString]].CGImage);
+    coverLayer.contents = (__bridge id _Nullable)([LBImageHelper blurImage:[UIImage imageWithContentsOfFile:imagePath]].CGImage);
     
     CGRect coverRect = CGRectZero;
     coverRect.size = videoSize;
@@ -206,11 +206,11 @@
     return coverLayer;
 }
 
-+ (UIImage *)compareLayerImageWithBeforeImageURL:(NSURL *)beforeImageURL
-                                   afterImageURL:(NSURL *)afterImageURL
-                                       videoSize:(CGSize)videoSize {
-    UIImage *beforeImage = [UIImage imageWithContentsOfFile:beforeImageURL.absoluteString];
-    UIImage *afterImage = [UIImage imageWithContentsOfFile:afterImageURL.absoluteString];
++ (UIImage *)compareLayerImageWithBeforeImagePath:(NSString *)beforeImagePath
+                                   afterImagePath:(NSString *)afterImagePath
+                                        videoSize:(CGSize)videoSize {
+    UIImage *beforeImage = [UIImage imageWithContentsOfFile:beforeImagePath];
+    UIImage *afterImage = [UIImage imageWithContentsOfFile:afterImagePath];
     
     CGFloat margin = 20;
     
@@ -561,6 +561,21 @@
     signLayer.frame = signRect;
     
     return contentLayer;
+}
+
++ (CALayer *)imageLayerWithImagePath:(NSString *)imagePath
+                           videoSize:(CGSize)videoSize {
+    UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
+    
+    CALayer *coverLayer = [CALayer layer];
+    coverLayer.contentsGravity = kCAGravityResizeAspect;
+    coverLayer.contents = (__bridge id _Nullable)(image.CGImage);
+    
+    CGRect coverRect = CGRectZero;
+    coverRect.size = image.size;
+    coverLayer.frame = coverRect;
+    
+    return coverLayer;
 }
 
 @end

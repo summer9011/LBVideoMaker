@@ -78,7 +78,8 @@
         animation = [LBAnimationHelper contentAnimationWithFromImage:fromImage
                                                              toImage:toImage
                                                            beginTime:beginTime
-                                                            duration:duration];
+                                                            duration:duration
+                                                  timingFunctionName:nil];
     } else if (isAlphaChange) {
         colorMaskLayer = [CALayer layer];
         colorMaskLayer.frame = layer.frame;
@@ -92,7 +93,8 @@
         animation = [LBAnimationHelper opacityAnimationWithFromOpacity:fromOpacity
                                                              toOpacity:toOpacity
                                                              beginTime:beginTime
-                                                              duration:duration];
+                                                              duration:duration
+                                                    timingFunctionName:nil];
     }
     if (colorMaskLayer) {
         [colorMaskLayer addAnimation:animation forKey:nil];
@@ -118,14 +120,16 @@
     CAAnimation *transitionAnimation = [LBAnimationHelper opacityAnimationWithFromOpacity:transition.fromAlpha
                                                                                 toOpacity:transition.toAlpha
                                                                                 beginTime:beginTime
-                                                                                 duration:duration];
+                                                                                 duration:duration
+                                                                       timingFunctionName:nil];
     
     beginTime = CMTimeGetSeconds(CMTimeAdd(transition.absoluteStartTime, transition.timeRange.duration));
     duration = CMTimeGetSeconds(CMTimeSubtract(keepDurationTime, transition.timeRange.duration));
     CAAnimation *keepAnimation = [LBAnimationHelper opacityAnimationWithFromOpacity:transition.toAlpha
                                                                           toOpacity:transition.toAlpha
                                                                           beginTime:beginTime
-                                                                           duration:duration];
+                                                                           duration:duration
+                                                                 timingFunctionName:nil];
     keepAnimation.removedOnCompletion = NO;
     keepAnimation.fillMode = kCAFillModeForwards;
     
@@ -146,7 +150,8 @@
     CAAnimation *animation = [LBAnimationHelper contentAnimationWithFromImage:transition.fromImage
                                                                       toImage:transition.toImage
                                                                     beginTime:beginTime
-                                                                     duration:duration];
+                                                                     duration:duration
+                                                           timingFunctionName:nil];
     [layer addAnimation:animation forKey:nil];
 }
 

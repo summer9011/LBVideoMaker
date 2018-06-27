@@ -25,13 +25,13 @@
                               sign:(NSString *)sign
                          videoSize:(CGSize)videoSize;
 
-+ (CALayer *)stepLayerWithImageURL:(NSURL *)imageURL
-                         videoSize:(CGSize)videoSize;
++ (CALayer *)stepLayerWithImagePath:(NSString *)imagePath
+                          videoSize:(CGSize)videoSize;
 + (CALayer *)stepContentLayerWithVideoSize:(CGSize)videoSize;
 
-+ (UIImage *)compareLayerImageWithBeforeImageURL:(NSURL *)beforeImageURL
-                                   afterImageURL:(NSURL *)afterImageURL
-                                       videoSize:(CGSize)videoSize;
++ (UIImage *)compareLayerImageWithBeforeImagePath:(NSString *)beforeImagePath
+                                   afterImagePath:(NSString *)afterImagePath
+                                        videoSize:(CGSize)videoSize;
 + (CALayer *)compareLayerWithContents:(UIImage *)content
                             videoSize:(CGSize)videoSize;
 + (CALayer *)detailLayerWithDetail:(NSString *)detail
@@ -45,6 +45,9 @@
                               author:(NSString *)author
                                 sign:(NSString *)sign
                                color:(UIColor *)color
+                           videoSize:(CGSize)videoSize;
+
++ (CALayer *)imageLayerWithImagePath:(NSString *)imagePath
                            videoSize:(CGSize)videoSize;
 
 @end

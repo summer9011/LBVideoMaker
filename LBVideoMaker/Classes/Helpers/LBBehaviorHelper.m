@@ -36,14 +36,26 @@
     CAAnimation *animation = [LBAnimationHelper contentsAnimationWithImages:behavior.images
                                                                   beginTime:beginTime
                                                                    duration:duration
-                                                                repeatCount:behavior.repeatCount];
+                                                                repeatCount:behavior.repeatCount
+                                                        timingFunctionNames:nil];
     [personLayer addAnimation:animation forKey:nil];
 }
 
 + (void)addMovesBehavior:(id<LBMovesBehaviorProtocol>)behavior
          withPersonLayer:(CALayer *)personLayer
             toSceneLayer:(CALayer *)sceneLayer {
+    CFTimeInterval beginTime = CMTimeGetSeconds(behavior.absoluteUsableTimeRange.start);
+    if (beginTime == 0.f) {
+        beginTime = AVCoreAnimationBeginTimeAtZero;
+    }
+    CFTimeInterval duration = CMTimeGetSeconds(behavior.absoluteUsableTimeRange.duration);
     
+    CAAnimation *animation = [LBAnimationHelper positionAnimationWithPositions:behavior.positions
+                                                                     beginTime:beginTime
+                                                                      duration:duration
+                                                                   repeatCount:behavior.repeatCount
+                                                           timingFunctionNames:behavior.timingFunctionNames];
+    [personLayer addAnimation:animation forKey:nil];
 }
 
 @end
