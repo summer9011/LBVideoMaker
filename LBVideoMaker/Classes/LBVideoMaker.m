@@ -279,7 +279,6 @@
 
 - (void)addPersonLayerWithPerson:(id<LBPersonProtocol>)person
                     toSceneLayer:(CALayer *)sceneLayer {
-    CGSize sceneSize = sceneLayer.bounds.size;
     person.appearance.opacity = (!person.appear)?1:0;
     [sceneLayer addSublayer:person.appearance];
     
