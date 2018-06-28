@@ -328,7 +328,7 @@
                              [NSValue valueWithCGRect:CGRectMake(0, 0, originSize.width, originSize.height)],
                              [NSValue valueWithCGRect:CGRectMake(0, 0, originSize.width + 100, originSize.height + 100)]
                              ];
-        animation.beginTime = 2.5 + [LBDemoObj normalTransitionTime] + CMTimeGetSeconds(timeRange.start) + CMTimeGetSeconds(bStartTime);
+        animation.beginTime = 0;
         animation.duration = CMTimeGetSeconds(bDurationTime);
         animation.keyTimes = @[@0,@(1/3.f),@(2/3.f),@1];
         animation.timingFunctions = @[
@@ -338,7 +338,19 @@
                                       ];
         animation.removedOnCompletion = NO;
         animation.fillMode = kCAFillModeForwards;
-        [personLayer addAnimation:animation forKey:nil];
+        
+        CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
+        transformAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
+        transformAnimation.toValue = [NSValue valueWithCATransform3D:CATransform3DRotate(CATransform3DIdentity, M_PI, 0, 0, 1)];
+        transformAnimation.beginTime = 0;
+        transformAnimation.duration = CMTimeGetSeconds(bDurationTime);
+        
+        CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
+        animationGroup.beginTime = 2.5 + [LBDemoObj normalTransitionTime] + CMTimeGetSeconds(timeRange.start) + CMTimeGetSeconds(bStartTime);
+        animationGroup.duration = CMTimeGetSeconds(bDurationTime);
+        animationGroup.animations = @[animation, transformAnimation];
+        
+        [personLayer addAnimation:animationGroup forKey:nil];
     }];
     
     personObj.behaviors = @[moveBehavior,zoomBehavior];
