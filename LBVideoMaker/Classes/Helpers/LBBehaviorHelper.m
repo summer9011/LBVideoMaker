@@ -37,7 +37,9 @@
                                                                   beginTime:beginTime
                                                                    duration:duration
                                                                 repeatCount:behavior.repeatCount
-                                                        timingFunctionNames:nil];
+                                                               autoreverses:behavior.autoreverses
+                                                        timingFunctionNames:behavior.timingFunctionNames];
+    [self addCommonBehaviorProperty:behavior forAnimation:animation];
     [personLayer addAnimation:animation forKey:nil];
 }
 
@@ -54,8 +56,22 @@
                                                                      beginTime:beginTime
                                                                       duration:duration
                                                                    repeatCount:behavior.repeatCount
+                                                                  autoreverses:behavior.autoreverses
                                                            timingFunctionNames:behavior.timingFunctionNames];
+    [self addCommonBehaviorProperty:behavior forAnimation:animation];
     [personLayer addAnimation:animation forKey:nil];
+}
+
++ (void)addCommonBehaviorProperty:(id<LBBehaviorProtocol>)behavior forAnimation:(CAAnimation *)animation {
+    if (behavior.extendBackwards && behavior.extendForwards) {
+        animation.removedOnCompletion = NO;
+        animation.fillMode = kCAFillModeBoth;
+    } else if (behavior.extendBackwards) {
+        animation.fillMode = kCAFillModeBackwards;
+    } else if (behavior.extendForwards) {
+        animation.removedOnCompletion = NO;
+        animation.fillMode = kCAFillModeForwards;
+    }
 }
 
 @end

@@ -13,12 +13,16 @@
                                        toOpacity:(CGFloat)toOpacity
                                        beginTime:(CFTimeInterval)beginTime
                                         duration:(CFTimeInterval)duration
+                                     repeatCount:(NSUInteger)repeatCount
+                                    autoreverses:(BOOL)autoreverses
                               timingFunctionName:(NSString *)timingFunctionName {
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
     animation.fromValue = @(fromOpacity);
     animation.toValue = @(toOpacity);
     animation.beginTime = beginTime;
     animation.duration = duration;
+    animation.repeatCount = repeatCount;
+    animation.autoreverses = autoreverses;
     if (timingFunctionName) {
         animation.timingFunction = [CAMediaTimingFunction functionWithName:timingFunctionName];
     }
@@ -29,6 +33,7 @@
                                       beginTime:(CFTimeInterval)beginTime
                                        duration:(CFTimeInterval)duration
                                     repeatCount:(NSUInteger)repeatCount
+                                   autoreverses:(BOOL)autoreverses
                             timingFunctionNames:(NSArray<NSString *> *)timingFunctionNames {
     NSMutableArray<NSNumber *> *keyTimes = [NSMutableArray array];
     [positions enumerateObjectsUsingBlock:^(NSValue * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -50,8 +55,9 @@
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
     animation.values = positions;
     animation.beginTime = beginTime;
-    animation.duration = duration;
+    animation.duration = duration/((CGFloat)repeatCount * (autoreverses?2:1));
     animation.repeatCount = repeatCount;
+    animation.autoreverses = autoreverses;
     animation.keyTimes = keyTimes;
     if (timingFunctions) {
         animation.timingFunctions = timingFunctions;
@@ -64,11 +70,14 @@
                                        toImage:(UIImage *)toImage
                                      beginTime:(CFTimeInterval)beginTime
                                       duration:(CFTimeInterval)duration
+                                   repeatCount:(NSUInteger)repeatCount
+                                  autoreverses:(BOOL)autoreverses
                             timingFunctionName:(NSString *)timingFunctionName {
     return [self contentsAnimationWithImages:@[fromImage, toImage]
                                    beginTime:beginTime
                                     duration:duration
                                  repeatCount:1
+                                autoreverses:NO
                          timingFunctionNames:((timingFunctionName != nil)?@[timingFunctionName]:nil)];
 }
 
@@ -76,6 +85,7 @@
                                    beginTime:(CFTimeInterval)beginTime
                                     duration:(CFTimeInterval)duration
                                  repeatCount:(NSUInteger)repeatCount
+                                autoreverses:(BOOL)autoreverses
                          timingFunctionNames:(NSArray<NSString *> *)timingFunctionNames {
     NSMutableArray *cgImages = [NSMutableArray array];
     NSMutableArray<NSNumber *> *keyTimes = [NSMutableArray array];
@@ -99,8 +109,9 @@
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"contents"];
     animation.values = cgImages;
     animation.beginTime = beginTime;
-    animation.duration = duration;
+    animation.duration = duration/((CGFloat)repeatCount * (autoreverses?2:1));
     animation.repeatCount = repeatCount;
+    animation.autoreverses = autoreverses;
     animation.keyTimes = keyTimes;
     if (timingFunctions) {
         animation.timingFunctions = timingFunctions;

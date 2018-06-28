@@ -79,6 +79,8 @@
                                                              toImage:toImage
                                                            beginTime:beginTime
                                                             duration:duration
+                                                         repeatCount:1
+                                                        autoreverses:NO
                                                   timingFunctionName:nil];
     } else if (isAlphaChange) {
         colorMaskLayer = [CALayer layer];
@@ -94,6 +96,8 @@
                                                              toOpacity:toOpacity
                                                              beginTime:beginTime
                                                               duration:duration
+                                                           repeatCount:1
+                                                          autoreverses:NO
                                                     timingFunctionName:nil];
     }
     if (colorMaskLayer) {
@@ -121,6 +125,8 @@
                                                                                 toOpacity:transition.toAlpha
                                                                                 beginTime:beginTime
                                                                                  duration:duration
+                                                                              repeatCount:1
+                                                                             autoreverses:NO
                                                                        timingFunctionName:nil];
     [layer addAnimation:transitionAnimation forKey:nil];
     
@@ -130,6 +136,8 @@
                                                                           toOpacity:transition.toAlpha
                                                                           beginTime:beginTime
                                                                            duration:duration
+                                                                        repeatCount:1
+                                                                       autoreverses:NO
                                                                  timingFunctionName:nil];
     [layer addAnimation:keepAnimation forKey:nil];
 }
@@ -148,6 +156,8 @@
                                                                       toImage:transition.toImage
                                                                     beginTime:beginTime
                                                                      duration:duration
+                                                                  repeatCount:1
+                                                                 autoreverses:NO
                                                            timingFunctionName:nil];
     [layer addAnimation:animation forKey:nil];
 }

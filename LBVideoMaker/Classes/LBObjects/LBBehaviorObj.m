@@ -15,7 +15,11 @@
 @synthesize absoluteStartTime;
 
 @synthesize repeatCount;
+@synthesize autoreverses;
 @synthesize timingFunctionNames;
+
+@synthesize extendBackwards;
+@synthesize extendForwards;
 
 @synthesize nextBehavior = _nextBehavior;
 @synthesize contentPerson;
@@ -23,7 +27,10 @@
 - (instancetype)init {
     if (self = [super init]) {
         self.repeatCount = 1;
+        self.autoreverses = NO;
         self.timingFunctionNames = nil;
+        self.extendBackwards = NO;
+        self.extendForwards = NO;
     }
     return self;
 }

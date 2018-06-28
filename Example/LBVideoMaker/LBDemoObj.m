@@ -44,7 +44,7 @@
 }
 
 + (int32_t)frames {
-    return 30;
+    return 60;
 }
 
 + (CGSize)videoSize {
@@ -213,26 +213,35 @@
     LBPersonObj *backgroundPersonObj = [self createStepBackgroundPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     LBPersonObj *stepPersonObj = [self createStepPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     
-    CMTime offsetTime = CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], durationTime.timescale);
-    CMTime toolDurationTime = CMTimeMakeWithSeconds(2, durationTime.timescale);
     
-    CMTime toolBeginTime = CMTimeAdd(transitionTime, offsetTime);
-    CMTimeRange timeRange = CMTimeRangeMake(toolBeginTime, toolDurationTime);
-    LBPersonObj *eyeToolPersonObj = [self createStepToolPersonWithImageName:@"eye" timeRange:timeRange];
+    CMTime dTime = CMTimeMakeWithSeconds(1, durationTime.timescale);
     
-//    toolBeginTime = CMTimeAdd(CMTimeRangeGetEnd(timeRange), offsetTime);
-//    timeRange = CMTimeRangeMake(toolBeginTime, toolDurationTime);
-//    LBPersonObj *faceToolPersonObj = [self createStepToolPersonWithImageName:@"face" timeRange:timeRange];
+    CMTime sTime = CMTimeAdd(transitionTime, transitionTime);
+    CMTimeRange timeRange = CMTimeRangeMake(sTime, dTime);
+    LBPersonObj *eyeToolPersonObj = [self createStepToolPersonWithImageName:@"eye"
+                                                                  fromPoint:CGPointMake(420, 330)
+                                                                    toPoint:CGPointMake(446, 330)
+                                                                  timeRange:timeRange];
     
-//    toolBeginTime = CMTimeAdd(CMTimeRangeGetEnd(timeRange), offsetTime);
-//    timeRange = CMTimeRangeMake(toolBeginTime, toolDurationTime);
-//    LBPersonObj *lipToolPersonObj = [self createStepToolPersonWithImageName:@"lip" timeRange:timeRange];
+    sTime = CMTimeRangeGetEnd(timeRange);
+    timeRange = CMTimeRangeMake(sTime, dTime);
+    LBPersonObj *faceToolPersonObj = [self createStepToolPersonWithImageName:@"face"
+                                                                   fromPoint:CGPointMake(240, 390)
+                                                                     toPoint:CGPointMake(260, 390)
+                                                                   timeRange:timeRange];
+    
+    sTime = CMTimeRangeGetEnd(timeRange);
+    timeRange = CMTimeRangeMake(sTime, dTime);
+    LBPersonObj *lipToolPersonObj = [self createStepToolPersonWithImageName:@"lip"
+                                                                  fromPoint:CGPointMake(380, 480)
+                                                                    toPoint:CGPointMake(400, 480)
+                                                                  timeRange:timeRange];
     
     sceneObj.persons = @[backgroundPersonObj,
                          stepPersonObj,
                          eyeToolPersonObj,
-//                         faceToolPersonObj,
-//                         lipToolPersonObj
+                         faceToolPersonObj,
+                         lipToolPersonObj
                          ];
     
     return sceneObj;
@@ -255,35 +264,25 @@
         [images addObject:[UIImage imageWithContentsOfFile:obj]];
     }];
     
-    
-    CMTimeRange behaviorTimeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], timeRange.duration.timescale));
-    LBContentsGradientBehaviorObj *beforeStepBehaviorObj = [[LBContentsGradientBehaviorObj alloc] initWithImages:@[images.firstObject]
-                                                                                                       timeRange:behaviorTimeRange];
-    
-    
     CMTime behaviorDurationTime = CMTimeSubtract(timeRange.duration, CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime]*2, timeRange.duration.timescale));
-    behaviorTimeRange = CMTimeRangeMake(CMTimeRangeGetEnd(behaviorTimeRange), behaviorDurationTime);
+    CMTimeRange behaviorTimeRange = CMTimeRangeMake(CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], timeRange.duration.timescale), behaviorDurationTime);
     LBContentsGradientBehaviorObj *behaviorObj = [[LBContentsGradientBehaviorObj alloc] initWithImages:images
                                                                                              timeRange:behaviorTimeRange];
-    
-    behaviorTimeRange = CMTimeRangeMake(CMTimeRangeGetEnd(behaviorTimeRange), CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], timeRange.duration.timescale));
-    LBContentsGradientBehaviorObj *afterStepBehaviorObj = [[LBContentsGradientBehaviorObj alloc] initWithImages:@[images.lastObject]
-                                                                                                      timeRange:behaviorTimeRange];
-    
-    
-    personObj.behaviors = @[beforeStepBehaviorObj,behaviorObj,afterStepBehaviorObj];
+    behaviorObj.extendBackwards = YES;
+    behaviorObj.extendForwards = YES;
+    personObj.behaviors = @[behaviorObj];
     
     return personObj;
 }
 
-+ (LBPersonObj *)createStepToolPersonWithImageName:(NSString *)imageName timeRange:(CMTimeRange)timeRange {
-    CGPoint point1 = CGPointMake(200, 200);
-    CGPoint point2 = CGPointMake(220, 200);
-    
++ (LBPersonObj *)createStepToolPersonWithImageName:(NSString *)imageName
+                                         fromPoint:(CGPoint)fromPoint
+                                           toPoint:(CGPoint)toPoint
+                                         timeRange:(CMTimeRange)timeRange {
     CALayer *toolLayer = [LBLayerHelper imageLayerWithImagePath:[LBDemoObj toolImagePathWithName:imageName]
                                                       videoSize:[LBDemoObj videoSize]];
     CGPoint position = toolLayer.position;
-    position = point1;
+    position = fromPoint;
     toolLayer.position = position;
     
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:toolLayer
@@ -298,20 +297,24 @@
                                                              durationTime:transitionTime];
     
     NSArray *positions = @[
-                           [NSValue valueWithCGPoint:point1],
-                           [NSValue valueWithCGPoint:point2],
-                           [NSValue valueWithCGPoint:point1],
-//                           [NSValue valueWithCGPoint:point4]
+                           [NSValue valueWithCGPoint:fromPoint],
+                           [NSValue valueWithCGPoint:toPoint],
+                           [NSValue valueWithCGPoint:fromPoint],
+                           [NSValue valueWithCGPoint:toPoint]
                            ];
     
-    CMTime behaviorDurationTime = CMTimeSubtract(CMTimeSubtract(timeRange.duration, transitionTime), transitionTime);
-    CMTimeRange behaviorTimeRange = CMTimeRangeMake(timeRange.start, behaviorDurationTime);
-    LBMovesBehaviorObj *behavior = [[LBMovesBehaviorObj alloc] initWithPositions:positions timeRange:behaviorTimeRange];
+    
+    CMTime bStartTime = CMTimeAdd(transitionTime, transitionTime);
+    CMTime bDurationTime = CMTimeSubtract(CMTimeSubtract(CMTimeSubtract(timeRange.duration, transitionTime), transitionTime), transitionTime);
+    CMTimeRange bTimeRange = CMTimeRangeMake(bStartTime, bDurationTime);
+    LBMovesBehaviorObj *behavior = [[LBMovesBehaviorObj alloc] initWithPositions:positions timeRange:bTimeRange];
+    behavior.extendForwards = YES;
     behavior.timingFunctionNames = @[
                                      kCAMediaTimingFunctionEaseIn,
                                      kCAMediaTimingFunctionLinear,
-//                                     kCAMediaTimingFunctionEaseOut
+                                     kCAMediaTimingFunctionEaseOut
                                      ];
+    
     personObj.behaviors = @[behavior];
     
     return personObj;

@@ -13,7 +13,11 @@
 @protocol LBBehaviorProtocol <NSObject, LBTimeProtocol>
 
 @property (nonatomic, assign) NSUInteger repeatCount;
+@property (nonatomic, assign) BOOL autoreverses;
 @property (nonatomic, strong) NSArray<NSString *> *timingFunctionNames;
+
+@property (nonatomic, assign) BOOL extendBackwards;
+@property (nonatomic, assign) BOOL extendForwards;
 
 @property (nonatomic, weak) id<LBBehaviorProtocol> nextBehavior;
 
