@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "LBVideoProtocol.h"
+#import "LBScreenplay.h"
 
 typedef void(^LBVideoMakerProgressBlock)(CGFloat progress);
 typedef void(^LBVideoMakerBlock)(BOOL success, NSError *error);
