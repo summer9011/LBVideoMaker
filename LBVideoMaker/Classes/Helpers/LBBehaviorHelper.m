@@ -13,14 +13,18 @@
 + (void)addBehavior:(id<LBBehaviorProtocol>)behavior
     withPersonLayer:(CALayer *)personLayer
        toSceneLayer:(CALayer *)sceneLayer {
-    if ([behavior conformsToProtocol:@protocol(LBContentsGradientBehaviorProtocol)]) {
-        [self addContentsGradientBehavior:(id<LBContentsGradientBehaviorProtocol>)behavior
-                          withPersonLayer:personLayer
-                             toSceneLayer:sceneLayer];
-    } else if ([behavior conformsToProtocol:@protocol(LBMovesBehaviorProtocol)]) {
-        [self addMovesBehavior:(id<LBMovesBehaviorProtocol>)behavior
-               withPersonLayer:personLayer
-                  toSceneLayer:sceneLayer];
+    if (behavior.animationBlock) {
+        behavior.animationBlock(personLayer, sceneLayer);
+    } else {
+        if ([behavior conformsToProtocol:@protocol(LBContentsGradientBehaviorProtocol)]) {
+            [self addContentsGradientBehavior:(id<LBContentsGradientBehaviorProtocol>)behavior
+                              withPersonLayer:personLayer
+                                 toSceneLayer:sceneLayer];
+        } else if ([behavior conformsToProtocol:@protocol(LBMovesBehaviorProtocol)]) {
+            [self addMovesBehavior:(id<LBMovesBehaviorProtocol>)behavior
+                   withPersonLayer:personLayer
+                      toSceneLayer:sceneLayer];
+        }
     }
 }
 

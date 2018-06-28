@@ -13,7 +13,6 @@
 @synthesize framePerSecond = _framePerSecond;
 @synthesize totalVideoTime;
 @synthesize videoSize = _videoSize;
-
 @synthesize environments;
 @synthesize scenes = _scenes;
 

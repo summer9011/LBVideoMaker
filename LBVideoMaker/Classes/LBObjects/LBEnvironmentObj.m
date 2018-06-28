@@ -12,10 +12,8 @@
 
 @synthesize timeRange = _timeRange;
 @synthesize absoluteStartTime;
-
 @synthesize appear = _appear;
 @synthesize disappear = _disappear;
-
 @synthesize nextEnvironment = _nextEnvironment;
 
 - (void)resetNextEnvironmentTimeRange:(id<LBEnvironmentProtocol>)nextEnvironment {

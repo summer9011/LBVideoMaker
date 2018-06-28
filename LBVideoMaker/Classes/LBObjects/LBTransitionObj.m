@@ -12,11 +12,10 @@
 
 @synthesize timeRange;
 @synthesize absoluteStartTime;
-
 @synthesize fromValue;
 @synthesize toValue;
-
 @synthesize host;
+@synthesize animationBlock;
 
 - (instancetype)initWithFromValue:(id)fromValue
                           toValue:(id)toValue

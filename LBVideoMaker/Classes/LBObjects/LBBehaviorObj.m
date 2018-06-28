@@ -13,15 +13,13 @@
 
 @synthesize timeRange = _timeRange;
 @synthesize absoluteStartTime;
-
 @synthesize repeatCount;
 @synthesize autoreverses;
 @synthesize timingFunctionNames;
-
 @synthesize extendBackwards;
 @synthesize extendForwards;
-
 @synthesize nextBehavior = _nextBehavior;
+@synthesize animationBlock;
 @synthesize contentPerson;
 
 - (instancetype)init {

@@ -15,6 +15,8 @@
 
 @property (nonatomic, weak) id<LBTimeProtocol> host;
 
+@property (nonatomic, strong) void(^animationBlock)(CALayer *layer, CALayer *parentLayer, CFTimeInterval keepTime);
+
 @end
 
 @protocol LBVolumeTransitionProtocol <LBTransitionProtocol>

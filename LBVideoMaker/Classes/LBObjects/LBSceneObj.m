@@ -12,18 +12,12 @@
 
 @synthesize timeRange = _timeRange;
 @synthesize absoluteStartTime;
-
 @synthesize sortType;
-
 @synthesize backgroundColor;
-
 @synthesize persons = _persons;
-
 @synthesize appear = _appear;
 @synthesize disappear = _disappear;
-
 @synthesize nextScene = _nextScene;
-
 @synthesize contentVideo;
 
 - (instancetype)initWithDurationTime:(CMTime)durationTime {

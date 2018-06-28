@@ -19,7 +19,9 @@
 @property (nonatomic, assign) BOOL extendBackwards;
 @property (nonatomic, assign) BOOL extendForwards;
 
-@property (nonatomic, weak) id<LBBehaviorProtocol> nextBehavior;
+@property (nonatomic, strong) id<LBBehaviorProtocol> nextBehavior;
+
+@property (nonatomic, strong) void(^animationBlock)(CALayer *personLayer, CALayer *sceneLayer);
 
 @property (nonatomic, weak) id<LBPersonProtocol> contentPerson;
 

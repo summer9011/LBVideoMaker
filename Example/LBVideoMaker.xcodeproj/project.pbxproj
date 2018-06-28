@@ -36,6 +36,7 @@
 		6E00997E20E325CE00023293 /* eye.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E00997B20E325CE00023293 /* eye.png */; };
 		6E00997F20E325CE00023293 /* lip.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E00997C20E325CE00023293 /* lip.png */; };
 		6E285DFB20E13847008D2C63 /* LBScreenplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E285DFA20E13847008D2C63 /* LBScreenplay.m */; };
+		6E285E0020E51087008D2C63 /* LBZoomBehaviorObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E285DFF20E51087008D2C63 /* LBZoomBehaviorObj.m */; };
 		6ECF594B20DD218700FF839E /* LBDemoObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF594A20DD218700FF839E /* LBDemoObj.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
@@ -94,6 +95,8 @@
 		6E00997C20E325CE00023293 /* lip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lip.png; sourceTree = "<group>"; };
 		6E285DF920E13847008D2C63 /* LBScreenplay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBScreenplay.h; sourceTree = "<group>"; };
 		6E285DFA20E13847008D2C63 /* LBScreenplay.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBScreenplay.m; sourceTree = "<group>"; };
+		6E285DFE20E51087008D2C63 /* LBZoomBehaviorObj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBZoomBehaviorObj.h; sourceTree = "<group>"; };
+		6E285DFF20E51087008D2C63 /* LBZoomBehaviorObj.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBZoomBehaviorObj.m; sourceTree = "<group>"; };
 		6ECF594920DD218700FF839E /* LBDemoObj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBDemoObj.h; sourceTree = "<group>"; };
 		6ECF594A20DD218700FF839E /* LBDemoObj.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBDemoObj.m; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -179,6 +182,8 @@
 			isa = PBXGroup;
 			children = (
 				6E00994520D360BC00023293 /* Resources */,
+				6E285DFD20E5105A008D2C63 /* CustomBehaviors */,
+				6E285DFC20E5105A008D2C63 /* CustomTransitions */,
 				6003F59C195388D20070C39A /* LBAppDelegate.h */,
 				6003F59D195388D20070C39A /* LBAppDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
@@ -258,6 +263,22 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		6E285DFC20E5105A008D2C63 /* CustomTransitions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CustomTransitions;
+			sourceTree = "<group>";
+		};
+		6E285DFD20E5105A008D2C63 /* CustomBehaviors */ = {
+			isa = PBXGroup;
+			children = (
+				6E285DFE20E51087008D2C63 /* LBZoomBehaviorObj.h */,
+				6E285DFF20E51087008D2C63 /* LBZoomBehaviorObj.m */,
+			);
+			path = CustomBehaviors;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -310,7 +331,7 @@
 				ORGANIZATIONNAME = "胡萝卜_小波波";
 				TargetAttributes = {
 					6003F589195388D20070C39A = {
-						DevelopmentTeam = 7KD22EQFBB;
+						DevelopmentTeam = U9A4TD7GB4;
 					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
@@ -440,6 +461,7 @@
 				6ECF594B20DD218700FF839E /* LBDemoObj.m in Sources */,
 				6003F59E195388D20070C39A /* LBAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* LBViewController.m in Sources */,
+				6E285E0020E51087008D2C63 /* LBZoomBehaviorObj.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -568,7 +590,7 @@
 			baseConfigurationReference = 4F495CAB19FB42785DDA4328 /* Pods-LBVideoMaker_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 7KD22EQFBB;
+				DEVELOPMENT_TEAM = U9A4TD7GB4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LBVideoMaker/LBVideoMaker-Prefix.pch";
 				INFOPLIST_FILE = "LBVideoMaker/LBVideoMaker-Info.plist";
@@ -584,7 +606,7 @@
 			baseConfigurationReference = 805AC189D1EAAC805569BF75 /* Pods-LBVideoMaker_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 7KD22EQFBB;
+				DEVELOPMENT_TEAM = U9A4TD7GB4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LBVideoMaker/LBVideoMaker-Prefix.pch";
 				INFOPLIST_FILE = "LBVideoMaker/LBVideoMaker-Info.plist";

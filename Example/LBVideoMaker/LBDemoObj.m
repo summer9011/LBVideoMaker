@@ -9,6 +9,8 @@
 #import "LBDemoObj.h"
 #import "LBLayerHelper.h"
 
+#import "LBZoomBehaviorObj.h"
+
 @implementation LBDemoObj
 
 + (NSString *)videoPath {
@@ -307,15 +309,39 @@
     CMTime bStartTime = CMTimeAdd(transitionTime, transitionTime);
     CMTime bDurationTime = CMTimeSubtract(CMTimeSubtract(CMTimeSubtract(timeRange.duration, transitionTime), transitionTime), transitionTime);
     CMTimeRange bTimeRange = CMTimeRangeMake(bStartTime, bDurationTime);
-    LBMovesBehaviorObj *behavior = [[LBMovesBehaviorObj alloc] initWithPositions:positions timeRange:bTimeRange];
-    behavior.extendForwards = YES;
-    behavior.timingFunctionNames = @[
-                                     kCAMediaTimingFunctionEaseIn,
-                                     kCAMediaTimingFunctionLinear,
-                                     kCAMediaTimingFunctionEaseOut
-                                     ];
+    LBMovesBehaviorObj *moveBehavior = [[LBMovesBehaviorObj alloc] initWithPositions:positions timeRange:bTimeRange];
+    moveBehavior.extendForwards = YES;
+    moveBehavior.timingFunctionNames = @[
+                                         kCAMediaTimingFunctionEaseIn,
+                                         kCAMediaTimingFunctionLinear,
+                                         kCAMediaTimingFunctionEaseOut
+                                         ];
     
-    personObj.behaviors = @[behavior];
+    //Custom Behavior
+    LBZoomBehaviorObj *zoomBehavior = [LBZoomBehaviorObj animationWithBlock:^(CALayer *personLayer, CALayer *sceneLayer) {
+        CGSize originSize = toolLayer.bounds.size;
+        
+        CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"bounds"];
+        animation.values = @[
+                             [NSValue valueWithCGRect:CGRectMake(0, 0, originSize.width, originSize.height)],
+                             [NSValue valueWithCGRect:CGRectMake(0, 0, originSize.width + 100, originSize.height + 100)],
+                             [NSValue valueWithCGRect:CGRectMake(0, 0, originSize.width, originSize.height)],
+                             [NSValue valueWithCGRect:CGRectMake(0, 0, originSize.width + 100, originSize.height + 100)]
+                             ];
+        animation.beginTime = 2.5 + [LBDemoObj normalTransitionTime] + CMTimeGetSeconds(timeRange.start) + CMTimeGetSeconds(bStartTime);
+        animation.duration = CMTimeGetSeconds(bDurationTime);
+        animation.keyTimes = @[@0,@(1/3.f),@(2/3.f),@1];
+        animation.timingFunctions = @[
+                                      [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn],
+                                      [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear],
+                                      [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]
+                                      ];
+        animation.removedOnCompletion = NO;
+        animation.fillMode = kCAFillModeForwards;
+        [personLayer addAnimation:animation forKey:nil];
+    }];
+    
+    personObj.behaviors = @[moveBehavior,zoomBehavior];
     
     return personObj;
 }

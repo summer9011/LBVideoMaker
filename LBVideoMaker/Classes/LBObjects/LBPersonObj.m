@@ -13,14 +13,10 @@
 
 @synthesize timeRange;
 @synthesize absoluteStartTime;
-
 @synthesize appearance;
-
 @synthesize behaviors = _behaviors;
-
 @synthesize appear = _appear;
 @synthesize disappear = _disappear;
-
 @synthesize contentScene;
 
 - (instancetype)initWithAppearance:(CALayer *)appearance

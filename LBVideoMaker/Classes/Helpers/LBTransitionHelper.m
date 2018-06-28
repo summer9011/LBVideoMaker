@@ -30,20 +30,24 @@
      keepDurationTime:(CMTime)keepDurationTime
             withLayer:(CALayer *)layer
         toParentLayer:(CALayer *)parentLayer {
-    if ([transition conformsToProtocol:@protocol(LBColorMaskTransitionProtocol)]) {
-        [self addColorMaskTransition:(id<LBColorMaskTransitionProtocol>)transition
+    if (transition.animationBlock) {
+        transition.animationBlock(layer, parentLayer, CMTimeGetSeconds(keepDurationTime));
+    } else {
+        if ([transition conformsToProtocol:@protocol(LBColorMaskTransitionProtocol)]) {
+            [self addColorMaskTransition:(id<LBColorMaskTransitionProtocol>)transition
+                        keepDurationTime:keepDurationTime
+                               withLayer:layer
+                           toParentLayer:parentLayer];
+        } else if ([transition conformsToProtocol:@protocol(LBAlphaTransitionProtocol)]) {
+            [self addAlphaTransition:(id<LBAlphaTransitionProtocol>)transition
                     keepDurationTime:keepDurationTime
-                           withLayer:layer
-                       toParentLayer:parentLayer];
-    } else if ([transition conformsToProtocol:@protocol(LBAlphaTransitionProtocol)]) {
-        [self addAlphaTransition:(id<LBAlphaTransitionProtocol>)transition
-                keepDurationTime:keepDurationTime
-                       withLayer:layer];
-    } else if ([transition conformsToProtocol:@protocol(LBContentsMaskTransitionProtocol)]) {
-        [self addContentsMaskTransition:(id<LBContentsMaskTransitionProtocol>)transition
-                       keepDurationTime:keepDurationTime
-                              withLayer:layer
-                          toParentLayer:parentLayer];
+                           withLayer:layer];
+        } else if ([transition conformsToProtocol:@protocol(LBContentsMaskTransitionProtocol)]) {
+            [self addContentsMaskTransition:(id<LBContentsMaskTransitionProtocol>)transition
+                           keepDurationTime:keepDurationTime
+                                  withLayer:layer
+                              toParentLayer:parentLayer];
+        }
     }
 }
 
