@@ -78,24 +78,6 @@
 
 @end
 
-@implementation LBMaskTransitionObj
-
-@synthesize isAppear = _isAppear;
-
-- (instancetype)initWithFromValue:(id)fromValue
-                          toValue:(id)toValue
-                     durationTime:(CMTime)durationTime
-                         isAppear:(BOOL)isAppear {
-    if (self  = [super initWithFromValue:fromValue
-                                 toValue:toValue
-                            durationTime:durationTime]) {
-        _isAppear = isAppear;
-    }
-    return self;
-}
-
-@end
-
 @implementation LBColorMaskTransitionObj
 
 @synthesize fromColor = _fromColor;
@@ -103,12 +85,10 @@
 
 - (instancetype)initWithFromValue:(id)fromValue
                           toValue:(id)toValue
-                     durationTime:(CMTime)durationTime
-                         isAppear:(BOOL)isAppear {
+                     durationTime:(CMTime)durationTime {
     if (self  = [super initWithFromValue:fromValue
                                  toValue:toValue
-                            durationTime:durationTime
-                                isAppear:isAppear]) {
+                            durationTime:durationTime]) {
         _fromColor = fromValue;
         _toColor = toValue;
     }
@@ -124,12 +104,10 @@
 
 - (instancetype)initWithFromValue:(id)fromValue
                           toValue:(id)toValue
-                     durationTime:(CMTime)durationTime
-                         isAppear:(BOOL)isAppear {
+                     durationTime:(CMTime)durationTime {
     if (self  = [super initWithFromValue:fromValue
                                  toValue:toValue
-                            durationTime:durationTime
-                                isAppear:isAppear]) {
+                            durationTime:durationTime]) {
         _fromImage = fromValue;
         _toImage = toValue;
     }
@@ -137,9 +115,6 @@
 }
 
 @end
-
-
-
 
 @implementation LBDefaultTransitionObj
 

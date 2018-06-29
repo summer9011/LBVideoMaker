@@ -23,19 +23,10 @@
 @interface LBAlphaTransitionObj : LBTransitionObj <LBAlphaTransitionProtocol>
 @end
 
-@interface LBMaskTransitionObj : LBTransitionObj <LBMaskTransitionProtocol>
-
-- (instancetype)initWithFromValue:(id)fromValue
-                          toValue:(id)toValue
-                     durationTime:(CMTime)durationTime
-                         isAppear:(BOOL)isAppear;
-
+@interface LBColorMaskTransitionObj : LBTransitionObj <LBColorMaskTransitionProtocol>
 @end
 
-@interface LBColorMaskTransitionObj : LBMaskTransitionObj <LBColorMaskTransitionProtocol>
-@end
-
-@interface LBContentsMaskTransitionObj : LBMaskTransitionObj <LBContentsMaskTransitionProtocol>
+@interface LBContentsMaskTransitionObj : LBTransitionObj <LBContentsMaskTransitionProtocol>
 @end
 
 

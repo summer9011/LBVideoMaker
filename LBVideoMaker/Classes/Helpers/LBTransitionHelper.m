@@ -12,7 +12,7 @@
 
 @implementation LBTransitionHelper
 
-+ (void)addTransition:(id<LBTransitionProtocol>)transition toLayerInstruction:(AVMutableVideoCompositionLayerInstruction *)layerInstruction {
++ (void)addTransition:(id<LBTransitionProtocol>)transition toLayerInstruction:(AVMutableVideoCompositionLayerInstruction *)layerInstruction isAppear:(BOOL)isAppear {
     if ([transition conformsToProtocol:@protocol(LBAlphaTransitionProtocol)]) {
         id<LBAlphaTransitionProtocol> alphaTransition = (id<LBAlphaTransitionProtocol>)transition;
         [layerInstruction setOpacityRampFromStartOpacity:alphaTransition.fromAlpha toEndOpacity:alphaTransition.toAlpha timeRange:CMTimeRangeMake(alphaTransition.absoluteStartTime, alphaTransition.timeRange.duration)];
@@ -29,15 +29,23 @@
 + (void)addTransition:(id<LBTransitionProtocol>)transition
      keepDurationTime:(CMTime)keepDurationTime
             withLayer:(CALayer *)layer
-        toParentLayer:(CALayer *)parentLayer {
+        toParentLayer:(CALayer *)parentLayer
+             isAppear:(BOOL)isAppear {
     if (transition.animationBlock) {
+        [self addDefaultTransitionInHost:transition.host
+                        keepDurationTime:keepDurationTime
+                               withLayer:layer
+                           toParentLayer:parentLayer
+                         withVideoFrames:keepDurationTime.timescale
+                                isAppear:isAppear];
         transition.animationBlock(layer, parentLayer, CMTimeGetSeconds(keepDurationTime));
     } else {
         if ([transition conformsToProtocol:@protocol(LBColorMaskTransitionProtocol)]) {
             [self addColorMaskTransition:(id<LBColorMaskTransitionProtocol>)transition
                         keepDurationTime:keepDurationTime
                                withLayer:layer
-                           toParentLayer:parentLayer];
+                           toParentLayer:parentLayer
+                                isAppear:isAppear];
         } else if ([transition conformsToProtocol:@protocol(LBAlphaTransitionProtocol)]) {
             [self addAlphaTransition:(id<LBAlphaTransitionProtocol>)transition
                     keepDurationTime:keepDurationTime
@@ -46,7 +54,8 @@
             [self addContentsMaskTransition:(id<LBContentsMaskTransitionProtocol>)transition
                            keepDurationTime:keepDurationTime
                                   withLayer:layer
-                              toParentLayer:parentLayer];
+                              toParentLayer:parentLayer
+                                   isAppear:isAppear];
         }
     }
 }
@@ -54,7 +63,8 @@
 + (void)addColorMaskTransition:(id<LBColorMaskTransitionProtocol>)transition
               keepDurationTime:(CMTime)keepDurationTime
                      withLayer:(CALayer *)layer
-               toParentLayer:(CALayer *)parentLayer {
+                 toParentLayer:(CALayer *)parentLayer
+                      isAppear:(BOOL)isAppear {
     BOOL isFromColorNull = (transition.fromColor == nil || [transition.fromColor isEqual:[UIColor clearColor]]);
     BOOL isToColorNull = (transition.toColor == nil || [transition.toColor isEqual:[UIColor clearColor]]);
     
@@ -107,8 +117,8 @@
     if (colorMaskLayer) {
         [colorMaskLayer addAnimation:animation forKey:nil];
         
-        LBDefaultTransitionObj *alphaTransitionObj = [[LBDefaultTransitionObj alloc] initWithFromAlpha:transition.isAppear?0:1
-                                                                                               toAlpha:transition.isAppear?1:0
+        LBDefaultTransitionObj *alphaTransitionObj = [[LBDefaultTransitionObj alloc] initWithFromAlpha:isAppear?0:1
+                                                                                               toAlpha:isAppear?1:0
                                                                                                   host:transition.host
                                                                                              timeRange:transition.timeRange];
         [self addAlphaTransition:alphaTransitionObj
@@ -149,7 +159,8 @@
 + (void)addContentsMaskTransition:(id<LBContentsMaskTransitionProtocol>)transition
                  keepDurationTime:(CMTime)keepDurationTime
                         withLayer:(CALayer *)layer
-                    toParentLayer:(CALayer *)parentLayer {
+                    toParentLayer:(CALayer *)parentLayer
+                         isAppear:(BOOL)isAppear {
     CFTimeInterval beginTime = CMTimeGetSeconds(transition.absoluteStartTime);
     if (beginTime == 0.f) {
         beginTime = AVCoreAnimationBeginTimeAtZero;
@@ -188,7 +199,8 @@
     [self addTransition:defaultTransition
        keepDurationTime:keepDurationTime
               withLayer:layer
-          toParentLayer:parentLayer];
+          toParentLayer:parentLayer
+               isAppear:isAppear];
 }
 
 @end

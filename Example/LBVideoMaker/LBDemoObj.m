@@ -167,8 +167,7 @@
     /*
     sceneObj.disappear = [[LBColorMaskTransitionObj alloc] initWithFromValue:nil
                                                                      toValue:[UIColor whiteColor]
-                                                                durationTime:transitionTime
-                                                                    isAppear:NO];
+                                                                durationTime:transitionTime];
      */
     
     //Custom Transition
@@ -189,19 +188,11 @@
         moveAnimation.beginTime = 0;
         moveAnimation.duration = duration;
         moveAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        
-        CABasicAnimation *opacityAnimaiton = [CABasicAnimation animationWithKeyPath:@"opacity"];
-        opacityAnimaiton.fromValue = @1;
-        opacityAnimaiton.toValue = @0;
-        opacityAnimaiton.beginTime = 0;
-        opacityAnimaiton.duration = duration;
 
         CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
         animationGroup.beginTime = beginTime;
         animationGroup.duration = duration;
-        animationGroup.animations = @[zoomAnimation,moveAnimation,opacityAnimaiton];
-        animationGroup.removedOnCompletion = NO;
-        animationGroup.fillMode = kCAFillModeForwards;
+        animationGroup.animations = @[zoomAnimation,moveAnimation];
         
         [layer addAnimation:animationGroup forKey:nil];
     }];
@@ -218,8 +209,7 @@
                                                            sortType:LBSceneSortLast];
     sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromValue:[UIColor whiteColor]
                                                                   toValue:nil
-                                                             durationTime:CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], durationTime.timescale)
-                                                                 isAppear:YES];
+                                                             durationTime:CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], durationTime.timescale)];
     
     LBPersonObj *logoPersonObj = [self createLogoPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     sceneObj.persons = @[logoPersonObj];
@@ -248,8 +238,7 @@
     /*
     sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromValue:[UIColor whiteColor]
                                                                   toValue:nil
-                                                             durationTime:transitionTime
-                                                                 isAppear:YES];
+                                                             durationTime:transitionTime];
      */
     
     //Custom Transition
@@ -271,18 +260,10 @@
         moveAnimation.duration = duration;
         moveAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
         
-        CABasicAnimation *opacityAnimaiton = [CABasicAnimation animationWithKeyPath:@"opacity"];
-        opacityAnimaiton.fromValue = @0;
-        opacityAnimaiton.toValue = @1;
-        opacityAnimaiton.beginTime = 0;
-        opacityAnimaiton.duration = duration;
-        
         CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
         animationGroup.beginTime = beginTime;
         animationGroup.duration = duration;
-        animationGroup.animations = @[zoomAnimation,moveAnimation,opacityAnimaiton];
-        animationGroup.removedOnCompletion = NO;
-        animationGroup.fillMode = kCAFillModeForwards;
+        animationGroup.animations = @[zoomAnimation,moveAnimation];
         
         [layer addAnimation:animationGroup forKey:nil];
     }];
@@ -290,8 +271,7 @@
     
     sceneObj.disappear = [[LBColorMaskTransitionObj alloc] initWithFromValue:nil
                                                                      toValue:[UIColor whiteColor]
-                                                                durationTime:transitionTime
-                                                                    isAppear:NO];
+                                                                durationTime:transitionTime];
     
     LBPersonObj *backgroundPersonObj = [self createStepBackgroundPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     LBPersonObj *stepPersonObj = [self createStepPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
@@ -447,13 +427,11 @@
     CMTime appearTransitionTime = CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], durationTime.timescale);
     sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromValue:[UIColor whiteColor]
                                                                   toValue:nil
-                                                             durationTime:appearTransitionTime
-                                                                 isAppear:YES];
+                                                             durationTime:appearTransitionTime];
     CMTime disAppearTransitionTime = CMTimeMakeWithSeconds([LBDemoObj longTransitionTime], durationTime.timescale);
     sceneObj.disappear = [[LBContentsMaskTransitionObj alloc] initWithFromValue:[LBDemoObj compareImage]
                                                                         toValue:[LBDemoObj blurCompareImage]
-                                                                   durationTime:disAppearTransitionTime
-                                                                       isAppear:NO];
+                                                                   durationTime:disAppearTransitionTime];
     
     CMTime personDurationTime = CMTimeSubtract(durationTime, disAppearTransitionTime);
     CMTimeRange personTimeRange = CMTimeRangeMake(kCMTimeZero, personDurationTime);
@@ -493,8 +471,7 @@
     CMTime transitionTime = CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], durationTime.timescale);
     sceneObj.disappear = [[LBColorMaskTransitionObj alloc] initWithFromValue:nil
                                                                      toValue:[UIColor whiteColor]
-                                                                durationTime:transitionTime
-                                                                    isAppear:NO];
+                                                                durationTime:transitionTime];
     
     LBPersonObj *backgroundPersonObj = [self createProductsBackgroundPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     

@@ -33,20 +33,14 @@
 
 @end
 
-@protocol LBMaskTransitionProtocol <LBTransitionProtocol>
-
-@property (nonatomic, assign) BOOL isAppear;
-
-@end
-
-@protocol LBColorMaskTransitionProtocol <LBMaskTransitionProtocol>
+@protocol LBColorMaskTransitionProtocol <LBTransitionProtocol>
 
 @property (nonatomic, strong, readonly) UIColor *fromColor;
 @property (nonatomic, strong, readonly) UIColor *toColor;
 
 @end
 
-@protocol LBContentsMaskTransitionProtocol <LBMaskTransitionProtocol>
+@protocol LBContentsMaskTransitionProtocol <LBTransitionProtocol>
 
 @property (nonatomic, strong, readonly) UIImage *fromImage;
 @property (nonatomic, strong, readonly) UIImage *toImage;

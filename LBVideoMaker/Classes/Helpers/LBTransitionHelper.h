@@ -11,14 +11,15 @@
 
 @interface LBTransitionHelper : NSObject
 
-+ (void)addTransition:(id<LBTransitionProtocol>)transition toLayerInstruction:(AVMutableVideoCompositionLayerInstruction *)layerInstruction;
++ (void)addTransition:(id<LBTransitionProtocol>)transition toLayerInstruction:(AVMutableVideoCompositionLayerInstruction *)layerInstruction isAppear:(BOOL)isAppear;
 
 + (void)addTransition:(id<LBTransitionProtocol>)transition toAudioMixInputParameters:(AVMutableAudioMixInputParameters *)audioMixInputParameters;
 
 + (void)addTransition:(id<LBTransitionProtocol>)transition
      keepDurationTime:(CMTime)keepDurationTime
             withLayer:(CALayer *)layer
-        toParentLayer:(CALayer *)parentLayer;
+        toParentLayer:(CALayer *)parentLayer
+             isAppear:(BOOL)isAppear;
 
 + (void)addDefaultTransitionInHost:(id<LBTimeProtocol>)host
                   keepDurationTime:(CMTime)keepDurationTime

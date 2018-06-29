@@ -127,10 +127,14 @@
         assetTrack = [asset tracksWithMediaType:AVMediaTypeVideo].firstObject;
         AVMutableVideoCompositionLayerInstruction *layerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:track];
         if (videoEnvironment.appear) {
-            [LBTransitionHelper addTransition:videoEnvironment.appear toLayerInstruction:layerInstruction];
+            [LBTransitionHelper addTransition:videoEnvironment.appear
+                           toLayerInstruction:layerInstruction
+                                     isAppear:YES];
         }
         if (videoEnvironment.disappear) {
-            [LBTransitionHelper addTransition:videoEnvironment.disappear toLayerInstruction:layerInstruction];
+            [LBTransitionHelper addTransition:videoEnvironment.disappear
+                           toLayerInstruction:layerInstruction
+                                     isAppear:NO];
         }
         
         AVMutableVideoCompositionInstruction *instruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
@@ -225,6 +229,7 @@
     if (scene.backgroundColor) {
         sceneLayer.backgroundColor = scene.backgroundColor.CGColor;
     }
+    
     sceneLayer.opacity = (scene.sortType == LBSceneSortFirst && !scene.appear)?1:0;
     [animationLayer addSublayer:sceneLayer];
     
@@ -232,7 +237,8 @@
         [LBTransitionHelper addTransition:scene.appear
                          keepDurationTime:scene.timeRange.duration
                                 withLayer:sceneLayer
-                            toParentLayer:animationLayer];
+                            toParentLayer:animationLayer
+                                 isAppear:YES];
     } else {
         if (scene.sortType != LBSceneSortFirst) {
             [LBTransitionHelper addDefaultTransitionInHost:scene
@@ -255,7 +261,8 @@
         [LBTransitionHelper addTransition:scene.disappear
                          keepDurationTime:keepDurationTime
                                 withLayer:sceneLayer
-                            toParentLayer:animationLayer];
+                            toParentLayer:animationLayer
+                                 isAppear:NO];
     } else {
         if (scene.sortType != LBSceneSortLast) {
             [LBTransitionHelper addDefaultTransitionInHost:scene
@@ -288,7 +295,8 @@
         [LBTransitionHelper addTransition:person.appear
                          keepDurationTime:person.timeRange.duration
                                 withLayer:person.appearance
-                            toParentLayer:sceneLayer];
+                            toParentLayer:sceneLayer
+                                 isAppear:YES];
     } else {
         if (person.contentScene.sortType != LBSceneSortFirst) {
             [LBTransitionHelper addDefaultTransitionInHost:person
@@ -311,7 +319,8 @@
         [LBTransitionHelper addTransition:person.disappear
                          keepDurationTime:keepDurationTime
                                 withLayer:person.appearance
-                            toParentLayer:sceneLayer];
+                            toParentLayer:sceneLayer
+                                 isAppear:NO];
     } else {
         if (person.contentScene.sortType != LBSceneSortLast) {
             [LBTransitionHelper addDefaultTransitionInHost:person
