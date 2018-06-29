@@ -27,15 +27,28 @@
 
 @end
 
-@protocol LBContentsGradientBehaviorProtocol <LBBehaviorProtocol>
+@protocol LBContentGradientBehaviorProtocol <LBBehaviorProtocol>
 
 @property (nonatomic, strong) NSArray<UIImage *> *images;
 
 @end
 
-@protocol LBMovesBehaviorProtocol <LBBehaviorProtocol>
+@protocol LBMoveBehaviorProtocol <LBBehaviorProtocol>
 
 @property (nonatomic, strong) NSArray<NSValue *> *positions;
 @property (nonatomic, strong) UIBezierPath *path;
+
+@end
+
+@protocol LBZoomBehaviorProtocol <LBBehaviorProtocol>
+
+@property (nonatomic, strong) NSArray<NSValue *> *zooms;
+
+@end
+
+@protocol LBTransformBehaviorProtocol <LBBehaviorProtocol>
+
+@property (nonatomic, strong) NSString *keyPath;
+@property (nonatomic, strong) NSArray<NSValue *> *transforms;
 
 @end

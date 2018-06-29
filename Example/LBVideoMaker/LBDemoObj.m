@@ -9,7 +9,8 @@
 #import "LBDemoObj.h"
 #import "LBLayerHelper.h"
 
-#import "LBZoomBehaviorObj.h"
+#import "LBCustomBehaviorObj.h"
+#import "LBCustomTransitionObj.h"
 
 @implementation LBDemoObj
 
@@ -161,10 +162,50 @@
 + (LBSceneObj *)createHeaderSceneWithDurationTime:(CMTime)durationTime {
     LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime
                                                            sortType:LBSceneSortFirst];
+    
+    CMTime transitionTime = CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], durationTime.timescale);
+    /*
     sceneObj.disappear = [[LBColorMaskTransitionObj alloc] initWithFromValue:nil
                                                                      toValue:[UIColor whiteColor]
-                                                                durationTime:CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], durationTime.timescale)
+                                                                durationTime:transitionTime
                                                                     isAppear:NO];
+     */
+    
+    //Custom Transition
+    LBCustomTransitionObj *customDisappearTransition = [LBCustomTransitionObj transitionWithBlock:^(CALayer *layer, CALayer *parentLayer, CFTimeInterval keepTime) {
+        CFTimeInterval duration = CMTimeGetSeconds(transitionTime);
+        CFTimeInterval beginTime = CMTimeGetSeconds(durationTime) - duration;
+        
+        CABasicAnimation *zoomAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+        zoomAnimation.fromValue = @1;
+        zoomAnimation.toValue = @0;
+        zoomAnimation.beginTime = 0;
+        zoomAnimation.duration = duration;
+        zoomAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        
+        CABasicAnimation *moveAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
+        moveAnimation.fromValue = [NSValue valueWithCGPoint:CGPointMake(360, 360)];
+        moveAnimation.toValue = [NSValue valueWithCGPoint:CGPointMake(720, 720)];
+        moveAnimation.beginTime = 0;
+        moveAnimation.duration = duration;
+        moveAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        
+        CABasicAnimation *opacityAnimaiton = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        opacityAnimaiton.fromValue = @1;
+        opacityAnimaiton.toValue = @0;
+        opacityAnimaiton.beginTime = 0;
+        opacityAnimaiton.duration = duration;
+
+        CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
+        animationGroup.beginTime = beginTime;
+        animationGroup.duration = duration;
+        animationGroup.animations = @[zoomAnimation,moveAnimation,opacityAnimaiton];
+        animationGroup.removedOnCompletion = NO;
+        animationGroup.fillMode = kCAFillModeForwards;
+        
+        [layer addAnimation:animationGroup forKey:nil];
+    }];
+    sceneObj.disappear = customDisappearTransition;
     
     LBPersonObj *logoPersonObj = [self createLogoPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     sceneObj.persons = @[logoPersonObj];
@@ -203,10 +244,50 @@
     LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime];
     
     CMTime transitionTime = CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], durationTime.timescale);
+    
+    /*
     sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromValue:[UIColor whiteColor]
                                                                   toValue:nil
                                                              durationTime:transitionTime
                                                                  isAppear:YES];
+     */
+    
+    //Custom Transition
+    LBCustomTransitionObj *customAppearTransition = [LBCustomTransitionObj transitionWithBlock:^(CALayer *layer, CALayer *parentLayer, CFTimeInterval keepTime) {
+        CFTimeInterval duration = CMTimeGetSeconds(transitionTime);
+        CFTimeInterval beginTime = 2.5 + [LBDemoObj normalTransitionTime];
+        
+        CABasicAnimation *zoomAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+        zoomAnimation.fromValue = @0;
+        zoomAnimation.toValue = @1;
+        zoomAnimation.beginTime = 0;
+        zoomAnimation.duration = duration;
+        zoomAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        
+        CABasicAnimation *moveAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
+        moveAnimation.fromValue = [NSValue valueWithCGPoint:CGPointMake(720, 720)];
+        moveAnimation.toValue = [NSValue valueWithCGPoint:CGPointMake(360, 360)];
+        moveAnimation.beginTime = 0;
+        moveAnimation.duration = duration;
+        moveAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        
+        CABasicAnimation *opacityAnimaiton = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        opacityAnimaiton.fromValue = @0;
+        opacityAnimaiton.toValue = @1;
+        opacityAnimaiton.beginTime = 0;
+        opacityAnimaiton.duration = duration;
+        
+        CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
+        animationGroup.beginTime = beginTime;
+        animationGroup.duration = duration;
+        animationGroup.animations = @[zoomAnimation,moveAnimation,opacityAnimaiton];
+        animationGroup.removedOnCompletion = NO;
+        animationGroup.fillMode = kCAFillModeForwards;
+        
+        [layer addAnimation:animationGroup forKey:nil];
+    }];
+    sceneObj.appear = customAppearTransition;
+    
     sceneObj.disappear = [[LBColorMaskTransitionObj alloc] initWithFromValue:nil
                                                                      toValue:[UIColor whiteColor]
                                                                 durationTime:transitionTime
@@ -268,7 +349,7 @@
     
     CMTime behaviorDurationTime = CMTimeSubtract(timeRange.duration, CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime]*2, timeRange.duration.timescale));
     CMTimeRange behaviorTimeRange = CMTimeRangeMake(CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], timeRange.duration.timescale), behaviorDurationTime);
-    LBContentsGradientBehaviorObj *behaviorObj = [[LBContentsGradientBehaviorObj alloc] initWithImages:images
+    LBContentGradientBehaviorObj *behaviorObj = [[LBContentGradientBehaviorObj alloc] initWithImages:images
                                                                                              timeRange:behaviorTimeRange];
     behaviorObj.extendBackwards = YES;
     behaviorObj.extendForwards = YES;
@@ -309,7 +390,7 @@
     CMTime bStartTime = CMTimeAdd(transitionTime, transitionTime);
     CMTime bDurationTime = CMTimeSubtract(CMTimeSubtract(CMTimeSubtract(timeRange.duration, transitionTime), transitionTime), transitionTime);
     CMTimeRange bTimeRange = CMTimeRangeMake(bStartTime, bDurationTime);
-    LBMovesBehaviorObj *moveBehavior = [[LBMovesBehaviorObj alloc] initWithPositions:positions timeRange:bTimeRange];
+    LBMoveBehaviorObj *moveBehavior = [[LBMoveBehaviorObj alloc] initWithPositions:positions timeRange:bTimeRange];
     moveBehavior.extendForwards = YES;
     moveBehavior.timingFunctionNames = @[
                                          kCAMediaTimingFunctionEaseIn,
@@ -318,7 +399,8 @@
                                          ];
     
     //Custom Behavior
-    LBZoomBehaviorObj *zoomBehavior = [LBZoomBehaviorObj animationWithBlock:^(CALayer *personLayer, CALayer *sceneLayer) {
+    /*
+    LBCustomBehaviorObj *customBehavior = [LBCustomBehaviorObj behaviorWithBlock:^(CALayer *personLayer, CALayer *sceneLayer) {
         CGSize originSize = toolLayer.bounds.size;
         
         CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"bounds"];
@@ -352,8 +434,9 @@
         
         [personLayer addAnimation:animationGroup forKey:nil];
     }];
+    */
     
-    personObj.behaviors = @[moveBehavior,zoomBehavior];
+    personObj.behaviors = @[moveBehavior];
     
     return personObj;
 }

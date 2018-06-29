@@ -64,7 +64,7 @@
 @end
 
 
-@implementation LBContentsGradientBehaviorObj
+@implementation LBContentGradientBehaviorObj
 
 @synthesize images;
 
@@ -78,7 +78,7 @@
 
 @end
 
-@implementation LBMovesBehaviorObj
+@implementation LBMoveBehaviorObj
 
 @synthesize positions;
 @synthesize path;
@@ -94,6 +94,36 @@
 - (instancetype)initWithPath:(UIBezierPath *)path timeRange:(CMTimeRange)timeRange {
     if (self = [super init]) {
         self.path = path;
+        self.timeRange = timeRange;
+    }
+    return self;
+}
+
+@end
+
+@implementation LBZoomBehaviorObj
+
+@synthesize zooms;
+
+- (instancetype)initWithZooms:(NSArray<NSValue *> *)zooms timeRange:(CMTimeRange)timeRange {
+    if (self = [super init]) {
+        self.zooms = zooms;
+        self.timeRange = timeRange;
+    }
+    return self;
+}
+
+@end
+
+@implementation LBTransformBehaviorObj
+
+@synthesize keyPath;
+@synthesize transforms;
+
+- (instancetype)initWithKeyPath:(NSString *)keyPath transforms:(NSArray<NSValue *> *)transforms timeRange:(CMTimeRange)timeRange {
+    if (self = [super init]) {
+        self.keyPath = keyPath;
+        self.transforms = transforms;
         self.timeRange = timeRange;
     }
     return self;

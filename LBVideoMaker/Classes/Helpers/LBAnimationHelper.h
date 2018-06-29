@@ -24,6 +24,28 @@
                                    autoreverses:(BOOL)autoreverses
                             timingFunctionNames:(NSArray<NSString *> *)timingFunctionNames;
 
++ (CAAnimation *)pathAnimationWithPath:(UIBezierPath *)path
+                             beginTime:(CFTimeInterval)beginTime
+                              duration:(CFTimeInterval)duration
+                           repeatCount:(NSUInteger)repeatCount
+                          autoreverses:(BOOL)autoreverses
+                   timingFunctionNames:(NSArray<NSString *> *)timingFunctionNames;
+
++ (CAAnimation *)boundsAnimationWithZooms:(NSArray<NSValue *> *)zooms
+                                beginTime:(CFTimeInterval)beginTime
+                                 duration:(CFTimeInterval)duration
+                              repeatCount:(NSUInteger)repeatCount
+                             autoreverses:(BOOL)autoreverses
+                      timingFunctionNames:(NSArray<NSString *> *)timingFunctionNames;
+
++ (CAAnimation *)transformAnimationWithKeyPath:(NSString *)keyPath
+                                    transforms:(NSArray<NSValue *> *)transforms
+                                     beginTime:(CFTimeInterval)beginTime
+                                      duration:(CFTimeInterval)duration
+                                   repeatCount:(NSUInteger)repeatCount
+                                  autoreverses:(BOOL)autoreverses
+                           timingFunctionNames:(NSArray<NSString *> *)timingFunctionNames;
+
 + (CAAnimation *)contentAnimationWithFromImage:(UIImage *)fromImage
                                        toImage:(UIImage *)toImage
                                      beginTime:(CFTimeInterval)beginTime

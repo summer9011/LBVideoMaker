@@ -10,11 +10,11 @@
 @implementation LBScreenplay
 
 + (id<LBVideoProtocol>)createVideoObjWithScreenplay:(NSString *)screenplay {
-    
+    return nil;
 }
 
 + (NSString *)createScreenplayWithVideoObj:(id<LBVideoProtocol>)videoObj {
-    
+    return nil;
 }
 
 @end

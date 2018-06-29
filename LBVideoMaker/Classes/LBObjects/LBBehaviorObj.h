@@ -13,15 +13,27 @@
 
 @end
 
-@interface LBContentsGradientBehaviorObj : LBBehaviorObj <LBContentsGradientBehaviorProtocol>
+@interface LBContentGradientBehaviorObj : LBBehaviorObj <LBContentGradientBehaviorProtocol>
 
 - (instancetype)initWithImages:(NSArray<UIImage *> *)images timeRange:(CMTimeRange)timeRange;
 
 @end
 
-@interface LBMovesBehaviorObj : LBBehaviorObj <LBMovesBehaviorProtocol>
+@interface LBMoveBehaviorObj : LBBehaviorObj <LBMoveBehaviorProtocol>
 
 - (instancetype)initWithPositions:(NSArray<NSValue *> *)positions timeRange:(CMTimeRange)timeRange;
 - (instancetype)initWithPath:(UIBezierPath *)path timeRange:(CMTimeRange)timeRange;
+
+@end
+
+@interface LBZoomBehaviorObj : LBBehaviorObj <LBZoomBehaviorProtocol>
+
+- (instancetype)initWithZooms:(NSArray<NSValue *> *)zooms timeRange:(CMTimeRange)timeRange;
+
+@end
+
+@interface LBTransformBehaviorObj : LBBehaviorObj <LBTransformBehaviorProtocol>
+
+- (instancetype)initWithKeyPath:(NSString *)keyPath transforms:(NSArray<NSValue *> *)transforms timeRange:(CMTimeRange)timeRange;
 
 @end
