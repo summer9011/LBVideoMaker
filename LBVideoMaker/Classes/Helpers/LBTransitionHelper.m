@@ -49,7 +49,8 @@
         } else if ([transition conformsToProtocol:@protocol(LBAlphaTransitionProtocol)]) {
             [self addAlphaTransition:(id<LBAlphaTransitionProtocol>)transition
                     keepDurationTime:keepDurationTime
-                           withLayer:layer];
+                           withLayer:layer
+                            isAppear:isAppear];
         } else if ([transition conformsToProtocol:@protocol(LBContentsMaskTransitionProtocol)]) {
             [self addContentsMaskTransition:(id<LBContentsMaskTransitionProtocol>)transition
                            keepDurationTime:keepDurationTime
@@ -123,13 +124,15 @@
                                                                                              timeRange:transition.timeRange];
         [self addAlphaTransition:alphaTransitionObj
                 keepDurationTime:keepDurationTime
-                       withLayer:layer];
+                       withLayer:layer
+                        isAppear:isAppear];
     }
 }
 
 + (void)addAlphaTransition:(id<LBAlphaTransitionProtocol>)transition
           keepDurationTime:(CMTime)keepDurationTime
-                 withLayer:(CALayer *)layer {
+                 withLayer:(CALayer *)layer
+                  isAppear:(BOOL)isAppear {
     CFTimeInterval beginTime = CMTimeGetSeconds(transition.absoluteStartTime);
     if (beginTime == 0.f) {
         beginTime = AVCoreAnimationBeginTimeAtZero;
@@ -145,7 +148,11 @@
     [layer addAnimation:transitionAnimation forKey:nil];
     
     beginTime = CMTimeGetSeconds(CMTimeAdd(transition.absoluteStartTime, transition.timeRange.duration));
-    duration = CMTimeGetSeconds(CMTimeSubtract(keepDurationTime, transition.timeRange.duration));
+    if (isAppear) {
+        duration = CMTimeGetSeconds(CMTimeSubtract(keepDurationTime, transition.timeRange.duration));
+    } else {
+        duration = CMTimeGetSeconds(keepDurationTime);
+    }
     CAAnimation *keepAnimation = [LBAnimationHelper opacityAnimationWithFromOpacity:transition.toAlpha
                                                                           toOpacity:transition.toAlpha
                                                                           beginTime:beginTime
