@@ -193,6 +193,8 @@
         animationGroup.beginTime = beginTime;
         animationGroup.duration = duration;
         animationGroup.animations = @[zoomAnimation,moveAnimation];
+        animationGroup.removedOnCompletion = NO;
+        animationGroup.fillMode = kCAFillModeForwards;
         
         [layer addAnimation:animationGroup forKey:nil];
     }];
@@ -264,6 +266,8 @@
         animationGroup.beginTime = beginTime;
         animationGroup.duration = duration;
         animationGroup.animations = @[zoomAnimation,moveAnimation];
+        animationGroup.removedOnCompletion = NO;
+        animationGroup.fillMode = kCAFillModeForwards;
         
         [layer addAnimation:animationGroup forKey:nil];
     }];

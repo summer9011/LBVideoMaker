@@ -145,22 +145,24 @@
                                                                               repeatCount:1
                                                                              autoreverses:NO
                                                                        timingFunctionName:nil];
+    transitionAnimation.removedOnCompletion = NO;
+    transitionAnimation.fillMode = kCAFillModeForwards;
     [layer addAnimation:transitionAnimation forKey:nil];
     
-    beginTime = CMTimeGetSeconds(CMTimeAdd(transition.absoluteStartTime, transition.timeRange.duration));
-    if (isAppear) {
-        duration = CMTimeGetSeconds(CMTimeSubtract(keepDurationTime, transition.timeRange.duration));
-    } else {
-        duration = CMTimeGetSeconds(keepDurationTime);
-    }
-    CAAnimation *keepAnimation = [LBAnimationHelper opacityAnimationWithFromOpacity:transition.toAlpha
-                                                                          toOpacity:transition.toAlpha
-                                                                          beginTime:beginTime
-                                                                           duration:duration
-                                                                        repeatCount:1
-                                                                       autoreverses:NO
-                                                                 timingFunctionName:nil];
-    [layer addAnimation:keepAnimation forKey:nil];
+//    beginTime = CMTimeGetSeconds(CMTimeAdd(transition.absoluteStartTime, transition.timeRange.duration));
+//    if (isAppear) {
+//        duration = CMTimeGetSeconds(CMTimeSubtract(keepDurationTime, transition.timeRange.duration));
+//    } else {
+//        duration = CMTimeGetSeconds(keepDurationTime);
+//    }
+//    CAAnimation *keepAnimation = [LBAnimationHelper opacityAnimationWithFromOpacity:transition.toAlpha
+//                                                                          toOpacity:transition.toAlpha
+//                                                                          beginTime:beginTime
+//                                                                           duration:duration
+//                                                                        repeatCount:1
+//                                                                       autoreverses:NO
+//                                                                 timingFunctionName:nil];
+//    [layer addAnimation:keepAnimation forKey:nil];
 }
 
 + (void)addContentsMaskTransition:(id<LBContentsMaskTransitionProtocol>)transition
