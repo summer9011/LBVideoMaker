@@ -570,11 +570,11 @@
     CALayer *coverLayer = [CALayer layer];
     coverLayer.contentsGravity = kCAGravityResizeAspect;
     coverLayer.contents = (__bridge id _Nullable)(image.CGImage);
-    [coverLayer setAffineTransform:CGAffineTransformRotate(CGAffineTransformIdentity, -1*M_PI_4/4.f)];
     
     CGRect coverRect = CGRectZero;
     coverRect.size = image.size;
     coverLayer.frame = coverRect;
+    [coverLayer setAffineTransform:CGAffineTransformRotate(CGAffineTransformIdentity, -1*M_PI_4/4.f)];
     
     return coverLayer;
 }
