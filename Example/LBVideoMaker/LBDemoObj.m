@@ -274,14 +274,11 @@
     LBPersonObj *backgroundPersonObj = [self createStepBackgroundPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     LBPersonObj *stepPersonObj = [self createStepPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     
-    
     CMTime dTime = CMTimeMakeWithSeconds(1, durationTime.timescale);
-    CGAffineTransform transform = CGAffineTransformRotate(CGAffineTransformIdentity, -1*M_PI_4/4.f);
     
     CMTime sTime = CMTimeAdd(transitionTime, transitionTime);
     CMTimeRange timeRange = CMTimeRangeMake(sTime, dTime);
     LBPersonObj *faceToolPersonObj = [self createStepToolPersonWithImageName:@"face"
-                                                                   transform:transform
                                                                    fromPoint:CGPointMake(240, 370)
                                                                      toPoint:CGPointMake(260, 370)
                                                                    timeRange:timeRange];
@@ -289,7 +286,6 @@
     sTime = CMTimeRangeGetEnd(timeRange);
     timeRange = CMTimeRangeMake(sTime, dTime);
     LBPersonObj *eyeToolPersonObj = [self createStepToolPersonWithImageName:@"eye"
-                                                                  transform:transform
                                                                   fromPoint:CGPointMake(460, 330)
                                                                     toPoint:CGPointMake(486, 330)
                                                                   timeRange:timeRange];
@@ -297,7 +293,6 @@
     sTime = CMTimeRangeGetEnd(timeRange);
     timeRange = CMTimeRangeMake(sTime, dTime);
     LBPersonObj *lipToolPersonObj = [self createStepToolPersonWithImageName:@"lip"
-                                                                  transform:transform
                                                                   fromPoint:CGPointMake(380, 490)
                                                                     toPoint:CGPointMake(400, 490)
                                                                   timeRange:timeRange];
@@ -341,13 +336,11 @@
 }
 
 + (LBPersonObj *)createStepToolPersonWithImageName:(NSString *)imageName
-                                         transform:(CGAffineTransform)transform
                                          fromPoint:(CGPoint)fromPoint
                                            toPoint:(CGPoint)toPoint
                                          timeRange:(CMTimeRange)timeRange {
     CALayer *toolLayer = [LBLayerHelper imageLayerWithImagePath:[self toolImagePathWithName:imageName]
                                                       videoSize:[self videoSize]];
-    [toolLayer setAffineTransform:transform];
     
     CGPoint position = toolLayer.position;
     position = fromPoint;
