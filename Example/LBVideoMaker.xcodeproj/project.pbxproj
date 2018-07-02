@@ -37,6 +37,8 @@
 		6E00997F20E325CE00023293 /* lip.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E00997C20E325CE00023293 /* lip.png */; };
 		6E285E0020E51087008D2C63 /* LBCustomBehaviorObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E285DFF20E51087008D2C63 /* LBCustomBehaviorObj.m */; };
 		6E7E227D20E9D03900DF1708 /* LBScreenplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7E227C20E9D03900DF1708 /* LBScreenplayController.m */; };
+		6E7E228720EA2D6200DF1708 /* LBCreateScreenplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7E228620EA2D6200DF1708 /* LBCreateScreenplayController.m */; };
+		6E7E228A20EA312900DF1708 /* LBCreateTimelineController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7E228920EA312900DF1708 /* LBCreateTimelineController.m */; };
 		6EC8135F20E5D60100BDF307 /* LBCustomTransitionObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC8135E20E5D60100BDF307 /* LBCustomTransitionObj.m */; };
 		6ECF594B20DD218700FF839E /* LBDemoObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF594A20DD218700FF839E /* LBDemoObj.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
@@ -98,6 +100,10 @@
 		6E285DFF20E51087008D2C63 /* LBCustomBehaviorObj.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBCustomBehaviorObj.m; sourceTree = "<group>"; };
 		6E7E227B20E9D03900DF1708 /* LBScreenplayController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBScreenplayController.h; sourceTree = "<group>"; };
 		6E7E227C20E9D03900DF1708 /* LBScreenplayController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBScreenplayController.m; sourceTree = "<group>"; };
+		6E7E228520EA2D6200DF1708 /* LBCreateScreenplayController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBCreateScreenplayController.h; sourceTree = "<group>"; };
+		6E7E228620EA2D6200DF1708 /* LBCreateScreenplayController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBCreateScreenplayController.m; sourceTree = "<group>"; };
+		6E7E228820EA312900DF1708 /* LBCreateTimelineController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBCreateTimelineController.h; sourceTree = "<group>"; };
+		6E7E228920EA312900DF1708 /* LBCreateTimelineController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBCreateTimelineController.m; sourceTree = "<group>"; };
 		6EC8135D20E5D60100BDF307 /* LBCustomTransitionObj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBCustomTransitionObj.h; sourceTree = "<group>"; };
 		6EC8135E20E5D60100BDF307 /* LBCustomTransitionObj.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBCustomTransitionObj.m; sourceTree = "<group>"; };
 		6ECF594920DD218700FF839E /* LBDemoObj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBDemoObj.h; sourceTree = "<group>"; };
@@ -194,6 +200,10 @@
 				6003F5A6195388D20070C39A /* LBVideosController.m */,
 				6E7E227B20E9D03900DF1708 /* LBScreenplayController.h */,
 				6E7E227C20E9D03900DF1708 /* LBScreenplayController.m */,
+				6E7E228520EA2D6200DF1708 /* LBCreateScreenplayController.h */,
+				6E7E228620EA2D6200DF1708 /* LBCreateScreenplayController.m */,
+				6E7E228820EA312900DF1708 /* LBCreateTimelineController.h */,
+				6E7E228920EA312900DF1708 /* LBCreateTimelineController.m */,
 				6ECF594920DD218700FF839E /* LBDemoObj.h */,
 				6ECF594A20DD218700FF839E /* LBDemoObj.m */,
 				6E00996F20E0DB6F00023293 /* LBLayerHelper.h */,
@@ -443,11 +453,13 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-LBVideoMaker_Example/Pods-LBVideoMaker_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/KVOController/KVOController.framework",
 				"${BUILT_PRODUCTS_DIR}/LBVideoMaker/LBVideoMaker.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactiveObjC/ReactiveObjC.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KVOController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LBVideoMaker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveObjC.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -461,9 +473,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E7E228720EA2D6200DF1708 /* LBCreateScreenplayController.m in Sources */,
 				6E00997120E0DB6F00023293 /* LBLayerHelper.m in Sources */,
 				6EC8135F20E5D60100BDF307 /* LBCustomTransitionObj.m in Sources */,
 				6ECF594B20DD218700FF839E /* LBDemoObj.m in Sources */,
+				6E7E228A20EA312900DF1708 /* LBCreateTimelineController.m in Sources */,
 				6003F59E195388D20070C39A /* LBAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* LBVideosController.m in Sources */,
 				6E285E0020E51087008D2C63 /* LBCustomBehaviorObj.m in Sources */,

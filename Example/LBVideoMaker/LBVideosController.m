@@ -21,6 +21,8 @@
 @property (nonatomic, strong) NSMutableArray<NSDate *> *videoDates;
 @property (nonatomic, strong) NSMutableDictionary<NSDate *, NSURL *> *videoURLDic;
 
+@property (nonatomic, strong) NSString *exportDir;
+
 @end
 
 @implementation LBVideosController
@@ -32,13 +34,14 @@
     self.videoDates = [NSMutableArray array];
     self.videoURLDic = [NSMutableDictionary dictionary];
     
+    self.exportDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"videos"];
+    
+    BOOL isDir = YES;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:self.exportDir isDirectory:&isDir]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:self.exportDir withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    
     [self loadVideoData];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Actions
@@ -71,9 +74,8 @@
 
 - (void)loadVideoData {
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        NSString *exportDir = NSTemporaryDirectory();
         NSArray *propertieKeys = @[NSURLContentModificationDateKey];
-        NSArray<NSURL *> *fileContents = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:exportDir] includingPropertiesForKeys:propertieKeys options:0 error:nil];
+        NSArray<NSURL *> *fileContents = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:self.exportDir] includingPropertiesForKeys:propertieKeys options:0 error:nil];
         [fileContents enumerateObjectsUsingBlock:^(NSURL * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             NSDictionary<NSURLResourceKey, id> *attributesDictionary = [obj resourceValuesForKeys:propertieKeys error:nil];
             NSDate *lastModifiedDate = [attributesDictionary objectForKey:NSURLContentModificationDateKey];
@@ -136,13 +138,12 @@
 - (void)makeVideo {
     self.moreBtnItem.enabled = NO;
     
-    NSString *dir = NSTemporaryDirectory();
     NSString *name = [[NSUUID UUID].UUIDString lowercaseString];
-    NSString *fullPath = [[dir stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"mp4"];
+    NSString *fullPath = [[self.exportDir stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"mp4"];
     NSURL *videoURL = [NSURL fileURLWithPath:fullPath];
     
     [[LBVideoMaker shareMaker] makeVideo:[LBDemoObj createDemoObj]
-                             toDirectory:dir
+                             toDirectory:self.exportDir
                                 withName:name
                                extension:LBVideoExtensionDefault
                            progressBlock:^(CGFloat progress) {
@@ -165,8 +166,7 @@
     self.moreBtnItem.enabled = NO;
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        NSString *exportDir = NSTemporaryDirectory();
-        NSArray<NSURL *> *fileContents = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:exportDir] includingPropertiesForKeys:nil options:0 error:nil];
+        NSArray<NSURL *> *fileContents = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:self.exportDir] includingPropertiesForKeys:nil options:0 error:nil];
         [fileContents enumerateObjectsUsingBlock:^(NSURL * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             [[NSFileManager defaultManager] removeItemAtURL:obj error:nil];
         }];

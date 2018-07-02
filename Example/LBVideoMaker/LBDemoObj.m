@@ -206,9 +206,11 @@
 + (LBSceneObj *)createFooterSceneWithDurationTime:(CMTime)durationTime {
     LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime
                                                            sortType:LBSceneSortLast];
+    
+    CMTime transitionTime = CMTimeMakeWithSeconds([self normalTransitionTime], durationTime.timescale);
     sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromValue:[UIColor whiteColor]
                                                                   toValue:nil
-                                                             durationTime:CMTimeMakeWithSeconds([self normalTransitionTime], durationTime.timescale)];
+                                                             durationTime:transitionTime];
     
     LBPersonObj *logoPersonObj = [self createLogoPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     sceneObj.persons = @[logoPersonObj];

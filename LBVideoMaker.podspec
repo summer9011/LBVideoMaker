@@ -39,4 +39,5 @@ A tool for create video with static resources & export video.
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'AVFoundation', 'AVKit'
   s.dependency 'KVOController'
+  s.dependency 'ReactiveObjC'
 end
