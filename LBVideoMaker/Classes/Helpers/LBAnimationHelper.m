@@ -16,7 +16,13 @@
     } else {
         animation.values = object.values;
     }
-    animation.beginTime = object.beginTime;
+    
+    CFTimeInterval beginTime = object.beginTime;
+    if (beginTime <= 0.f) {
+        beginTime = AVCoreAnimationBeginTimeAtZero;
+    }
+    animation.beginTime = beginTime;
+    
     animation.duration = object.duration/((CGFloat)object.repeatCount * (object.autoreverses?2:1));
     animation.repeatCount = object.repeatCount;
     animation.autoreverses = object.autoreverses;

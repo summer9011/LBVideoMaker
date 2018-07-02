@@ -40,9 +40,6 @@
                     withPersonLayer:(CALayer *)personLayer
                        toSceneLayer:(CALayer *)sceneLayer {
     CFTimeInterval beginTime = CMTimeGetSeconds(behavior.absoluteStartTime);
-    if (beginTime == 0.f) {
-        beginTime = AVCoreAnimationBeginTimeAtZero;
-    }
     CFTimeInterval duration = CMTimeGetSeconds(behavior.timeRange.duration);
     
     LBAnimationHelperObject *animationObj = [[LBAnimationHelperObject alloc] initWithBehavior:behavior];
@@ -62,9 +59,6 @@
          withPersonLayer:(CALayer *)personLayer
             toSceneLayer:(CALayer *)sceneLayer {
     CFTimeInterval beginTime = CMTimeGetSeconds(behavior.absoluteStartTime);
-    if (beginTime == 0.f) {
-        beginTime = AVCoreAnimationBeginTimeAtZero;
-    }
     CFTimeInterval duration = CMTimeGetSeconds(behavior.timeRange.duration);
     
     CAAnimation *animation = nil;
@@ -93,9 +87,6 @@
         withPersonLayer:(CALayer *)personLayer
            toSceneLayer:(CALayer *)sceneLayer {
     CFTimeInterval beginTime = CMTimeGetSeconds(behavior.absoluteStartTime);
-    if (beginTime == 0.f) {
-        beginTime = AVCoreAnimationBeginTimeAtZero;
-    }
     CFTimeInterval duration = CMTimeGetSeconds(behavior.timeRange.duration);
     
     LBAnimationHelperObject *animationObj = [[LBAnimationHelperObject alloc] initWithBehavior:behavior];
@@ -111,9 +102,6 @@
              withPersonLayer:(CALayer *)personLayer
                 toSceneLayer:(CALayer *)sceneLayer {
     CFTimeInterval beginTime = CMTimeGetSeconds(behavior.absoluteStartTime);
-    if (beginTime == 0.f) {
-        beginTime = AVCoreAnimationBeginTimeAtZero;
-    }
     CFTimeInterval duration = CMTimeGetSeconds(behavior.timeRange.duration);
     
     LBAnimationHelperObject *animationObj = [[LBAnimationHelperObject alloc] initWithBehavior:behavior];

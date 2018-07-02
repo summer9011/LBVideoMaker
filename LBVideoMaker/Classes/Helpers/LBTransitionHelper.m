@@ -74,9 +74,6 @@
     BOOL isAlphaChange = !isContentChange && !isDefaultChange;
     
     CFTimeInterval beginTime = CMTimeGetSeconds(transition.absoluteStartTime);
-    if (beginTime == 0.f) {
-        beginTime = AVCoreAnimationBeginTimeAtZero;
-    }
     CFTimeInterval duration = CMTimeGetSeconds(transition.timeRange.duration);
     
     CALayer *colorMaskLayer = nil;
@@ -133,9 +130,6 @@
                  withLayer:(CALayer *)layer
                   isAppear:(BOOL)isAppear {
     CFTimeInterval beginTime = CMTimeGetSeconds(transition.absoluteStartTime);
-    if (beginTime == 0.f) {
-        beginTime = AVCoreAnimationBeginTimeAtZero;
-    }
     CFTimeInterval duration = CMTimeGetSeconds(transition.timeRange.duration);
     
     LBAnimationHelperObject *transitionAnimationObj = [[LBAnimationHelperObject alloc] initWithTransition:transition];
@@ -167,9 +161,6 @@
                     toParentLayer:(CALayer *)parentLayer
                          isAppear:(BOOL)isAppear {
     CFTimeInterval beginTime = CMTimeGetSeconds(transition.absoluteStartTime);
-    if (beginTime == 0.f) {
-        beginTime = AVCoreAnimationBeginTimeAtZero;
-    }
     CFTimeInterval duration = CMTimeGetSeconds(transition.timeRange.duration);
     
     LBAnimationHelperObject *animationObj = [[LBAnimationHelperObject alloc] initWithTransition:transition];
