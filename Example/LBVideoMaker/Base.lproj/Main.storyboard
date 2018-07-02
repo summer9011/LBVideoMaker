@@ -452,6 +452,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g6l-Wd-JWs">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="579"/>
+                            </scrollView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5cq-a0-HrQ">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
@@ -463,22 +466,26 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g6l-Wd-JWs">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
-                                <connections>
-                                    <outlet property="delegate" destination="YYi-Nl-tuT" id="Nuw-0L-2pd"/>
-                                </connections>
-                            </scrollView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nem-tm-xx1">
+                                <rect key="frame" x="0.0" y="579" width="375" height="44"/>
+                                <items>
+                                    <barButtonItem title="Add" id="GnS-uz-p5u"/>
+                                    <barButtonItem title="Delete" id="3r6-Z7-e3E"/>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="5cq-a0-HrQ" firstAttribute="top" secondItem="g6l-Wd-JWs" secondAttribute="bottom" id="AZb-ae-YI9"/>
+                            <constraint firstAttribute="trailing" secondItem="nem-tm-xx1" secondAttribute="trailing" id="99Z-SN-ETk"/>
                             <constraint firstAttribute="trailing" secondItem="5cq-a0-HrQ" secondAttribute="trailing" id="Jxv-ER-rSu"/>
                             <constraint firstItem="5cq-a0-HrQ" firstAttribute="leading" secondItem="n9I-qe-A4k" secondAttribute="leading" id="MCp-DS-BvG"/>
                             <constraint firstItem="g6l-Wd-JWs" firstAttribute="top" secondItem="n9I-qe-A4k" secondAttribute="top" id="TXr-Nx-a2Q"/>
                             <constraint firstAttribute="trailing" secondItem="g6l-Wd-JWs" secondAttribute="trailing" id="cJU-eb-5be"/>
                             <constraint firstItem="g6l-Wd-JWs" firstAttribute="leading" secondItem="n9I-qe-A4k" secondAttribute="leading" id="ejM-Qj-Sfa"/>
+                            <constraint firstItem="5cq-a0-HrQ" firstAttribute="top" secondItem="nem-tm-xx1" secondAttribute="bottom" id="foY-xJ-udU"/>
                             <constraint firstItem="oY9-Qt-oyH" firstAttribute="top" secondItem="5cq-a0-HrQ" secondAttribute="bottom" id="naf-Ek-SIK"/>
+                            <constraint firstItem="nem-tm-xx1" firstAttribute="leading" secondItem="n9I-qe-A4k" secondAttribute="leading" id="tSL-O9-Urd"/>
+                            <constraint firstItem="nem-tm-xx1" firstAttribute="top" secondItem="g6l-Wd-JWs" secondAttribute="bottom" id="toy-f6-pIP"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Timeline" id="bKZ-Rs-sw3">
