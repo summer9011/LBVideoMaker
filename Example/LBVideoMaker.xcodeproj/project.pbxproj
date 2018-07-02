@@ -36,9 +36,10 @@
 		6E00997E20E325CE00023293 /* eye.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E00997B20E325CE00023293 /* eye.png */; };
 		6E00997F20E325CE00023293 /* lip.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E00997C20E325CE00023293 /* lip.png */; };
 		6E285E0020E51087008D2C63 /* LBCustomBehaviorObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E285DFF20E51087008D2C63 /* LBCustomBehaviorObj.m */; };
+		6E55CE6220EA661B0037E3B1 /* LBCreateScreenplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E55CE5E20EA661B0037E3B1 /* LBCreateScreenplayController.m */; };
+		6E55CE6320EA661B0037E3B1 /* LBCreateTimelineController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E55CE6120EA661B0037E3B1 /* LBCreateTimelineController.m */; };
+		6E55CE6620EA6DA30037E3B1 /* LBResourceListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E55CE6520EA6DA30037E3B1 /* LBResourceListController.m */; };
 		6E7E227D20E9D03900DF1708 /* LBScreenplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7E227C20E9D03900DF1708 /* LBScreenplayController.m */; };
-		6E7E228720EA2D6200DF1708 /* LBCreateScreenplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7E228620EA2D6200DF1708 /* LBCreateScreenplayController.m */; };
-		6E7E228A20EA312900DF1708 /* LBCreateTimelineController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7E228920EA312900DF1708 /* LBCreateTimelineController.m */; };
 		6EC8135F20E5D60100BDF307 /* LBCustomTransitionObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC8135E20E5D60100BDF307 /* LBCustomTransitionObj.m */; };
 		6ECF594B20DD218700FF839E /* LBDemoObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF594A20DD218700FF839E /* LBDemoObj.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
@@ -98,12 +99,14 @@
 		6E00997C20E325CE00023293 /* lip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lip.png; sourceTree = "<group>"; };
 		6E285DFE20E51087008D2C63 /* LBCustomBehaviorObj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBCustomBehaviorObj.h; sourceTree = "<group>"; };
 		6E285DFF20E51087008D2C63 /* LBCustomBehaviorObj.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBCustomBehaviorObj.m; sourceTree = "<group>"; };
+		6E55CE5E20EA661B0037E3B1 /* LBCreateScreenplayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBCreateScreenplayController.m; sourceTree = "<group>"; };
+		6E55CE5F20EA661B0037E3B1 /* LBCreateScreenplayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBCreateScreenplayController.h; sourceTree = "<group>"; };
+		6E55CE6020EA661B0037E3B1 /* LBCreateTimelineController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBCreateTimelineController.h; sourceTree = "<group>"; };
+		6E55CE6120EA661B0037E3B1 /* LBCreateTimelineController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBCreateTimelineController.m; sourceTree = "<group>"; };
+		6E55CE6420EA6DA30037E3B1 /* LBResourceListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBResourceListController.h; sourceTree = "<group>"; };
+		6E55CE6520EA6DA30037E3B1 /* LBResourceListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBResourceListController.m; sourceTree = "<group>"; };
 		6E7E227B20E9D03900DF1708 /* LBScreenplayController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBScreenplayController.h; sourceTree = "<group>"; };
 		6E7E227C20E9D03900DF1708 /* LBScreenplayController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBScreenplayController.m; sourceTree = "<group>"; };
-		6E7E228520EA2D6200DF1708 /* LBCreateScreenplayController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBCreateScreenplayController.h; sourceTree = "<group>"; };
-		6E7E228620EA2D6200DF1708 /* LBCreateScreenplayController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBCreateScreenplayController.m; sourceTree = "<group>"; };
-		6E7E228820EA312900DF1708 /* LBCreateTimelineController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBCreateTimelineController.h; sourceTree = "<group>"; };
-		6E7E228920EA312900DF1708 /* LBCreateTimelineController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBCreateTimelineController.m; sourceTree = "<group>"; };
 		6EC8135D20E5D60100BDF307 /* LBCustomTransitionObj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBCustomTransitionObj.h; sourceTree = "<group>"; };
 		6EC8135E20E5D60100BDF307 /* LBCustomTransitionObj.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBCustomTransitionObj.m; sourceTree = "<group>"; };
 		6ECF594920DD218700FF839E /* LBDemoObj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBDemoObj.h; sourceTree = "<group>"; };
@@ -200,10 +203,12 @@
 				6003F5A6195388D20070C39A /* LBVideosController.m */,
 				6E7E227B20E9D03900DF1708 /* LBScreenplayController.h */,
 				6E7E227C20E9D03900DF1708 /* LBScreenplayController.m */,
-				6E7E228520EA2D6200DF1708 /* LBCreateScreenplayController.h */,
-				6E7E228620EA2D6200DF1708 /* LBCreateScreenplayController.m */,
-				6E7E228820EA312900DF1708 /* LBCreateTimelineController.h */,
-				6E7E228920EA312900DF1708 /* LBCreateTimelineController.m */,
+				6E55CE5F20EA661B0037E3B1 /* LBCreateScreenplayController.h */,
+				6E55CE5E20EA661B0037E3B1 /* LBCreateScreenplayController.m */,
+				6E55CE6020EA661B0037E3B1 /* LBCreateTimelineController.h */,
+				6E55CE6120EA661B0037E3B1 /* LBCreateTimelineController.m */,
+				6E55CE6420EA6DA30037E3B1 /* LBResourceListController.h */,
+				6E55CE6520EA6DA30037E3B1 /* LBResourceListController.m */,
 				6ECF594920DD218700FF839E /* LBDemoObj.h */,
 				6ECF594A20DD218700FF839E /* LBDemoObj.m */,
 				6E00996F20E0DB6F00023293 /* LBLayerHelper.h */,
@@ -346,7 +351,7 @@
 				ORGANIZATIONNAME = "胡萝卜_小波波";
 				TargetAttributes = {
 					6003F589195388D20070C39A = {
-						DevelopmentTeam = 7KD22EQFBB;
+						DevelopmentTeam = U9A4TD7GB4;
 					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
@@ -473,12 +478,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E7E228720EA2D6200DF1708 /* LBCreateScreenplayController.m in Sources */,
+				6E55CE6220EA661B0037E3B1 /* LBCreateScreenplayController.m in Sources */,
 				6E00997120E0DB6F00023293 /* LBLayerHelper.m in Sources */,
 				6EC8135F20E5D60100BDF307 /* LBCustomTransitionObj.m in Sources */,
 				6ECF594B20DD218700FF839E /* LBDemoObj.m in Sources */,
-				6E7E228A20EA312900DF1708 /* LBCreateTimelineController.m in Sources */,
+				6E55CE6320EA661B0037E3B1 /* LBCreateTimelineController.m in Sources */,
 				6003F59E195388D20070C39A /* LBAppDelegate.m in Sources */,
+				6E55CE6620EA6DA30037E3B1 /* LBResourceListController.m in Sources */,
 				6003F5A7195388D20070C39A /* LBVideosController.m in Sources */,
 				6E285E0020E51087008D2C63 /* LBCustomBehaviorObj.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
@@ -610,7 +616,7 @@
 			baseConfigurationReference = 4F495CAB19FB42785DDA4328 /* Pods-LBVideoMaker_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 7KD22EQFBB;
+				DEVELOPMENT_TEAM = U9A4TD7GB4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LBVideoMaker/LBVideoMaker-Prefix.pch";
 				INFOPLIST_FILE = "LBVideoMaker/LBVideoMaker-Info.plist";
@@ -626,7 +632,7 @@
 			baseConfigurationReference = 805AC189D1EAAC805569BF75 /* Pods-LBVideoMaker_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 7KD22EQFBB;
+				DEVELOPMENT_TEAM = U9A4TD7GB4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LBVideoMaker/LBVideoMaker-Prefix.pch";
 				INFOPLIST_FILE = "LBVideoMaker/LBVideoMaker-Info.plist";

@@ -1,5 +1,5 @@
 //
-//  LBCreateTimelineController.h
+//  LBResourceListController.h
 //  LBVideoMaker_Example
 //
 //  Created by 赵立波 on 2018/7/2.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <LBVideoMaker/LBScreenplayObj.h>
 
-@interface LBCreateTimelineController : UIViewController
+@interface LBResourceListController : UIViewController
 
 @property (nonatomic, strong) LBScreenplayObj *obj;
 

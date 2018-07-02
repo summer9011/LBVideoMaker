@@ -143,7 +143,8 @@
 #pragma mark - Segue
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(nullable id)sender {
-    LBCreateScreenplayController *createScreenplayVC = (LBCreateScreenplayController *)segue.destinationViewController;
+    UINavigationController *naviVC = (UINavigationController *)segue.destinationViewController;
+    LBCreateScreenplayController *createScreenplayVC = (LBCreateScreenplayController *)naviVC.viewControllers.firstObject;
     
     __weak LBScreenplayController *weakSelf = self;
     createScreenplayVC.createBlock = ^(NSURL *screenplayURL) {
