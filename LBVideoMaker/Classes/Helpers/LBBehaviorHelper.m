@@ -45,13 +45,16 @@
     }
     CFTimeInterval duration = CMTimeGetSeconds(behavior.timeRange.duration);
     
-    CAAnimation *animation = [LBAnimationHelper contentsAnimationWithImages:behavior.images
-                                                                  beginTime:beginTime
-                                                                   duration:duration
-                                                                repeatCount:behavior.repeatCount
-                                                               autoreverses:behavior.autoreverses
-                                                        timingFunctionNames:behavior.timingFunctionNames];
-    [self addCommonBehaviorProperty:behavior forAnimation:animation];
+    LBAnimationHelperObject *animationObj = [[LBAnimationHelperObject alloc] initWithBehavior:behavior];
+    NSMutableArray *cgImages = [NSMutableArray array];
+    [behavior.images enumerateObjectsUsingBlock:^(UIImage * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [cgImages addObject:(id)obj.CGImage];
+    }];
+    animationObj.values = cgImages;
+    animationObj.keyPath = @"contents";
+    animationObj.beginTime = beginTime;
+    animationObj.duration = duration;
+    CAAnimation *animation = [LBAnimationHelper animationWithObject:animationObj];
     [personLayer addAnimation:animation forKey:nil];
 }
 
@@ -66,23 +69,22 @@
     
     CAAnimation *animation = nil;
     if (behavior.path) {
-        animation = [LBAnimationHelper pathAnimationWithPath:behavior.path
-                                                   beginTime:beginTime
-                                                    duration:duration
-                                                 repeatCount:behavior.repeatCount
-                                                autoreverses:behavior.autoreverses
-                                         timingFunctionNames:behavior.timingFunctionNames];
+        LBAnimationHelperObject *animationObj = [[LBAnimationHelperObject alloc] initWithBehavior:behavior];
+        animationObj.path = behavior.path;
+        animationObj.keyPath = @"position";
+        animationObj.beginTime = beginTime;
+        animationObj.duration = duration;
+        animation = [LBAnimationHelper animationWithObject:animationObj];
     } else if (behavior.positions) {
-        animation = [LBAnimationHelper positionAnimationWithPositions:behavior.positions
-                                                            beginTime:beginTime
-                                                             duration:duration
-                                                          repeatCount:behavior.repeatCount
-                                                         autoreverses:behavior.autoreverses
-                                                  timingFunctionNames:behavior.timingFunctionNames];
+        LBAnimationHelperObject *animationObj = [[LBAnimationHelperObject alloc] initWithBehavior:behavior];
+        animationObj.values = behavior.positions;
+        animationObj.keyPath = @"position";
+        animationObj.beginTime = beginTime;
+        animationObj.duration = duration;
+        animation = [LBAnimationHelper animationWithObject:animationObj];
     }
     
     if (animation) {
-        [self addCommonBehaviorProperty:behavior forAnimation:animation];
         [personLayer addAnimation:animation forKey:nil];
     }
 }
@@ -96,13 +98,12 @@
     }
     CFTimeInterval duration = CMTimeGetSeconds(behavior.timeRange.duration);
     
-    CAAnimation *animation = [LBAnimationHelper boundsAnimationWithZooms:behavior.zooms
-                                                               beginTime:beginTime
-                                                                duration:duration
-                                                             repeatCount:behavior.repeatCount
-                                                            autoreverses:behavior.autoreverses
-                                                     timingFunctionNames:behavior.timingFunctionNames];
-    [self addCommonBehaviorProperty:behavior forAnimation:animation];
+    LBAnimationHelperObject *animationObj = [[LBAnimationHelperObject alloc] initWithBehavior:behavior];
+    animationObj.values = behavior.zooms;
+    animationObj.keyPath = @"bounds";
+    animationObj.beginTime = beginTime;
+    animationObj.duration = duration;
+    CAAnimation *animation = [LBAnimationHelper animationWithObject:animationObj];
     [personLayer addAnimation:animation forKey:nil];
 }
 
@@ -115,27 +116,13 @@
     }
     CFTimeInterval duration = CMTimeGetSeconds(behavior.timeRange.duration);
     
-    CAAnimation *animation = [LBAnimationHelper transformAnimationWithKeyPath:behavior.keyPath
-                                                                   transforms:behavior.transforms
-                                                                    beginTime:beginTime
-                                                                     duration:duration
-                                                                  repeatCount:behavior.repeatCount
-                                                                 autoreverses:behavior.autoreverses
-                                                          timingFunctionNames:behavior.timingFunctionNames];
-    [self addCommonBehaviorProperty:behavior forAnimation:animation];
+    LBAnimationHelperObject *animationObj = [[LBAnimationHelperObject alloc] initWithBehavior:behavior];
+    animationObj.values = behavior.transforms;
+    animationObj.keyPath = behavior.keyPath;
+    animationObj.beginTime = beginTime;
+    animationObj.duration = duration;
+    CAAnimation *animation = [LBAnimationHelper animationWithObject:animationObj];
     [personLayer addAnimation:animation forKey:nil];
-}
-    
-+ (void)addCommonBehaviorProperty:(id<LBBehaviorProtocol>)behavior forAnimation:(CAAnimation *)animation {
-    if (behavior.extendBackwards && behavior.extendForwards) {
-        animation.removedOnCompletion = NO;
-        animation.fillMode = kCAFillModeBoth;
-    } else if (behavior.extendBackwards) {
-        animation.fillMode = kCAFillModeBackwards;
-    } else if (behavior.extendForwards) {
-        animation.removedOnCompletion = NO;
-        animation.fillMode = kCAFillModeForwards;
-    }
 }
 
 @end

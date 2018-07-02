@@ -6,59 +6,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LBAnimationHelperObject.h"
 
 @interface LBAnimationHelper : NSObject
 
-+ (CAAnimation *)opacityAnimationWithFromOpacity:(CGFloat)fromOpacity
-                                       toOpacity:(CGFloat)toOpacity
-                                       beginTime:(CFTimeInterval)beginTime
-                                        duration:(CFTimeInterval)duration
-                                     repeatCount:(NSUInteger)repeatCount
-                                    autoreverses:(BOOL)autoreverses
-                              timingFunctionName:(NSString *)timingFunctionName;
-
-+ (CAAnimation *)positionAnimationWithPositions:(NSArray<NSValue *> *)positions
-                                      beginTime:(CFTimeInterval)beginTime
-                                       duration:(CFTimeInterval)duration
-                                    repeatCount:(NSUInteger)repeatCount
-                                   autoreverses:(BOOL)autoreverses
-                            timingFunctionNames:(NSArray<NSString *> *)timingFunctionNames;
-
-+ (CAAnimation *)pathAnimationWithPath:(UIBezierPath *)path
-                             beginTime:(CFTimeInterval)beginTime
-                              duration:(CFTimeInterval)duration
-                           repeatCount:(NSUInteger)repeatCount
-                          autoreverses:(BOOL)autoreverses
-                   timingFunctionNames:(NSArray<NSString *> *)timingFunctionNames;
-
-+ (CAAnimation *)boundsAnimationWithZooms:(NSArray<NSValue *> *)zooms
-                                beginTime:(CFTimeInterval)beginTime
-                                 duration:(CFTimeInterval)duration
-                              repeatCount:(NSUInteger)repeatCount
-                             autoreverses:(BOOL)autoreverses
-                      timingFunctionNames:(NSArray<NSString *> *)timingFunctionNames;
-
-+ (CAAnimation *)transformAnimationWithKeyPath:(NSString *)keyPath
-                                    transforms:(NSArray<NSValue *> *)transforms
-                                     beginTime:(CFTimeInterval)beginTime
-                                      duration:(CFTimeInterval)duration
-                                   repeatCount:(NSUInteger)repeatCount
-                                  autoreverses:(BOOL)autoreverses
-                           timingFunctionNames:(NSArray<NSString *> *)timingFunctionNames;
-
-+ (CAAnimation *)contentAnimationWithFromImage:(UIImage *)fromImage
-                                       toImage:(UIImage *)toImage
-                                     beginTime:(CFTimeInterval)beginTime
-                                      duration:(CFTimeInterval)duration
-                                   repeatCount:(NSUInteger)repeatCount
-                                  autoreverses:(BOOL)autoreverses
-                            timingFunctionName:(NSString *)timingFunctionName;
-
-+ (CAAnimation *)contentsAnimationWithImages:(NSArray<UIImage *> *)images
-                                   beginTime:(CFTimeInterval)beginTime
-                                    duration:(CFTimeInterval)duration
-                                 repeatCount:(NSUInteger)repeatCount
-                                autoreverses:(BOOL)autoreverses
-                         timingFunctionNames:(NSArray<NSString *> *)timingFunctionNames;
++ (CAAnimation *)animationWithObject:(LBAnimationHelperObject *)object;
 
 @end

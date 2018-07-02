@@ -1,5 +1,5 @@
 //
-//  LBViewController.h
+//  LBVideosController.h
 //  LBVideoMaker
 //
 //  Created by 胡萝卜_小波波 on 06/12/2018.
@@ -8,6 +8,6 @@
 
 @import UIKit;
 
-@interface LBViewController : UIViewController
+@interface LBVideosController : UIViewController
 
 @end

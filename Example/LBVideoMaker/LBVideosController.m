@@ -1,21 +1,21 @@
 //
-//  LBViewController.m
+//  LBVideosController.m
 //  LBVideoMaker
 //
 //  Created by 胡萝卜_小波波 on 06/12/2018.
 //  Copyright (c) 2018 胡萝卜_小波波. All rights reserved.
 //
 
-#import "LBViewController.h"
+#import "LBVideosController.h"
 #import "LBDemoObj.h"
 
 @import AVKit;
 @import LBVideoMaker;
 
-@interface LBViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface LBVideosController () <UITableViewDataSource, UITableViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *makeVideoBtnItem;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *clearVideoBtnItem;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *moreBtnItem;
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic, strong) NSMutableArray<NSDate *> *videoDates;
@@ -23,7 +23,7 @@
 
 @end
 
-@implementation LBViewController
+@implementation LBVideosController
 
 - (void)viewDidLoad
 {
@@ -40,6 +40,34 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - Actions
+
+- (IBAction)doMoreAction:(UIBarButtonItem *)btnItem {
+    UIAlertController *sheet = [UIAlertController alertControllerWithTitle:@"Tools" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *makeAction = [UIAlertAction actionWithTitle:@"Make video" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self makeVideo];
+    }];
+    [sheet addAction:makeAction];
+    
+    UIAlertAction *clearAction = [UIAlertAction actionWithTitle:@"Clear all videos" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self clearAllVideos];
+    }];
+    [sheet addAction:clearAction];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    [sheet addAction:cancelAction];
+    
+    UIPopoverPresentationController *popover = sheet.popoverPresentationController;
+    if (popover) {
+        popover.barButtonItem = btnItem;
+        popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    }
+    [self presentViewController:sheet animated:YES completion:nil];
+}
+
+#pragma mark - Private Method
 
 - (void)loadVideoData {
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
@@ -105,8 +133,8 @@
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
-- (IBAction)makeVideo:(id)sender {
-    self.makeVideoBtnItem.enabled = NO;
+- (void)makeVideo {
+    self.moreBtnItem.enabled = NO;
     
     NSString *dir = NSTemporaryDirectory();
     NSString *name = [[NSUUID UUID].UUIDString lowercaseString];
@@ -121,8 +149,6 @@
                                NSLog(@"progress %f", progress);
                            }
                              resultBlock:^(BOOL success, NSError *error) {
-                                 self.makeVideoBtnItem.enabled = YES;
-                                 
                                  if (success) {
                                      NSIndexPath *insertIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
                                      [self.tableView beginUpdates];
@@ -131,11 +157,12 @@
                                  } else {
                                      NSLog(@"error %@", error);
                                  }
+                                 self.moreBtnItem.enabled = YES;
                              }];
 }
 
-- (IBAction)clearAllVideos:(id)sender {
-    self.clearVideoBtnItem.enabled = NO;
+- (void)clearAllVideos {
+    self.moreBtnItem.enabled = NO;
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         NSString *exportDir = NSTemporaryDirectory();
@@ -148,7 +175,7 @@
             [self.videoURLDic removeAllObjects];
             
             [self.tableView reloadData];
-            self.clearVideoBtnItem.enabled = YES;
+            self.moreBtnItem.enabled = YES;
         });
     });
 }

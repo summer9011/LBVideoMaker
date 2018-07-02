@@ -90,13 +90,12 @@
         UIImage *fromImage = [LBImageHelper createImageWithColor:transition.fromColor];
         UIImage *toImage = [LBImageHelper createImageWithColor:transition.toColor];
         
-        animation = [LBAnimationHelper contentAnimationWithFromImage:fromImage
-                                                             toImage:toImage
-                                                           beginTime:beginTime
-                                                            duration:duration
-                                                         repeatCount:1
-                                                        autoreverses:NO
-                                                  timingFunctionName:nil];
+        LBAnimationHelperObject *animationObj = [[LBAnimationHelperObject alloc] initWithTransition:transition];
+        animationObj.values = @[(id)fromImage.CGImage, (id)toImage.CGImage];
+        animationObj.keyPath = @"contents";
+        animationObj.beginTime = beginTime;
+        animationObj.duration = duration;
+        animation = [LBAnimationHelper animationWithObject:animationObj];
     } else if (isAlphaChange) {
         colorMaskLayer = [CALayer layer];
         colorMaskLayer.frame = layer.frame;
@@ -107,14 +106,14 @@
         CGFloat fromOpacity = isFromColorNull?0:1;
         CGFloat toOpacity = isFromColorNull?1:0;
         
-        animation = [LBAnimationHelper opacityAnimationWithFromOpacity:fromOpacity
-                                                             toOpacity:toOpacity
-                                                             beginTime:beginTime
-                                                              duration:duration
-                                                           repeatCount:1
-                                                          autoreverses:NO
-                                                    timingFunctionName:nil];
+        LBAnimationHelperObject *animationObj = [[LBAnimationHelperObject alloc] initWithTransition:transition];
+        animationObj.values = @[@(fromOpacity), @(toOpacity)];
+        animationObj.keyPath = @"opacity";
+        animationObj.beginTime = beginTime;
+        animationObj.duration = duration;
+        animation = [LBAnimationHelper animationWithObject:animationObj];
     }
+    
     if (colorMaskLayer) {
         [colorMaskLayer addAnimation:animation forKey:nil];
         
@@ -138,31 +137,28 @@
         beginTime = AVCoreAnimationBeginTimeAtZero;
     }
     CFTimeInterval duration = CMTimeGetSeconds(transition.timeRange.duration);
-    CAAnimation *transitionAnimation = [LBAnimationHelper opacityAnimationWithFromOpacity:transition.fromAlpha
-                                                                                toOpacity:transition.toAlpha
-                                                                                beginTime:beginTime
-                                                                                 duration:duration
-                                                                              repeatCount:1
-                                                                             autoreverses:NO
-                                                                       timingFunctionName:nil];
-    transitionAnimation.removedOnCompletion = NO;
-    transitionAnimation.fillMode = kCAFillModeForwards;
+    
+    LBAnimationHelperObject *transitionAnimationObj = [[LBAnimationHelperObject alloc] initWithTransition:transition];
+    transitionAnimationObj.values = @[@(transition.fromAlpha), @(transition.toAlpha)];
+    transitionAnimationObj.keyPath = @"opacity";
+    transitionAnimationObj.beginTime = beginTime;
+    transitionAnimationObj.duration = duration;
+    CAAnimation *transitionAnimation = [LBAnimationHelper animationWithObject:transitionAnimationObj];
     [layer addAnimation:transitionAnimation forKey:nil];
     
-//    beginTime = CMTimeGetSeconds(CMTimeAdd(transition.absoluteStartTime, transition.timeRange.duration));
-//    if (isAppear) {
-//        duration = CMTimeGetSeconds(CMTimeSubtract(keepDurationTime, transition.timeRange.duration));
-//    } else {
-//        duration = CMTimeGetSeconds(keepDurationTime);
-//    }
-//    CAAnimation *keepAnimation = [LBAnimationHelper opacityAnimationWithFromOpacity:transition.toAlpha
-//                                                                          toOpacity:transition.toAlpha
-//                                                                          beginTime:beginTime
-//                                                                           duration:duration
-//                                                                        repeatCount:1
-//                                                                       autoreverses:NO
-//                                                                 timingFunctionName:nil];
-//    [layer addAnimation:keepAnimation forKey:nil];
+    beginTime = CMTimeGetSeconds(CMTimeAdd(transition.absoluteStartTime, transition.timeRange.duration));
+    if (isAppear) {
+        duration = CMTimeGetSeconds(CMTimeSubtract(keepDurationTime, transition.timeRange.duration));
+    } else {
+        duration = CMTimeGetSeconds(keepDurationTime);
+    }
+    LBAnimationHelperObject *keepAnimationObj = [[LBAnimationHelperObject alloc] initWithTransition:transition];
+    keepAnimationObj.values = @[@(transition.toAlpha), @(transition.toAlpha)];
+    keepAnimationObj.keyPath = @"opacity";
+    keepAnimationObj.beginTime = beginTime;
+    keepAnimationObj.duration = duration;
+    CAAnimation *keepAnimation = [LBAnimationHelper animationWithObject:keepAnimationObj];
+    [layer addAnimation:keepAnimation forKey:nil];
 }
 
 + (void)addContentsMaskTransition:(id<LBContentsMaskTransitionProtocol>)transition
@@ -176,13 +172,12 @@
     }
     CFTimeInterval duration = CMTimeGetSeconds(transition.timeRange.duration);
     
-    CAAnimation *animation = [LBAnimationHelper contentAnimationWithFromImage:transition.fromImage
-                                                                      toImage:transition.toImage
-                                                                    beginTime:beginTime
-                                                                     duration:duration
-                                                                  repeatCount:1
-                                                                 autoreverses:NO
-                                                           timingFunctionName:nil];
+    LBAnimationHelperObject *animationObj = [[LBAnimationHelperObject alloc] initWithTransition:transition];
+    animationObj.values = @[(id)transition.fromImage.CGImage, (id)transition.toImage.CGImage];
+    animationObj.keyPath = @"contents";
+    animationObj.beginTime = beginTime;
+    animationObj.duration = duration;
+    CAAnimation *animation = [LBAnimationHelper animationWithObject:animationObj];
     [layer addAnimation:animation forKey:nil];
 }
 

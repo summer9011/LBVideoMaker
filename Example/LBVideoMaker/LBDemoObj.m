@@ -89,14 +89,14 @@
 }
 
 + (UIImage *)compareImage {
-    NSArray<NSString *> *imagePaths = [LBDemoObj images];
+    NSArray<NSString *> *imagePaths = [self images];
     return [LBLayerHelper compareLayerImageWithBeforeImagePath:imagePaths.firstObject
                                                 afterImagePath:imagePaths.lastObject
-                                                     videoSize:[LBDemoObj videoSize]];
+                                                     videoSize:[self videoSize]];
 }
 
 + (UIImage *)blurCompareImage {
-    return [LBImageHelper blurImage:[LBDemoObj compareImage]];
+    return [LBImageHelper blurImage:[self compareImage]];
 }
 
 + (NSTimeInterval)normalTransitionTime {
@@ -111,7 +111,7 @@
 #pragma mark - Video
 
 + (LBVideoObj *)createDemoObj {
-    LBVideoObj *videoObj = [[LBVideoObj alloc] initWithFramePerSecond:[LBDemoObj frames] videoSize:[LBDemoObj videoSize]];
+    LBVideoObj *videoObj = [[LBVideoObj alloc] initWithFramePerSecond:[self frames] videoSize:[self videoSize]];
     videoObj.scenes = [self createScenesWithVideo:videoObj];
     videoObj.environments = [self createEnvironmentsWithVideo:videoObj];
     return videoObj;
@@ -120,23 +120,23 @@
 #pragma mark - Create Scenes
 
 + (NSArray<LBSceneObj *> *)createScenesWithVideo:(LBVideoObj *)videoObj {
-    NSTimeInterval headerTotalTime = 2.5 + [LBDemoObj normalTransitionTime];
+    NSTimeInterval headerTotalTime = 2.5 + [self normalTransitionTime];
     LBSceneObj *headerSceneObj = [self createHeaderSceneWithDurationTime:CMTimeMakeWithSeconds(headerTotalTime, videoObj.framePerSecond)];
     
-    NSTimeInterval stepTotalTime = 1 * [LBDemoObj images].count + [LBDemoObj normalTransitionTime] * 2;
+    NSTimeInterval stepTotalTime = 1 * [self images].count + [self normalTransitionTime] * 2;
     LBSceneObj *stepSceneObj = [self createStepSceneWithDurationTime:CMTimeMakeWithSeconds(stepTotalTime, videoObj.framePerSecond)];
     
-    NSTimeInterval compareTotalTime = 1.5 + [LBDemoObj normalTransitionTime] + [LBDemoObj longTransitionTime];
+    NSTimeInterval compareTotalTime = 1.5 + [self normalTransitionTime] + [self longTransitionTime];
     LBSceneObj *compareSceneObj = [self createCompareSceneWithDurationTime:CMTimeMakeWithSeconds(compareTotalTime, videoObj.framePerSecond)];
     
     NSTimeInterval productsTotalTime = 0;
     LBSceneObj *productsSceneObj = nil;
-    if ([LBDemoObj products].count > 0) {
-        productsTotalTime = 2 + [LBDemoObj normalTransitionTime];
+    if ([self products].count > 0) {
+        productsTotalTime = 2 + [self normalTransitionTime];
         productsSceneObj = [self createProductsSceneWithDurationTime:CMTimeMakeWithSeconds(productsTotalTime, videoObj.framePerSecond)];
     }
     
-    NSTimeInterval footerTotalTime = 1.5 + [LBDemoObj normalTransitionTime];
+    NSTimeInterval footerTotalTime = 1.5 + [self normalTransitionTime];
     LBSceneObj *footerSceneObj = [self createFooterSceneWithDurationTime:CMTimeMakeWithSeconds(footerTotalTime, videoObj.framePerSecond)];
     
     headerSceneObj.nextScene = stepSceneObj;
@@ -163,7 +163,7 @@
     LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime
                                                            sortType:LBSceneSortFirst];
     
-    CMTime transitionTime = CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], durationTime.timescale);
+    CMTime transitionTime = CMTimeMakeWithSeconds([self normalTransitionTime], durationTime.timescale);
     /*
     sceneObj.disappear = [[LBColorMaskTransitionObj alloc] initWithFromValue:nil
                                                                      toValue:[UIColor whiteColor]
@@ -193,9 +193,6 @@
         animationGroup.beginTime = beginTime;
         animationGroup.duration = duration;
         animationGroup.animations = @[zoomAnimation,moveAnimation];
-        animationGroup.removedOnCompletion = NO;
-        animationGroup.fillMode = kCAFillModeForwards;
-        
         [layer addAnimation:animationGroup forKey:nil];
     }];
     sceneObj.disappear = customDisappearTransition;
@@ -211,7 +208,7 @@
                                                            sortType:LBSceneSortLast];
     sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromValue:[UIColor whiteColor]
                                                                   toValue:nil
-                                                             durationTime:CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], durationTime.timescale)];
+                                                             durationTime:CMTimeMakeWithSeconds([self normalTransitionTime], durationTime.timescale)];
     
     LBPersonObj *logoPersonObj = [self createLogoPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     sceneObj.persons = @[logoPersonObj];
@@ -220,12 +217,12 @@
 }
 
 + (LBPersonObj *)createLogoPersonWithTimeRange:(CMTimeRange)timeRange {
-    CALayer *logoLayer = [LBLayerHelper headLayerWithLogoPath:[LBDemoObj logoPath]
-                                                        title:[LBDemoObj title]
-                                                     subTitle:[LBDemoObj subTitle]
-                                                       author:[LBDemoObj author]
-                                                         sign:[LBDemoObj sign]
-                                                    videoSize:[LBDemoObj videoSize]];
+    CALayer *logoLayer = [LBLayerHelper headLayerWithLogoPath:[self logoPath]
+                                                        title:[self title]
+                                                     subTitle:[self subTitle]
+                                                       author:[self author]
+                                                         sign:[self sign]
+                                                    videoSize:[self videoSize]];
     
     return [[LBPersonObj alloc] initWithAppearance:logoLayer
                                          timeRange:timeRange];
@@ -235,7 +232,7 @@
 + (LBSceneObj *)createStepSceneWithDurationTime:(CMTime)durationTime {
     LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime];
     
-    CMTime transitionTime = CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], durationTime.timescale);
+    CMTime transitionTime = CMTimeMakeWithSeconds([self normalTransitionTime], durationTime.timescale);
     
     /*
     sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromValue:[UIColor whiteColor]
@@ -246,7 +243,7 @@
     //Custom Transition
     LBCustomTransitionObj *customAppearTransition = [LBCustomTransitionObj transitionWithBlock:^(CALayer *layer, CALayer *parentLayer, CFTimeInterval keepTime) {
         CFTimeInterval duration = CMTimeGetSeconds(transitionTime);
-        CFTimeInterval beginTime = 2.5 + [LBDemoObj normalTransitionTime];
+        CFTimeInterval beginTime = 2.5 + [self normalTransitionTime];
         
         CABasicAnimation *zoomAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
         zoomAnimation.fromValue = @0;
@@ -266,9 +263,6 @@
         animationGroup.beginTime = beginTime;
         animationGroup.duration = duration;
         animationGroup.animations = @[zoomAnimation,moveAnimation];
-        animationGroup.removedOnCompletion = NO;
-        animationGroup.fillMode = kCAFillModeForwards;
-        
         [layer addAnimation:animationGroup forKey:nil];
     }];
     sceneObj.appear = customAppearTransition;
@@ -282,32 +276,36 @@
     
     
     CMTime dTime = CMTimeMakeWithSeconds(1, durationTime.timescale);
+    CGAffineTransform transform = CGAffineTransformRotate(CGAffineTransformIdentity, -1*M_PI_4/4.f);
     
     CMTime sTime = CMTimeAdd(transitionTime, transitionTime);
     CMTimeRange timeRange = CMTimeRangeMake(sTime, dTime);
-    LBPersonObj *eyeToolPersonObj = [self createStepToolPersonWithImageName:@"eye"
-                                                                  fromPoint:CGPointMake(420, 330)
-                                                                    toPoint:CGPointMake(446, 330)
-                                                                  timeRange:timeRange];
-    
-    sTime = CMTimeRangeGetEnd(timeRange);
-    timeRange = CMTimeRangeMake(sTime, dTime);
     LBPersonObj *faceToolPersonObj = [self createStepToolPersonWithImageName:@"face"
-                                                                   fromPoint:CGPointMake(240, 390)
-                                                                     toPoint:CGPointMake(260, 390)
+                                                                   transform:transform
+                                                                   fromPoint:CGPointMake(240, 370)
+                                                                     toPoint:CGPointMake(260, 370)
                                                                    timeRange:timeRange];
     
     sTime = CMTimeRangeGetEnd(timeRange);
     timeRange = CMTimeRangeMake(sTime, dTime);
+    LBPersonObj *eyeToolPersonObj = [self createStepToolPersonWithImageName:@"eye"
+                                                                  transform:transform
+                                                                  fromPoint:CGPointMake(460, 330)
+                                                                    toPoint:CGPointMake(486, 330)
+                                                                  timeRange:timeRange];
+    
+    sTime = CMTimeRangeGetEnd(timeRange);
+    timeRange = CMTimeRangeMake(sTime, dTime);
     LBPersonObj *lipToolPersonObj = [self createStepToolPersonWithImageName:@"lip"
-                                                                  fromPoint:CGPointMake(380, 480)
-                                                                    toPoint:CGPointMake(400, 480)
+                                                                  transform:transform
+                                                                  fromPoint:CGPointMake(380, 490)
+                                                                    toPoint:CGPointMake(400, 490)
                                                                   timeRange:timeRange];
     
     sceneObj.persons = @[backgroundPersonObj,
                          stepPersonObj,
-                         eyeToolPersonObj,
                          faceToolPersonObj,
+                         eyeToolPersonObj,
                          lipToolPersonObj
                          ];
     
@@ -315,24 +313,24 @@
 }
 
 + (LBPersonObj *)createStepBackgroundPersonWithTimeRange:(CMTimeRange)timeRange {
-    CALayer *stepLayer = [LBLayerHelper stepLayerWithImagePath:[LBDemoObj images].firstObject
-                                                     videoSize:[LBDemoObj videoSize]];
+    CALayer *stepLayer = [LBLayerHelper stepLayerWithImagePath:[self images].firstObject
+                                                     videoSize:[self videoSize]];
     return [[LBPersonObj alloc] initWithAppearance:stepLayer
                                          timeRange:timeRange];
 }
 
 + (LBPersonObj *)createStepPersonWithTimeRange:(CMTimeRange)timeRange {
-    CALayer *stepLayer = [LBLayerHelper stepContentLayerWithVideoSize:[LBDemoObj videoSize]];
+    CALayer *stepLayer = [LBLayerHelper stepContentLayerWithVideoSize:[self videoSize]];
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:stepLayer
                                                            timeRange:timeRange];
     
     NSMutableArray<UIImage *> *images = [NSMutableArray array];
-    [[LBDemoObj images] enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [[self images] enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [images addObject:[UIImage imageWithContentsOfFile:obj]];
     }];
     
-    CMTime behaviorDurationTime = CMTimeSubtract(timeRange.duration, CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime]*2, timeRange.duration.timescale));
-    CMTimeRange behaviorTimeRange = CMTimeRangeMake(CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], timeRange.duration.timescale), behaviorDurationTime);
+    CMTime behaviorDurationTime = CMTimeSubtract(timeRange.duration, CMTimeMakeWithSeconds([self normalTransitionTime]*2, timeRange.duration.timescale));
+    CMTimeRange behaviorTimeRange = CMTimeRangeMake(CMTimeMakeWithSeconds([self normalTransitionTime], timeRange.duration.timescale), behaviorDurationTime);
     LBContentGradientBehaviorObj *behaviorObj = [[LBContentGradientBehaviorObj alloc] initWithImages:images
                                                                                              timeRange:behaviorTimeRange];
     behaviorObj.extendBackwards = YES;
@@ -343,11 +341,14 @@
 }
 
 + (LBPersonObj *)createStepToolPersonWithImageName:(NSString *)imageName
+                                         transform:(CGAffineTransform)transform
                                          fromPoint:(CGPoint)fromPoint
                                            toPoint:(CGPoint)toPoint
                                          timeRange:(CMTimeRange)timeRange {
-    CALayer *toolLayer = [LBLayerHelper imageLayerWithImagePath:[LBDemoObj toolImagePathWithName:imageName]
-                                                      videoSize:[LBDemoObj videoSize]];
+    CALayer *toolLayer = [LBLayerHelper imageLayerWithImagePath:[self toolImagePathWithName:imageName]
+                                                      videoSize:[self videoSize]];
+    [toolLayer setAffineTransform:transform];
+    
     CGPoint position = toolLayer.position;
     position = fromPoint;
     toolLayer.position = position;
@@ -355,7 +356,7 @@
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:toolLayer
                                                            timeRange:timeRange];
     
-    CMTime transitionTime = CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], timeRange.duration.timescale);
+    CMTime transitionTime = CMTimeMakeWithSeconds([self normalTransitionTime], timeRange.duration.timescale);
     personObj.appear = [[LBAlphaTransitionObj alloc] initWithFromValue:@0
                                                                toValue:@1
                                                           durationTime:transitionTime];
@@ -404,7 +405,7 @@
                                       ];
         animation.removedOnCompletion = NO;
         animation.fillMode = kCAFillModeForwards;
-        
+     
         CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
         transformAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
         transformAnimation.toValue = [NSValue valueWithCATransform3D:CATransform3DRotate(CATransform3DIdentity, M_PI, 0, 0, 1)];
@@ -412,7 +413,7 @@
         transformAnimation.duration = CMTimeGetSeconds(bDurationTime);
         
         CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
-        animationGroup.beginTime = 2.5 + [LBDemoObj normalTransitionTime] + CMTimeGetSeconds(timeRange.start) + CMTimeGetSeconds(bStartTime);
+        animationGroup.beginTime = 2.5 + [self normalTransitionTime] + CMTimeGetSeconds(timeRange.start) + CMTimeGetSeconds(bStartTime);
         animationGroup.duration = CMTimeGetSeconds(bDurationTime);
         animationGroup.animations = @[animation, transformAnimation];
         
@@ -428,13 +429,13 @@
 #pragma mark - Compare Scene
 + (LBSceneObj *)createCompareSceneWithDurationTime:(CMTime)durationTime {
     LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime];
-    CMTime appearTransitionTime = CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], durationTime.timescale);
+    CMTime appearTransitionTime = CMTimeMakeWithSeconds([self normalTransitionTime], durationTime.timescale);
     sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromValue:[UIColor whiteColor]
                                                                   toValue:nil
                                                              durationTime:appearTransitionTime];
-    CMTime disAppearTransitionTime = CMTimeMakeWithSeconds([LBDemoObj longTransitionTime], durationTime.timescale);
-    sceneObj.disappear = [[LBContentsMaskTransitionObj alloc] initWithFromValue:[LBDemoObj compareImage]
-                                                                        toValue:[LBDemoObj blurCompareImage]
+    CMTime disAppearTransitionTime = CMTimeMakeWithSeconds([self longTransitionTime], durationTime.timescale);
+    sceneObj.disappear = [[LBContentsMaskTransitionObj alloc] initWithFromValue:[self compareImage]
+                                                                        toValue:[self blurCompareImage]
                                                                    durationTime:disAppearTransitionTime];
     
     CMTime personDurationTime = CMTimeSubtract(durationTime, disAppearTransitionTime);
@@ -447,8 +448,8 @@
 }
 
 + (LBPersonObj *)createCompareImagesPersonWithTimeRange:(CMTimeRange)timeRange {
-    CALayer *compareLayer = [LBLayerHelper compareLayerWithContents:[LBDemoObj compareImage]
-                                                          videoSize:[LBDemoObj videoSize]];
+    CALayer *compareLayer = [LBLayerHelper compareLayerWithContents:[self compareImage]
+                                                          videoSize:[self videoSize]];
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:compareLayer
                                                            timeRange:timeRange];
     
@@ -456,12 +457,12 @@
 }
 
 + (LBPersonObj *)createDetailPersonWithTimeRange:(CMTimeRange)timeRange {
-    CALayer *detailLayer = [LBLayerHelper detailLayerWithDetail:[LBDemoObj detail]
-                                                      videoSize:[LBDemoObj videoSize]];
+    CALayer *detailLayer = [LBLayerHelper detailLayerWithDetail:[self detail]
+                                                      videoSize:[self videoSize]];
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:detailLayer
                                                            timeRange:timeRange];
     
-    CMTime transitionTime = CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], timeRange.duration.timescale);
+    CMTime transitionTime = CMTimeMakeWithSeconds([self normalTransitionTime], timeRange.duration.timescale);
     personObj.disappear = [[LBAlphaTransitionObj alloc] initWithFromValue:@1
                                                                   toValue:@0
                                                              durationTime:transitionTime];
@@ -472,15 +473,15 @@
 #pragma mark - Products Scene
 + (LBSceneObj *)createProductsSceneWithDurationTime:(CMTime)durationTime {
     LBSceneObj *sceneObj = [[LBSceneObj alloc] initWithDurationTime:durationTime];
-    CMTime transitionTime = CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], durationTime.timescale);
+    CMTime transitionTime = CMTimeMakeWithSeconds([self normalTransitionTime], durationTime.timescale);
     sceneObj.disappear = [[LBColorMaskTransitionObj alloc] initWithFromValue:nil
                                                                      toValue:[UIColor whiteColor]
                                                                 durationTime:transitionTime];
     
     LBPersonObj *backgroundPersonObj = [self createProductsBackgroundPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     
-    CMTime pageProductStartTime = CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], durationTime.timescale);
-    CMTime pageProductDurationTime = CMTimeSubtract(durationTime, CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime]*2, durationTime.timescale));
+    CMTime pageProductStartTime = CMTimeMakeWithSeconds([self normalTransitionTime], durationTime.timescale);
+    CMTime pageProductDurationTime = CMTimeSubtract(durationTime, CMTimeMakeWithSeconds([self normalTransitionTime]*2, durationTime.timescale));
     CMTimeRange pageProductTimeRange = CMTimeRangeMake(pageProductStartTime, pageProductDurationTime);
     LBPersonObj *pageProductPersonObj = [self createPageProductPersonWithTimeRange:pageProductTimeRange];
     sceneObj.persons = @[backgroundPersonObj,pageProductPersonObj];
@@ -489,8 +490,8 @@
 }
 
 + (LBPersonObj *)createProductsBackgroundPersonWithTimeRange:(CMTimeRange)timeRange {
-    CALayer *compareLayer = [LBLayerHelper compareLayerWithContents:[LBDemoObj blurCompareImage]
-                                                          videoSize:[LBDemoObj videoSize]];
+    CALayer *compareLayer = [LBLayerHelper compareLayerWithContents:[self blurCompareImage]
+                                                          videoSize:[self videoSize]];
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:compareLayer
                                                            timeRange:timeRange];
     
@@ -498,11 +499,11 @@
 }
 
 + (LBPersonObj *)createPageProductPersonWithTimeRange:(CMTimeRange)timeRange {
-    CALayer *productLayer = [LBLayerHelper productLayerWithProducts:[LBDemoObj products]
-                                                          videoSize:[LBDemoObj videoSize]];
+    CALayer *productLayer = [LBLayerHelper productLayerWithProducts:[self products]
+                                                          videoSize:[self videoSize]];
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:productLayer
                                                            timeRange:timeRange];
-    CMTime transitionTime = CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], timeRange.duration.timescale);
+    CMTime transitionTime = CMTimeMakeWithSeconds([self normalTransitionTime], timeRange.duration.timescale);
     personObj.appear = [[LBAlphaTransitionObj alloc] initWithFromValue:@0
                                                                toValue:@1
                                                           durationTime:transitionTime];
@@ -532,16 +533,16 @@
 }
 
 + (LBPersonObj *)createWatermarkPersonWithTimeRange:(CMTimeRange)timeRange color:(UIColor *)color {
-    CALayer *watermarkLayer = [LBLayerHelper watermarkLayerWithTitle:[LBDemoObj title]
-                                                            subTitle:[LBDemoObj subTitle]
-                                                              author:[LBDemoObj author]
-                                                                sign:[LBDemoObj sign]
+    CALayer *watermarkLayer = [LBLayerHelper watermarkLayerWithTitle:[self title]
+                                                            subTitle:[self subTitle]
+                                                              author:[self author]
+                                                                sign:[self sign]
                                                                color:color
-                                                           videoSize:[LBDemoObj videoSize]];
+                                                           videoSize:[self videoSize]];
     
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:watermarkLayer
                                                            timeRange:timeRange];
-    CMTime transitionTime = CMTimeMakeWithSeconds([LBDemoObj normalTransitionTime], timeRange.duration.timescale);
+    CMTime transitionTime = CMTimeMakeWithSeconds([self normalTransitionTime], timeRange.duration.timescale);
     personObj.appear = [[LBAlphaTransitionObj alloc] initWithFromValue:@0
                                                                toValue:@1
                                                           durationTime:transitionTime];
@@ -561,14 +562,14 @@
 }
 
 + (LBVideoEnvironmentObj *)createVideoEnvironmentWithTotalVideoTime:(CMTime)totalVideoTime {
-    LBVideoEnvironmentObj *videoEnvironmentObj = [[LBVideoEnvironmentObj alloc] initWithVideoURL:[NSURL fileURLWithPath:[LBDemoObj videoPath]] backgroundColor:[UIColor whiteColor]];
+    LBVideoEnvironmentObj *videoEnvironmentObj = [[LBVideoEnvironmentObj alloc] initWithVideoURL:[NSURL fileURLWithPath:[self videoPath]] backgroundColor:[UIColor whiteColor]];
     videoEnvironmentObj.timeRange = CMTimeRangeMake(kCMTimeZero, totalVideoTime);
     
     return videoEnvironmentObj;
 }
 
 + (LBAudioEnvironmentObj *)createAudioEnvironmentWithTotalVideoTime:(CMTime)totalVideoTime {
-    LBAudioEnvironmentObj *audioEnvironmentObj = [[LBAudioEnvironmentObj alloc] initWithAudioURL:[NSURL fileURLWithPath:[LBDemoObj audioPath]]];
+    LBAudioEnvironmentObj *audioEnvironmentObj = [[LBAudioEnvironmentObj alloc] initWithAudioURL:[NSURL fileURLWithPath:[self audioPath]]];
     audioEnvironmentObj.timeRange = CMTimeRangeMake(kCMTimeZero, totalVideoTime);
     
     CMTime appearDurationTime = CMTimeMakeWithSeconds(2.3, totalVideoTime.timescale);
