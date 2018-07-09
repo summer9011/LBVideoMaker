@@ -59,12 +59,11 @@
 }
 
 + (NSArray<NSString *> *)images {
-    return @[
-             [[NSBundle mainBundle] pathForResource:@"1" ofType:@"JPG"],
-             [[NSBundle mainBundle] pathForResource:@"2" ofType:@"JPG"],
-             [[NSBundle mainBundle] pathForResource:@"3" ofType:@"JPG"],
-             [[NSBundle mainBundle] pathForResource:@"4" ofType:@"JPG"]
-             ];
+    NSMutableArray<NSString *> *imagePaths = [NSMutableArray array];
+    for (NSInteger i = 0; i < 5; i ++) {
+        [imagePaths addObject:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"step-%ld", i] ofType:@"jpg"]];
+    }
+    return imagePaths;
 }
 
 + (NSArray<NSDictionary<NSString *, NSString *> *> *)products {
@@ -372,11 +371,9 @@
     CMTimeRange bTimeRange = CMTimeRangeMake(bStartTime, bDurationTime);
     LBMoveBehaviorObj *moveBehavior = [[LBMoveBehaviorObj alloc] initWithPositions:positions timeRange:bTimeRange];
     moveBehavior.extendForwards = YES;
-    moveBehavior.timingFunctionNames = @[
-                                         kCAMediaTimingFunctionEaseIn,
+    moveBehavior.timingFunctionNames = @[kCAMediaTimingFunctionEaseIn,
                                          kCAMediaTimingFunctionLinear,
-                                         kCAMediaTimingFunctionEaseOut
-                                         ];
+                                         kCAMediaTimingFunctionEaseOut];
     
     //Custom Behavior
     /*
@@ -428,25 +425,28 @@
     sceneObj.appear = [[LBColorMaskTransitionObj alloc] initWithFromValue:[UIColor whiteColor]
                                                                   toValue:nil
                                                              durationTime:appearTransitionTime];
-    CMTime disAppearTransitionTime = CMTimeMakeWithSeconds([self longTransitionTime], durationTime.timescale);
-    sceneObj.disappear = [[LBContentsMaskTransitionObj alloc] initWithFromValue:[self compareImage]
-                                                                        toValue:[self blurCompareImage]
-                                                                   durationTime:disAppearTransitionTime];
     
-    CMTime personDurationTime = CMTimeSubtract(durationTime, disAppearTransitionTime);
-    CMTimeRange personTimeRange = CMTimeRangeMake(kCMTimeZero, personDurationTime);
+    LBPersonObj *compareImagesPersonObj = [self createCompareImagesPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, durationTime)];
     
-    LBPersonObj *compareImagesPersonObj = [self createCompareImagesPersonWithTimeRange:personTimeRange];
-    LBPersonObj *detailPersonObj = [self createDetailPersonWithTimeRange:personTimeRange];
+    CMTime detailDurationTime = CMTimeSubtract(durationTime, CMTimeMakeWithSeconds([self longTransitionTime], durationTime.timescale));
+    LBPersonObj *detailPersonObj = [self createDetailPersonWithTimeRange:CMTimeRangeMake(kCMTimeZero, detailDurationTime)];
     sceneObj.persons = @[compareImagesPersonObj,detailPersonObj];
     return sceneObj;
 }
 
 + (LBPersonObj *)createCompareImagesPersonWithTimeRange:(CMTimeRange)timeRange {
-    CALayer *compareLayer = [LBLayerHelper compareLayerWithContents:[self compareImage]
+    UIImage *compareImage = [self compareImage];
+    UIImage *blurCompareImage = [self blurCompareImage];
+    
+    CALayer *compareLayer = [LBLayerHelper compareLayerWithContents:compareImage
                                                           videoSize:[self videoSize]];
     LBPersonObj *personObj = [[LBPersonObj alloc] initWithAppearance:compareLayer
                                                            timeRange:timeRange];
+    
+    CMTime disAppearTransitionTime = CMTimeMakeWithSeconds([self longTransitionTime], timeRange.duration.timescale);
+    personObj.disappear = [[LBContentsMaskTransitionObj alloc] initWithFromValue:compareImage
+                                                                        toValue:blurCompareImage
+                                                                   durationTime:disAppearTransitionTime];
     
     return personObj;
 }
