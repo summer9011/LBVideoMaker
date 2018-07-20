@@ -43,7 +43,6 @@
 		6E7E227D20E9D03900DF1708 /* LBScreenplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7E227C20E9D03900DF1708 /* LBScreenplayController.m */; };
 		6EC8135F20E5D60100BDF307 /* LBCustomTransitionObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC8135E20E5D60100BDF307 /* LBCustomTransitionObj.m */; };
 		6ECF594B20DD218700FF839E /* LBDemoObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF594A20DD218700FF839E /* LBDemoObj.m */; };
-		6ED6F32C20EB4BB100189572 /* LBTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ED6F32B20EB4BB100189572 /* LBTimelineView.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		AB61E1E9059490D3F1D365AF /* Pods_LBVideoMaker_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6030C7D74A224EB9384E38A6 /* Pods_LBVideoMaker_Example.framework */; };
@@ -114,8 +113,6 @@
 		6EC8135E20E5D60100BDF307 /* LBCustomTransitionObj.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBCustomTransitionObj.m; sourceTree = "<group>"; };
 		6ECF594920DD218700FF839E /* LBDemoObj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBDemoObj.h; sourceTree = "<group>"; };
 		6ECF594A20DD218700FF839E /* LBDemoObj.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBDemoObj.m; sourceTree = "<group>"; };
-		6ED6F32A20EB4BB100189572 /* LBTimelineView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBTimelineView.h; sourceTree = "<group>"; };
-		6ED6F32B20EB4BB100189572 /* LBTimelineView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBTimelineView.m; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		805AC189D1EAAC805569BF75 /* Pods-LBVideoMaker_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LBVideoMaker_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-LBVideoMaker_Example/Pods-LBVideoMaker_Example.release.xcconfig"; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -212,8 +209,6 @@
 				6E55CE5E20EA661B0037E3B1 /* LBCreateScreenplayController.m */,
 				6E55CE6020EA661B0037E3B1 /* LBCreateTimelineController.h */,
 				6E55CE6120EA661B0037E3B1 /* LBCreateTimelineController.m */,
-				6ED6F32A20EB4BB100189572 /* LBTimelineView.h */,
-				6ED6F32B20EB4BB100189572 /* LBTimelineView.m */,
 				6E55CE6420EA6DA30037E3B1 /* LBResourceListController.h */,
 				6E55CE6520EA6DA30037E3B1 /* LBResourceListController.m */,
 				6ECF594920DD218700FF839E /* LBDemoObj.h */,
@@ -494,7 +489,6 @@
 				6E55CE6320EA661B0037E3B1 /* LBCreateTimelineController.m in Sources */,
 				6003F59E195388D20070C39A /* LBAppDelegate.m in Sources */,
 				6E55CE6620EA6DA30037E3B1 /* LBResourceListController.m in Sources */,
-				6ED6F32C20EB4BB100189572 /* LBTimelineView.m in Sources */,
 				6003F5A7195388D20070C39A /* LBVideosController.m in Sources */,
 				6E285E0020E51087008D2C63 /* LBCustomBehaviorObj.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
